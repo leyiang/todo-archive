@@ -4,13 +4,17 @@
 
 <template>
     <div class="task-item flex bg-white rounded p-5 text-lg">
-        <button class="mr-3 text-2xl">
-            <Icon icon="ic:outline-circle" />
-        </button>
+        <FinishButton />
+
         <span>This is the task name</span>
+        
+        <button class="text-2xl ml-auto">
+            <Icon icon="ic:round-star-border" />
+        </button>
     </div>
 </template>
 
 <script setup>
+import FinishButton from "@/components/FinishButton.vue";
 import { Icon } from "@iconify/vue";
 </script>

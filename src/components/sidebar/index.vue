@@ -4,7 +4,7 @@
 }
 
 .todo-aside .sidebar-item:first-of-type {
-    margin-top: -1rem;
+    margin-top: -10px;
 }
 </style>
 
