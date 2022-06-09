@@ -1,6 +1,9 @@
-import type { iTask } from "../types";
+import type { iTask, iList } from "../types";
 
 export interface iAccessor {
-    getTasks() : Array<iTask>;
-    addTask( task : iTask ) : void;
+    getTasks() : Promise<iTask[]>;
+    addTask( task : iTask ) : Promise<void>;
+
+    getTaskLists() : Promise<iList[]>;
+    addTaskList() : Promise<void>;
 }

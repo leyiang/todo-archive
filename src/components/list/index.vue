@@ -34,7 +34,10 @@
         </header>
 
         <div class="task-list flex flex-col gap-2 task-list flex-1">
-            <TaskItem v-for="i in 15" />
+            <TaskItem
+                v-for="task in tasks"
+                :task="task"
+            />
         </div>
 
         <AddNewInput
@@ -43,11 +46,18 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TaskItem from "./TaskItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
+import { inject, provide, ref } from "vue";
+import List from "@/core/model/List";
 
-import { provide } from "vue";
 provide("icon-column-width", 50)
+const accessor = inject("accessor");
+const tasks = ref([]);
+
+accessor.getTasks().then( loaded => {
+    tasks.value = loaded;
+});
 </script>

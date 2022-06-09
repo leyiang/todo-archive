@@ -13,7 +13,7 @@
         class="icon-column"
         :style="style"
     >
-        <slot></slot>
+        <slot ref="child"></slot>
     </div>
 </template>
 
@@ -26,8 +26,13 @@ import { inject, computed } from "vue";
  * Will Have a same width
  * @type {number}
  */
-const width = inject("icon-column-width", 40);
+let width = inject("icon-column-width", 40);
+
+/**
+ * Get Referenced By DOM
+ * @type {ComputedRef<{width: string}>}
+ */
 const style = computed(() => ({
-    "width" : width + "px"
+    "width": width + "px",
 }));
 </script>

@@ -8,24 +8,32 @@
 
 <template>
     <div class="task-detail">
-        <div class="bg-white p-5">
+        <div class="bg-white p-3">
             <div class="flex items-center">
                 <IconColumn>
-                    <FinishButton class="text-2xl" />
+                    <FinishButton
+                        class="text-2xl"
+                    />
                 </IconColumn>
 
                 <h1 class="text-xl">
                     <GhostInput
-                        :value="123123"
+                        value="Task Title"
                     />
                 </h1>
             </div>
 
-            <AddNewInput
-                placeholder="12312312"
-            />
+            <div class="flex flex-col mt-5">
+                <StepItem
+                    v-for="i in 5"
+                />
+            </div>
 
-
+            <div class="mt-1">
+                <AddNewInput
+                    placeholder="Add a task"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -35,4 +43,5 @@ import FinishButton from "@/components/FinishButton.vue"
 import AddNewInput from "@/components/AddNewInput.vue"
 import IconColumn from "@/components/IconColumn.vue";
 import GhostInput from "@/components/GhostInput.vue";
+import StepItem from "./StepItem.vue";
 </script>
