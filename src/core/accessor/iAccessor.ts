@@ -5,5 +5,5 @@ export interface iAccessor {
     addTask( task : iTask ) : Promise<void>;
 
     getTaskLists() : Promise<iList[]>;
-    addTaskList() : Promise<void>;
+    addTaskList( name: string, icon: string | null ) : Promise<iList>;
 }

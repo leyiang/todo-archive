@@ -27,6 +27,7 @@
         <div class="mt-auto">
             <AddNewInput
                 placeholder="New List"
+                @submit="addNewList"
             />
         </div>
     </aside>
@@ -38,23 +39,25 @@ import ListItem from "./ListItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 
 import List from "@/core/model/List";
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import type { Ref } from "vue";
-import type {iAccessor} from "@/core/accessor/iAccessor";
+import accessor from "@/core/accessor/AccessorInstance";
+import { toSnakeCase } from "@/core/shared/utils";
 
 const lists : Ref<List[]> = ref([]);
-const accessor : iAccessor | undefined = inject("accessor");
-
-if( accessor ) {
-    accessor.getTaskLists().then( loaded => {
-        lists.value = loaded;
-    });
-}
-
 const defaultList : Array<List> = [
-    new List("day", "My Day", "ic:outline-wb-sunny"),
-    new List("important", "Important", "ic:round-star-border"),
-    new List("all", "All", "ic:baseline-list-alt"),
+    new List(0, "My Day", "ic:outline-wb-sunny"),
+    new List(0, "Important", "ic:round-star-border"),
+    new List(0, "All", "ic:baseline-list-alt"),
 ];
 
+accessor.getTaskLists().then( loaded => {
+    lists.value = loaded;
+});
+
+function addNewList( name: string ) {
+    accessor.addTaskList(name).then( list => {
+        lists.value.push( list );
+    });
+}
 </script>

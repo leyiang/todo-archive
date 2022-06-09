@@ -31,6 +31,11 @@ export default class StoreAccessor implements iAccessor {
         if( Array.isArray( rawTasks ) ) this.tasks = rawTasks.map( Task.Load );
     }
 
+    #save() : void {
+        this.manager.set("lists", this.lists);
+        this.manager.set("tasks", this.tasks);
+    }
+
     fetchTasks() : Promise<Task[]> {
         return new Promise((resolve, reject) =>{
             setTimeout(() => {
@@ -56,7 +61,23 @@ export default class StoreAccessor implements iAccessor {
 
     getTaskLists() : Promise<List[]> {
         return new Promise(resolve => {
-            resolve(this.lists);
+            /**
+             * Resolve Clone Version Array
+             * To Prevent Local-Array-Reference Problems
+             */
+            const lists = this.lists.slice();
+            resolve( lists );
+        });
+    }
+
+    addTaskList( name: string, icon: string | null = null ): Promise<List> {
+        return new Promise(resolve => {
+            const id = this.lists.length;
+            const list = new List(id, name, icon);
+            this.lists.push( list );
+            this.#save();
+
+            resolve( list );
         });
     }
 }

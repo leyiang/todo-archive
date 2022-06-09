@@ -3,7 +3,7 @@ export interface iTask {
 }
 
 export interface iList {
-    id: string,
+    id: number,
     name: string,
     icon: string | null,
 }

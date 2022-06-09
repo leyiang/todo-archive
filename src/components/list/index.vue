@@ -50,12 +50,13 @@
 import TaskItem from "./TaskItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
-import { inject, provide, ref } from "vue";
-import List from "@/core/model/List";
+import { provide, ref } from "vue";
+import type { Ref } from "vue";
+import type Task from "@/core/model/Task";
+import accessor from "@/core/accessor/AccessorInstance";
 
 provide("icon-column-width", 50)
-const accessor = inject("accessor");
-const tasks = ref([]);
+const tasks : Ref<Task[]> = ref([]);
 
 accessor.getTasks().then( loaded => {
     tasks.value = loaded;

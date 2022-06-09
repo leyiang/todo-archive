@@ -35,6 +35,7 @@
             class="p-4 w-full f1 pl-0"
             placeholder="Add a task"
             v-bind="$attrs"
+            @keydown.enter="submit"
         >
     </div>
 </template>
@@ -48,6 +49,12 @@ export default {
     components: {
         IconColumn,
         Icon
+    },
+    methods: {
+        submit(e) {
+            this.$emit('submit', e.target.value);
+            e.target.value = null;
+        }
     }
 }
 </script>
