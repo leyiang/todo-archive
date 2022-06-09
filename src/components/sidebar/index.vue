@@ -42,7 +42,6 @@ import List from "@/core/model/List";
 import { ref } from "vue";
 import type { Ref } from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
-import { toSnakeCase } from "@/core/shared/utils";
 
 const lists : Ref<List[]> = ref([]);
 const defaultList : Array<List> = [
