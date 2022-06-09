@@ -8,7 +8,7 @@
             <FinishButton class="text-2xl" />
         </IconColumn>
 
-        <span>This is the task name</span>
+        <span>{{ task.name }}</span>
 
         <IconColumn class="ml-auto">
             <button class="text-2xl">
@@ -22,4 +22,13 @@
 import FinishButton from "@/components/FinishButton.vue";
 import { Icon } from "@iconify/vue";
 import IconColumn from "@/components/IconColumn.vue";
+import { defineProps } from "vue";
+import Task from "@/core/model/Task";
+
+const props = defineProps({
+    task: {
+        type: Task,
+        require: true
+    }
+});
 </script>

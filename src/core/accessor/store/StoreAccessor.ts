@@ -23,12 +23,31 @@ export default class StoreAccessor implements iAccessor {
 
     #load() : void {
         const types = ["lists", "tasks"];
+        const listMap : any = {};
 
         const rawLists = this.manager.get("lists", []);
         const rawTasks = this.manager.get("tasks", []);
 
-        if( Array.isArray( rawLists ) ) this.lists = rawLists.map( List.Load );
+        if( Array.isArray( rawLists ) ) {
+            const lists : List[] = [];
+
+            rawLists.forEach( raw => {
+                const list = List.Load(raw);
+                listMap[ list.id ] = list;
+                lists.push( list );
+            });
+
+            this.lists = lists;
+        }
+
         if( Array.isArray( rawTasks ) ) this.tasks = rawTasks.map( Task.Load );
+
+        this.tasks.forEach( task => {
+            const list = listMap[ task.list_id ];
+            if( list ) {
+                list.tasks.push( task );
+            }
+        });
     }
 
     #save() : void {
@@ -53,9 +72,12 @@ export default class StoreAccessor implements iAccessor {
         })
     }
 
-    addTask(task: Task) : Promise<void> {
+    addTask( name: string, list_id: number ) : Promise<Task> {
         return new Promise((resolve) => {
-            resolve();
+            const task = new Task( name, list_id );
+            this.tasks.push( task );
+            this.#save();
+            resolve( task );
         });
     }
 
@@ -66,14 +88,15 @@ export default class StoreAccessor implements iAccessor {
              * To Prevent Local-Array-Reference Problems
              */
             const lists = this.lists.slice();
+
             resolve( lists );
         });
     }
 
-    addTaskList( name: string, icon: string | null = null ): Promise<List> {
+    addTaskList( name: string, icon: string | null = null, isDefault=false): Promise<List> {
         return new Promise(resolve => {
             const id = this.lists.length;
-            const list = new List(id, name, icon);
+            const list = new List(id, name, icon, isDefault);
             this.lists.push( list );
             this.#save();
 
