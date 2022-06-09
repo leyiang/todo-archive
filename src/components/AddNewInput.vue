@@ -1,15 +1,19 @@
 <style>
 .task-input {
-    background-color: rgba(0, 0, 0, 0.3);
     tab-index: 1;
 }
 
 .task-input input {
     background: transparent;
+    outline: none;
 }
 
 .task-input input::placeholder {
-    color: #fff;
+    color: currentColor;
+}
+
+.task-input .iconify {
+    color: currentColor;
 }
 
 .plus-wrap {
@@ -19,23 +23,31 @@
 
 <template>
     <div class="flex items-center task-input rounded">
-        <span
-            class="justify-center items-center flex plus-wrap"
-        >
+        <IconColumn>
             <Icon
                 icon="ic:sharp-plus"
-                class="text-xl text-white"
+                class="text-xl"
             />
-        </span>
+        </IconColumn>
 
         <input
             type="text"
             class="p-4 w-full f1 pl-0"
             placeholder="Add a task"
+            v-bind="$attrs"
         >
     </div>
 </template>
 
-<script setup>
+<script>
 import { Icon } from "@iconify/vue";
+import IconColumn from "@/components/IconColumn.vue";
+
+export default {
+    inheritAttrs: false,
+    components: {
+        IconColumn,
+        Icon
+    }
+}
 </script>

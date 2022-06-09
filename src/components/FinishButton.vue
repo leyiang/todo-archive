@@ -1,5 +1,5 @@
 <template>
-    <button class="mr-3 text-2xl">
+    <button class="finish-button">
         <Icon icon="ic:outline-circle" />
     </button>
 </template>

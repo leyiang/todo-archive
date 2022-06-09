@@ -3,18 +3,23 @@
 </style>
 
 <template>
-    <div class="task-item flex bg-white rounded p-5 text-lg">
-        <FinishButton />
+    <div class="task-item flex bg-white rounded text-lg py-5">
+        <IconColumn>
+            <FinishButton class="text-2xl" />
+        </IconColumn>
 
         <span>This is the task name</span>
-        
-        <button class="text-2xl ml-auto">
-            <Icon icon="ic:round-star-border" />
-        </button>
+
+        <IconColumn class="ml-auto">
+            <button class="text-2xl">
+                <Icon icon="ic:round-star-border" />
+            </button>
+        </IconColumn>
     </div>
 </template>
 
 <script setup>
 import FinishButton from "@/components/FinishButton.vue";
 import { Icon } from "@iconify/vue";
+import IconColumn from "@/components/IconColumn.vue";
 </script>
