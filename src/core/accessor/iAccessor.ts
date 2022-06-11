@@ -6,4 +6,6 @@ export interface iAccessor {
 
     getTaskLists() : Promise<iList[]>;
     addTaskList( name: string, icon: string | null ) : Promise<iList>;
+
+    setTaskFinishStatus( task_id: number, type: boolean ): Promise<void>;
 }

@@ -1,6 +1,7 @@
 import type {iTask} from "@/core/types";
 
 export default class Task implements iTask {
+    id: number;
     name: string;
     list_id: number;
     date: Date | null;
@@ -8,12 +9,14 @@ export default class Task implements iTask {
     finish: boolean;
 
     constructor(
+        id: number,
         name: string,
         list_id: number,
         date: Date | null = null,
         important: boolean = false,
         finish: boolean = false
     ) {
+        this.id = id;
         this.name = name;
         this.list_id = list_id;
         this.date = date;
@@ -23,6 +26,7 @@ export default class Task implements iTask {
 
     static Load( task: Task ) : Task {
         return new Task(
+            task.id,
             task.name,
             task.list_id,
             task.date,

@@ -1,11 +1,18 @@
 <style>
-
+.task-item.finished {
+    color: #999;
+    text-decoration: line-through;
+}
 </style>
 
 <template>
-    <div class="task-item flex bg-white rounded text-lg py-5">
+    <div :class="['task-item flex bg-white rounded text-lg py-5', task.finish ? 'finished' : '' ]">
         <IconColumn>
-            <FinishButton class="text-2xl" />
+            <FinishButton
+                class="text-2xl"
+                @click="$emit('toggleStatus', task)"
+                :finish="task.finish"
+            />
         </IconColumn>
 
         <span>{{ task.name }}</span>
@@ -22,7 +29,6 @@
 import FinishButton from "@/components/FinishButton.vue";
 import { Icon } from "@iconify/vue";
 import IconColumn from "@/components/IconColumn.vue";
-import { defineProps } from "vue";
 import Task from "@/core/model/Task";
 
 const props = defineProps({

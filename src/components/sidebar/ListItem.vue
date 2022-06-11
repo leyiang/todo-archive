@@ -24,7 +24,7 @@
         </div>
 
         <IconColumn>
-            <span class=text-gray-400>5</span>
+            <span class=text-gray-400>{{ openTasksLength }}</span>
         </IconColumn>
     </button>
 </template>
@@ -33,11 +33,22 @@
 import { Icon } from "@iconify/vue"
 import IconColumn from "@/components/IconColumn.vue"
 import List from "@/core/model/List";
+import { computed } from "vue";
 
 const props = defineProps({
     list: {
         type: List,
         required: true
     }
+});
+
+const openTasksLength = computed(() => {
+    return props.list.tasks.reduce((total, task) => {
+        if( ! task.finish ) {
+            return total + 1;
+        } else {
+            return total;
+        }
+    }, 0)
 });
 </script>

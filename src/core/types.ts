@@ -1,4 +1,5 @@
 export interface iTask {
+    id: number,
     name: string;
     list_id: number;
     date: Date | null;

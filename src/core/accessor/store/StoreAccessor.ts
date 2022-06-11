@@ -74,7 +74,8 @@ export default class StoreAccessor implements iAccessor {
 
     addTask( name: string, list_id: number ) : Promise<Task> {
         return new Promise((resolve) => {
-            const task = new Task( name, list_id );
+            const id = this.tasks.length;
+            const task = new Task( id, name, list_id );
             this.tasks.push( task );
             this.#save();
             resolve( task );
@@ -101,6 +102,15 @@ export default class StoreAccessor implements iAccessor {
             this.#save();
 
             resolve( list );
+        });
+    }
+
+    setTaskFinishStatus( task_id: number, type: boolean ): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.tasks.findIndex(task => task.id === task_id);
+            this.tasks[ index ].finish = type;
+            this.#save();
+            resolve();
         });
     }
 }

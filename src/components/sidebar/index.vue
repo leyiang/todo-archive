@@ -73,7 +73,6 @@ accessor.getTaskLists().then( loaded => {
 
     if( defaultList.value[0] ) {
         focusList(defaultList.value[0]);
-        console.log( defaultList.value[0] );
     }
 });
 

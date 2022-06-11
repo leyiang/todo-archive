@@ -36,7 +36,9 @@
         <div class="task-list flex flex-col gap-2 task-list flex-1">
             <TaskItem
                 v-for="task in activeList.focusing.tasks"
+                :key="task.id"
                 :task="task"
+                @toggleStatus="toggleTaskStatus"
             />
         </div>
 
@@ -67,10 +69,25 @@ accessor.getTasks().then( loaded => {
 });
 
 function addNewTask( name : string ) {
-    if( activeList.focusing ) {
+    if( activeList.focusing !== null ) {
         accessor.addTask( name, activeList.focusing.id ).then( task => {
-            activeList.focusing.tasks.push( task );
+            activeList?.focusing?.tasks.push( task );
         });
     }
+}
+
+function toggleTaskStatus( task: Task ) {
+    const type = ! task.finish;
+
+    accessor.setTaskFinishStatus( task.id, type ).then( r => {
+        /**
+         * Update Array element from Pinia is not reactive
+         * Not sure what happens, temporarily use this hack
+         */
+        task.finish = ! type;
+        task.finish = type;
+
+        activeList.setTaskStatus( task.id, type );
+    });
 }
 </script>
