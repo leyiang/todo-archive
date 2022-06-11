@@ -62,14 +62,9 @@ import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import { useTodoStore } from "@/stores/todo";
 
-const tasks : Ref<Task[]> = ref([]);
 const todo = useTodoStore();
 
 provide("icon-column-width", 50);
-
-accessor.getTasks().then( loaded => {
-    tasks.value = loaded;
-});
 
 function addNewTask( name : string ) {
     if( todo.list !== null ) {

@@ -7,7 +7,7 @@ export default class Task implements iTask {
     date: Date | null;
     important: boolean;
     finish: boolean;
-    steps: [];
+    steps: string[];
 
     constructor(
         id: number,
@@ -16,7 +16,7 @@ export default class Task implements iTask {
         date: Date | null = null,
         important: boolean = false,
         finish: boolean = false,
-        steps: [] = [],
+        steps: string[] = [],
     ) {
         this.id = id;
         this.name = name;
@@ -35,7 +35,6 @@ export default class Task implements iTask {
             task.date,
             task.important,
             task.finish,
-            task.steps
         );
     }
 }

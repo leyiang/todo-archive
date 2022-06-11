@@ -2,17 +2,20 @@ import type {iAccessor} from "@/core/accessor/iAccessor";
 import LocalStoreManager from "@/core/accessor/store/LocalStorageManager";
 import Task from "@/core/model/Task";
 import List from "@/core/model/List";
+import Step from "@/core/model/Step";
 
 export default class StoreAccessor implements iAccessor {
-    tasks: Task[];
-    lists: List[];
-    manager: LocalStoreManager;
+    #tasks: Task[];
+    #lists: List[];
+    #steps: Step[];
+    #manager: LocalStoreManager;
 
     constructor() {
-        this.manager = new LocalStoreManager();
+        this.#manager = new LocalStoreManager();
 
-        this.tasks = [];
-        this.lists = [];
+        this.#tasks = [];
+        this.#lists = [];
+        this.#steps = [];
 
         /**
          * This Accessor can load data
@@ -24,9 +27,11 @@ export default class StoreAccessor implements iAccessor {
     #load() : void {
         const types = ["lists", "tasks"];
         const listMap : any = {};
+        const taskMap : any = {};
 
-        const rawLists = this.manager.get("lists", []);
-        const rawTasks = this.manager.get("tasks", []);
+        const rawLists = this.#manager.get("lists", []);
+        const rawTasks = this.#manager.get("tasks", []);
+        const rawSteps = this.#manager.get("steps", []);
 
         if( Array.isArray( rawLists ) ) {
             const lists : List[] = [];
@@ -37,28 +42,49 @@ export default class StoreAccessor implements iAccessor {
                 lists.push( list );
             });
 
-            this.lists = lists;
+            this.#lists = lists;
         }
 
-        if( Array.isArray( rawTasks ) ) this.tasks = rawTasks.map( Task.Load );
+        if( Array.isArray(rawTasks) ) {
+            const tasks : Task[] = [];
 
-        this.tasks.forEach( task => {
+            rawTasks.forEach( raw => {
+                const task = Task.Load( raw );
+                taskMap[ task.id ] = task;
+                tasks.push( task );
+            });
+
+            this.#tasks = tasks;
+        }
+
+        if( Array.isArray(rawSteps) ) this.#steps = rawSteps.map(Step.Load);
+
+        this.#tasks.forEach( task => {
             const list = listMap[ task.list_id ];
             if( list ) {
                 list.tasks.push( task );
             }
         });
+
+        this.#steps.forEach( step => {
+            const task = taskMap[ step.task_id ];
+            console.log( task );
+            if( task ) {
+                task.steps.push( step );
+            }
+        });
     }
 
     #save() : void {
-        this.manager.set("lists", this.lists);
-        this.manager.set("tasks", this.tasks);
+        this.#manager.set("lists", this.#lists);
+        this.#manager.set("tasks", this.#tasks);
+        this.#manager.set("steps", this.#steps);
     }
 
     fetchTasks() : Promise<Task[]> {
         return new Promise((resolve, reject) =>{
             setTimeout(() => {
-                resolve( this.tasks );
+                resolve( this.#tasks );
             }, 2000 )
         });
     }
@@ -74,9 +100,9 @@ export default class StoreAccessor implements iAccessor {
 
     addTask( name: string, list_id: number ) : Promise<Task> {
         return new Promise((resolve) => {
-            const id = this.tasks.length;
+            const id = this.#tasks.length;
             const task = new Task( id, name, list_id );
-            this.tasks.push( task );
+            this.#tasks.push( task );
             this.#save();
             resolve( task );
         });
@@ -88,7 +114,7 @@ export default class StoreAccessor implements iAccessor {
              * Resolve Clone Version Array
              * To Prevent Local-Array-Reference Problems
              */
-            const lists = this.lists.slice();
+            const lists = this.#lists.slice();
 
             resolve( lists );
         });
@@ -96,9 +122,9 @@ export default class StoreAccessor implements iAccessor {
 
     addTaskList( name: string, icon: string | null = null, isDefault=false): Promise<List> {
         return new Promise(resolve => {
-            const id = this.lists.length;
+            const id = this.#lists.length;
             const list = new List(id, name, icon, isDefault);
-            this.lists.push( list );
+            this.#lists.push( list );
             this.#save();
 
             resolve( list );
@@ -107,10 +133,21 @@ export default class StoreAccessor implements iAccessor {
 
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void> {
         return new Promise(resolve => {
-            const index = this.tasks.findIndex(task => task.id === task_id);
-            this.tasks[ index ].finish = type;
+            const index = this.#tasks.findIndex(task => task.id === task_id);
+            this.#tasks[ index ].finish = type;
             this.#save();
             resolve();
+        });
+    }
+
+
+    addStep( name: string, task_id: number ) : Promise<Step> {
+        return new Promise(resolve => {
+            const id = this.#steps.length;
+            const step = new Step(id, name, task_id);
+            this.#steps.push( step );
+            this.#save();
+            resolve( step );
         });
     }
 }

@@ -37,13 +37,15 @@
 
             <div class="flex flex-col mt-5">
                 <StepItem
-                    v-for="i in 5"
+                    v-for="step in todo.task.steps"
+                    :step="step"
                 />
             </div>
 
             <div class="mt-1">
                 <AddNewInput
                     placeholder="Add a task"
+                    @submit="addNewStep"
                 />
             </div>
         </div>
@@ -76,6 +78,14 @@ function toggleStatus() {
             todo.task.finish = type;
 
             todo.setTaskStatus(todo.task.id, type );
+        });
+    }
+}
+
+function addNewStep( name ) {
+    if( todo.task ) {
+        accessor.addStep( name, todo.task.id ).then( step => {
+            todo.task.steps.push( step );
         });
     }
 }
