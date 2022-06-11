@@ -68,7 +68,9 @@ accessor.getTasks().then( loaded => {
 
 function addNewTask( name : string ) {
     if( activeList.focusing ) {
-        accessor.addTask( name, activeList.focusing.id );
+        accessor.addTask( name, activeList.focusing.id ).then( task => {
+            activeList.focusing.tasks.push( task );
+        });
     }
 }
 </script>
