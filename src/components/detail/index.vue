@@ -17,11 +17,11 @@
                     class="flex items-center"
                     :finish="todo.task.finish"
                 >
-
                     <IconColumn>
                         <FinishButton
                             class="text-2xl"
                             :finish="todo.task.finish"
+                            @click="toggleStatus"
                         />
                     </IconColumn>
 
@@ -58,6 +58,25 @@ import GhostInput from "@/components/GhostInput.vue";
 import StepWrap from "@/components/StepWrap.vue";
 import StepItem from "./StepItem.vue";
 import { useTodoStore } from "@/stores/todo";
+import accessor from "@/core/accessor/AccessorInstance";
 
 const todo = useTodoStore();
+
+function toggleStatus() {
+    if( todo.task ) {
+        const type = ! todo.task.finish;
+
+        accessor.setTaskFinishStatus( todo.task.id, type ).then( r => {
+            /**
+             * Missing Reactive
+             * Use this hack to let it work
+             * @type {boolean}
+             */
+            todo.task.finish = ! type;
+            todo.task.finish = type;
+
+            todo.setTaskStatus(todo.task.id, type );
+        });
+    }
+}
 </script>
