@@ -1,7 +1,6 @@
 <style>
 .ghost-input {
     background: transparent;
-
 }
 </style>
 

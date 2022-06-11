@@ -18,7 +18,7 @@
             <ListItem
                 v-for="list in defaultList"
                 :list="list"
-                :class="['', activeList.focusing.id === list.id ? 'active' : '' ]"
+                :class="['', activeList.list.id === list.id ? 'active' : '' ]"
                 @click="focusList( list )"
             />
         </div>
@@ -44,13 +44,13 @@
 // Components
 import ListItem from "./ListItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
-import { useListStore } from "@/stores/list";
+import { useTodoStore } from "@/stores/todo";
 import List from "@/core/model/List";
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
 
-const activeList = useListStore();
+const activeList = useTodoStore();
 const lists : Ref<List[]> = ref([]);
 
 /**
@@ -83,6 +83,6 @@ function addNewList( name: string ) {
 }
 
 function focusList( list: List ) : void {
-    activeList.focus( list );
+    activeList.setList( list );
 }
 </script>

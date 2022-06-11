@@ -7,21 +7,33 @@
 </style>
 
 <template>
-    <div class="task-detail">
+    <div
+        class="task-detail"
+        v-if="todo.task"
+    >
         <div class="bg-white p-3">
-            <div class="flex items-center">
-                <IconColumn>
-                    <FinishButton
-                        class="text-2xl"
-                    />
-                </IconColumn>
+            <div class="">
+                <StepWrap
+                    class="flex items-center"
+                    :finish="todo.task.finish"
+                >
 
-                <h1 class="text-xl">
-                    <GhostInput
-                        value="Task Title"
-                    />
-                </h1>
+                    <IconColumn>
+                        <FinishButton
+                            class="text-2xl"
+                            :finish="todo.task.finish"
+                        />
+                    </IconColumn>
+
+                    <h1 class="text-xl">
+                        <GhostInput
+                            :value="todo.task.name"
+                        />
+                    </h1>
+
+                </StepWrap>
             </div>
+
 
             <div class="flex flex-col mt-5">
                 <StepItem
@@ -43,5 +55,9 @@ import FinishButton from "@/components/FinishButton.vue"
 import AddNewInput from "@/components/AddNewInput.vue"
 import IconColumn from "@/components/IconColumn.vue";
 import GhostInput from "@/components/GhostInput.vue";
+import StepWrap from "@/components/StepWrap.vue";
 import StepItem from "./StepItem.vue";
+import { useTodoStore } from "@/stores/todo";
+
+const todo = useTodoStore();
 </script>
