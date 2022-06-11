@@ -11,4 +11,5 @@ export interface iAccessor {
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void>;
 
     addStep( name: string, task_id: number ) : Promise<Step>;
+    setStepStatus( step_id: number, type: boolean ) : Promise<void>;
 }

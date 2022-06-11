@@ -150,4 +150,13 @@ export default class StoreAccessor implements iAccessor {
             resolve( step );
         });
     }
+
+    setStepStatus(step_id: number, type: boolean): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.#steps.findIndex(step => step.id === step_id);
+            this.#steps[ index ].finish = type;
+            this.#save();
+            resolve();
+        });
+    }
 }

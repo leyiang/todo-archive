@@ -39,6 +39,7 @@
                 <StepItem
                     v-for="step in todo.task.steps"
                     :step="step"
+                    @toggleStatus="toggleStepStatus( step )"
                 />
             </div>
 
@@ -88,5 +89,17 @@ function addNewStep( name ) {
             todo.task.steps.push( step );
         });
     }
+}
+
+function toggleStepStatus( step ) {
+    const status = ! step.finish;
+    accessor.setStepStatus( step.id, status).then( r => {
+        /**
+         * Hack for responsive to work
+         * @type {boolean}
+         */
+        step.finish = ! status;
+        step.finish = status;
+    });
 }
 </script>
