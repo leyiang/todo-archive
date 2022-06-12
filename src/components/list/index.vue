@@ -98,6 +98,6 @@ function toggleTaskStatus( task: Task ) {
 
 
 function focusTask( task : Task ) {
-    todo.setTask( task );
+    todo.toggleTask( task );
 }
 </script>

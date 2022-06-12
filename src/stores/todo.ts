@@ -33,8 +33,12 @@ export const useTodoStore = defineStore("list", {
             this.list = list;
         },
 
-        setTask( task: Task ) {
-            this.task = task;
+        toggleTask( task: Task ) {
+            if( this.task === task ) {
+                this.task = null;
+            } else {
+                this.task = task;
+            }
         },
 
         addList( list: List ) {
