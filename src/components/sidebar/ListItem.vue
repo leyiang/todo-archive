@@ -37,8 +37,7 @@
 import { Icon } from "@iconify/vue"
 import IconColumn from "@/components/IconColumn.vue"
 import List from "@/core/model/List";
-import {computed, onMounted, ref} from "vue";
-import type {Ref} from "vue";
+import {computed} from "vue";
 
 const props = defineProps({
     list: {

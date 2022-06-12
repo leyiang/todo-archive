@@ -2,8 +2,8 @@
     <StepWrap
         class="task-item flex bg-white rounded text-lg py-5"
         :finish="task.finish"
-        data-menu-id="task-item"
         tabindex="0"
+        ref="el"
     >
         <IconColumn>
             <FinishButton
@@ -29,6 +29,8 @@ import { Icon } from "@iconify/vue";
 import IconColumn from "@/components/IconColumn.vue";
 import StepWrap from "@/components/StepWrap.vue";
 import Task from "@/core/model/Task";
+import {registerMenu} from "@/components/context_menu/data";
+import {ref, onMounted} from "vue";
 
 const props = defineProps({
     task: {
@@ -36,4 +38,25 @@ const props = defineProps({
         require: true
     }
 });
+
+const el = ref(null);
+
+onMounted(() => {
+    registerMenu(el.value.el, {
+        items: [
+            {
+                name: "Remove Task",
+                args: {
+                    el: el.value.el,
+                    task: props.task
+                },
+                action: (args) => {
+                    console.log( args.task );
+                }
+            }
+        ]
+    });
+
+});
+
 </script>

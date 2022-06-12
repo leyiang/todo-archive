@@ -12,13 +12,14 @@
 <template>
     <div
         :class="finish ? 'finished' : '' "
+        ref="el"
     >
         <slot></slot>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 
 defineProps({
     finish: {
@@ -26,4 +27,10 @@ defineProps({
         default: false,
     }
 });
+
+const el = ref(null);
+
+defineExpose({
+    el
+})
 </script>

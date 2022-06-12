@@ -28,7 +28,7 @@
         <button
             v-for="item in menuSpec.items"
             class="context-menu-item"
-            @click="item.action"
+            @click="trigger(item.action, item.args, $event)"
         >{{ item.name }}</button>
     </div>
 </template>
@@ -62,16 +62,22 @@ const style = computed(() => {
     }
 });
 
+let target: HTMLElement | null = null;
 onMounted(() => {
     window.addEventListener("contextmenu", (e) => {
-        let spec = null;
+        let spec = null, el = null;
 
         if( e.target instanceof HTMLElement ) {
-            spec = getSpec( e.target );
+            const raw = getSpec( e.target );
+
+            if( raw !== null ) {
+                [spec, el] = raw;
+            }
         }
 
         if( defaultSpec || spec ) {
             e.preventDefault();
+            target = el;
             menuSpec.value = spec || defaultSpec;
 
             pos.value = {
@@ -80,6 +86,7 @@ onMounted(() => {
             }
         } else {
             pos.value = null;
+            target = null;
         }
     });
 
@@ -89,4 +96,8 @@ onMounted(() => {
         }
     });
 });
+
+function trigger( callback:Function, args:{}, event: Event) {
+    callback( args, target );
+}
 </script>

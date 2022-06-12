@@ -99,15 +99,4 @@ function toggleTaskStatus( task: Task ) {
 function focusTask( task : Task ) {
     todo.setTask( task );
 }
-
-registerMenu("task-item", {
-    items: [
-        {
-            name: "Remove Task",
-            action: () => {
-                console.log("remove Task");
-            }
-        }
-    ]
-})
 </script>
