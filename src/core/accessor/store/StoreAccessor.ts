@@ -134,7 +134,7 @@ export default class StoreAccessor implements iAccessor {
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[ index ].finish = type;
+            // this.#tasks[ index ].finish = type;
             this.#save();
             resolve();
         });
@@ -154,7 +154,7 @@ export default class StoreAccessor implements iAccessor {
     setStepStatus(step_id: number, type: boolean): Promise<void> {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
-            this.#steps[ index ].finish = type;
+            // this.#steps[ index ].finish = type;
             this.#save();
             resolve();
         });

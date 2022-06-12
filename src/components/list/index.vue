@@ -81,11 +81,17 @@ function toggleTaskStatus( task: Task ) {
         /**
          * Update Array element from Pinia is not reactive
          * Not sure what happens, temporarily use this hack
+         *
+         * Update:
+         * No need for this hack anymore.
+         * Guess In StoreAccessor it only affects the value,
+         * not the reference, so it won't trigger reactive changes
+         * And even though we Set the Property here,
+         * The value is the same -> Accessor set task.finish to by type
+         * So the solution here is we don't need to set finish in accessor
+         * Just set finish here will solve our problem
          */
-        task.finish = ! type;
         task.finish = type;
-
-        todo.setTaskStatus( task.id, type );
     });
 }
 

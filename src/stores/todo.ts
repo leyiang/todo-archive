@@ -23,12 +23,5 @@ export const useTodoStore = defineStore("list", {
         setTask( task: Task ) {
             this.task = task;
         },
-
-        setTaskStatus( task_id: number, status: boolean ) {
-            if( this.list ) {
-                const index = this.list.tasks.findIndex( task => task.id === task_id );
-                this.list.tasks[index].finish = status;
-            }
-        }
     }
 });

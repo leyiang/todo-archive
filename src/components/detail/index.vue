@@ -96,9 +96,11 @@ function toggleStepStatus( step ) {
     accessor.setStepStatus( step.id, status).then( r => {
         /**
          * Hack for responsive to work
+         * Update: No need for this hack, go list/index.vue
+         * to check the detailed reason
          * @type {boolean}
          */
-        step.finish = ! status;
+        // step.finish = ! status;
         step.finish = status;
     });
 }
