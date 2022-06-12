@@ -2,6 +2,8 @@
     <StepWrap
         class="task-item flex bg-white rounded text-lg py-5"
         :finish="task.finish"
+        data-menu-id="task-item"
+        tabindex="0"
     >
         <IconColumn>
             <FinishButton

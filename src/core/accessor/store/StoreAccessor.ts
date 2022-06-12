@@ -68,7 +68,7 @@ export default class StoreAccessor implements iAccessor {
 
         this.#steps.forEach( step => {
             const task = taskMap[ step.task_id ];
-            console.log( task );
+
             if( task ) {
                 task.steps.push( step );
             }

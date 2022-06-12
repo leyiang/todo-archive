@@ -9,7 +9,11 @@
 </style>
 
 <template>
-    <button class="sidebar-item flex justify-between w-full py-4 hover:bg-blue-50">
+    <button
+        class="sidebar-item flex justify-between w-full py-4 hover:bg-blue-50"
+        ref="el"
+        data-menu-id="list-item"
+    >
         <div class="flex items-center">
             <IconColumn
                 v-if="list.icon"
@@ -33,7 +37,8 @@
 import { Icon } from "@iconify/vue"
 import IconColumn from "@/components/IconColumn.vue"
 import List from "@/core/model/List";
-import { computed } from "vue";
+import {computed, onMounted, ref} from "vue";
+import type {Ref} from "vue";
 
 const props = defineProps({
     list: {

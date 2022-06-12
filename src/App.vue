@@ -2,6 +2,7 @@
 import Sidebar from "./components/sidebar/index.vue";
 import TaskList from "./components/list/index.vue";
 import TaskDetail from "./components/detail/index.vue";
+import ContextMenu from "./components/context_menu/menu.vue";
 </script>
 
 <template>
@@ -11,6 +12,8 @@ import TaskDetail from "./components/detail/index.vue";
         <TaskDetail
             class="w-1/4"
         />
+
+        <context-menu />
     </main>
 </template>
 

@@ -57,10 +57,10 @@ import TaskItem from "./TaskItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
 import { provide, ref } from "vue";
-import type { Ref } from "vue";
 import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import { useTodoStore } from "@/stores/todo";
+import { registerMenu } from "@/components/context_menu/data";
 
 const todo = useTodoStore();
 
@@ -99,4 +99,15 @@ function toggleTaskStatus( task: Task ) {
 function focusTask( task : Task ) {
     todo.setTask( task );
 }
+
+registerMenu("task-item", {
+    items: [
+        {
+            name: "Remove Task",
+            action: () => {
+                console.log("remove Task");
+            }
+        }
+    ]
+})
 </script>

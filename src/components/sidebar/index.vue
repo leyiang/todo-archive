@@ -49,6 +49,7 @@ import List from "@/core/model/List";
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
+import { registerMenu } from "@/components/context_menu/data";
 
 const activeList = useTodoStore();
 const lists : Ref<List[]> = ref([]);
@@ -85,4 +86,13 @@ function addNewList( name: string ) {
 function focusList( list: List ) : void {
     activeList.setList( list );
 }
+
+registerMenu("list-item", {
+    items: [
+        {
+            name: "Remove List",
+            action: (el:any) => console.log("Remove List", el)
+        }
+    ]
+});
 </script>
