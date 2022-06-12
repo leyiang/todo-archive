@@ -9,25 +9,24 @@
 <template>
     <div
         class="task-detail"
-        v-if="todo.task"
     >
         <div class="bg-white p-3">
             <div class="">
                 <StepWrap
                     class="flex items-center"
-                    :finish="todo.task.finish"
+                    :finish="task.finish"
                 >
                     <IconColumn>
                         <FinishButton
                             class="text-2xl"
-                            :finish="todo.task.finish"
+                            :finish="task.finish"
                             @click="toggleStatus"
                         />
                     </IconColumn>
 
                     <h1 class="text-xl">
                         <GhostInput
-                            :value="todo.task.name"
+                            :value="task.name"
                         />
                     </h1>
 
@@ -37,7 +36,7 @@
 
             <div class="flex flex-col mt-5">
                 <StepItem
-                    v-for="step in todo.task.steps"
+                    v-for="step in task.steps"
                     :step="step"
                     @toggleStatus="toggleStepStatus( step )"
                 />
@@ -62,31 +61,39 @@ import StepWrap from "@/components/StepWrap.vue";
 import StepItem from "./StepItem.vue";
 import { useTodoStore } from "@/stores/todo";
 import accessor from "@/core/accessor/AccessorInstance";
+import { defineProps } from "vue";
+import Task from "@/core/model/Task";
 
 const todo = useTodoStore();
+const props = defineProps({
+    task: {
+        type: Task,
+        required: true
+    }
+})
 
 function toggleStatus() {
-    if( todo.task ) {
-        const type = ! todo.task.finish;
+    if( props.task ) {
+        const type = ! props.task.finish;
 
-        accessor.setTaskFinishStatus( todo.task.id, type ).then( r => {
+        accessor.setTaskFinishStatus( props.task.id, type ).then( r => {
             /**
              * Missing Reactive
              * Use this hack to let it work
              * @type {boolean}
              */
-            todo.task.finish = ! type;
-            todo.task.finish = type;
+            props.task.finish = ! type;
+            props.task.finish = type;
 
-            todo.setTaskStatus(todo.task.id, type );
+            todo.setTaskStatus(props.task.id, type );
         });
     }
 }
 
 function addNewStep( name ) {
-    if( todo.task ) {
-        accessor.addStep( name, todo.task.id ).then( step => {
-            todo.task.steps.push( step );
+    if( props.task ) {
+        accessor.addStep( name, props.task.id ).then( step => {
+            props.task.steps.push( step );
         });
     }
 }

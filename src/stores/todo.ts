@@ -3,6 +3,7 @@ import type List from "@/core/model/List";
 import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import { splice } from "@/core/shared/utils";
+import Step from "@/core/model/Step";
 
 export const useTodoStore = defineStore("list", {
     state: () => {
@@ -42,6 +43,12 @@ export const useTodoStore = defineStore("list", {
 
         removeTaskList( list: List ) {
             splice( this.lists, list );
+        },
+
+        removeStep( step: Step ) {
+            if( this.task ) {
+                splice( this.task.steps, step );
+            }
         }
     }
 });

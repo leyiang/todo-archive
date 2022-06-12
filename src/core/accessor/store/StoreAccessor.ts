@@ -179,7 +179,10 @@ export default class StoreAccessor implements iAccessor {
 
     removeStep(step_id: number): Promise<void> {
         return new Promise(resolve => {
-
+            const index = this.#steps.findIndex(step => step.id === step_id);
+            this.#steps.splice( index, 1 );
+            this.#save();
+            resolve();
         });
     }
 }
