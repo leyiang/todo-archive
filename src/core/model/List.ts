@@ -16,6 +16,7 @@ export default class List {
     }
 
     static Load( raw : List ) : List {
-        return new List( raw.id, raw.name, raw.icon );
+        console.log( raw.name, raw.isDefault );
+        return new List( raw.id, raw.name, raw.icon, raw.isDefault );
     }
 }

@@ -27,6 +27,7 @@
             <ListItem
                 v-for="list in userList"
                 :list="list"
+                :class="['', todo.list?.id === list.id ? 'active' : '' ]"
                 @click="focusList( list )"
             />
         </div>
@@ -45,7 +46,7 @@
 import ListItem from "./ListItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import { useTodoStore } from "@/stores/todo";
-import List from "@/core/model/List";
+import type List from "@/core/model/List";
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
@@ -58,7 +59,7 @@ const todo = useTodoStore();
  * Computed
  */
 const defaultList : ComputedRef<List[]> = computed(() => {
-    return todo.lists.filter( list => list.isDefault = true );
+    return todo.lists.filter( list => list.isDefault );
 });
 
 const userList : ComputedRef<List[]> = computed(() => {
@@ -73,7 +74,7 @@ todo.getList();
 
 function addNewList( name: string ) {
     accessor.addTaskList(name).then( list => {
-        lists.value.push( list );
+        todo.addList( list );
     });
 }
 

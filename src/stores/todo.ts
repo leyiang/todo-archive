@@ -3,7 +3,7 @@ import type List from "@/core/model/List";
 import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import { splice } from "@/core/shared/utils";
-import Step from "@/core/model/Step";
+import type Step from "@/core/model/Step";
 
 export const useTodoStore = defineStore("list", {
     state: () => {
@@ -25,6 +25,7 @@ export const useTodoStore = defineStore("list", {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
                 this.setList( loaded[0] );
+                console.log( this.lists );
             });
         },
 
@@ -34,6 +35,10 @@ export const useTodoStore = defineStore("list", {
 
         setTask( task: Task ) {
             this.task = task;
+        },
+
+        addList( list: List ) {
+            this.lists.push( list );
         },
 
         removeTask( task: Task ) {
