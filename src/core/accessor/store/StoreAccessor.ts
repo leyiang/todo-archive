@@ -132,7 +132,12 @@ export default class StoreAccessor implements iAccessor {
 
     addTaskList( name: string, icon: string | null = null, isDefault=false): Promise<List> {
         return new Promise(resolve => {
-            const id = this.#lists.length;
+            let id = this.#lists.length;
+
+            if( this.#tasks.length !== 0 ) {
+                id = last( this.#lists ).id + 1;
+            }
+
             const list = new List(id, name, icon, isDefault);
             this.#lists.push( list );
             this.#save();
@@ -171,7 +176,12 @@ export default class StoreAccessor implements iAccessor {
 
     addStep( name: string, task_id: number ) : Promise<Step> {
         return new Promise(resolve => {
-            const id = this.#steps.length;
+            let id = this.#steps.length;
+
+            if( this.#steps.length !== 0 ) {
+                id = last( this.#steps ).id + 1;
+            }
+
             const step = new Step(id, name, task_id);
             this.#steps.push( step );
             this.#save();
