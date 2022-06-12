@@ -18,7 +18,7 @@
             <ListItem
                 v-for="list in defaultList"
                 :list="list"
-                :class="['', activeList.list.id === list.id ? 'active' : '' ]"
+                :class="['', todo.list?.id === list.id ? 'active' : '' ]"
                 @click="focusList( list )"
             />
         </div>
@@ -51,31 +51,25 @@ import type { Ref, ComputedRef } from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
 import { registerMenu } from "@/components/context_menu/data";
 
-const activeList = useTodoStore();
 const lists : Ref<List[]> = ref([]);
+const todo = useTodoStore();
 
 /**
  * Computed
  */
 const defaultList : ComputedRef<List[]> = computed(() => {
-    return lists.value.filter( list => list.isDefault = true );
+    return todo.lists.filter( list => list.isDefault = true );
 });
 
 const userList : ComputedRef<List[]> = computed(() => {
-    return lists.value.filter( list => ! list.isDefault );
+    return todo.lists.filter( list => ! list.isDefault );
 });
+
+todo.getList();
 
 // accessor.addTaskList("My Day", "ic:outline-wb-sunny", true);
 // accessor.addTaskList("Important", "ic:round-star-border", true);
 // accessor.addTaskList("All", "ic:baseline-list-alt", true);
-
-accessor.getTaskLists().then( loaded => {
-    lists.value = loaded;
-
-    if( defaultList.value[0] ) {
-        focusList(defaultList.value[0]);
-    }
-});
 
 function addNewList( name: string ) {
     accessor.addTaskList(name).then( list => {
@@ -84,7 +78,7 @@ function addNewList( name: string ) {
 }
 
 function focusList( list: List ) : void {
-    activeList.setList( list );
+    todo.setList( list );
 }
 
 registerMenu("list-item", {

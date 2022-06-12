@@ -3,7 +3,7 @@
         class="task-item flex bg-white rounded text-lg py-5"
         :finish="task.finish"
         tabindex="0"
-        ref="el"
+        ref="root"
     >
         <IconColumn>
             <FinishButton
@@ -31,6 +31,8 @@ import StepWrap from "@/components/StepWrap.vue";
 import Task from "@/core/model/Task";
 import {registerMenu} from "@/components/context_menu/data";
 import {ref, onMounted} from "vue";
+import accessor from "@/core/accessor/AccessorInstance";
+import {useTodoStore} from "@/stores/todo";
 
 const props = defineProps({
     task: {
@@ -39,19 +41,27 @@ const props = defineProps({
     }
 });
 
-const el = ref(null);
+const root = ref(null);
+const todo = useTodoStore();
 
 onMounted(() => {
-    registerMenu(el.value.el, {
+    const el = root.value.el;
+
+    registerMenu(el, {
         items: [
             {
                 name: "Remove Task",
                 args: {
-                    el: el.value.el,
+                    el,
                     task: props.task
                 },
+
                 action: (args) => {
-                    console.log( args.task );
+                    console.log( props.task, el );
+
+                    accessor.removeTask( props.task.id ).then( r => {
+                        todo.removeTask( props.task );
+                    });
                 }
             }
         ]

@@ -100,7 +100,7 @@ function toggleStepStatus( step ) {
          * to check the detailed reason
          * @type {boolean}
          */
-        // step.finish = ! status;
+        step.finish = ! status;
         step.finish = status;
     });
 }

@@ -91,6 +91,7 @@ function toggleTaskStatus( task: Task ) {
          * So the solution here is we don't need to set finish in accessor
          * Just set finish here will solve our problem
          */
+        task.finish = !type;
         task.finish = type;
     });
 }

@@ -134,12 +134,26 @@ export default class StoreAccessor implements iAccessor {
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            // this.#tasks[ index ].finish = type;
+            this.#tasks[ index ].finish = type;
             this.#save();
             resolve();
         });
     }
 
+    removeTask(task_id: number): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.#tasks.findIndex(task => task.id === task_id );
+            this.#tasks.splice( index, 1 );
+            this.#save();
+            resolve();
+        });
+    }
+
+    removeTaskList(list_id: number): Promise<void> {
+        return new Promise(resolve => {
+
+        });
+    }
 
     addStep( name: string, task_id: number ) : Promise<Step> {
         return new Promise(resolve => {
@@ -154,9 +168,15 @@ export default class StoreAccessor implements iAccessor {
     setStepStatus(step_id: number, type: boolean): Promise<void> {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
-            // this.#steps[ index ].finish = type;
+            this.#steps[ index ].finish = type;
             this.#save();
             resolve();
+        });
+    }
+
+    removeStep(step_id: number): Promise<void> {
+        return new Promise(resolve => {
+
         });
     }
 }
