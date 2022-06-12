@@ -38,6 +38,10 @@ export const useTodoStore = defineStore("list", {
         removeTask( task: Task ) {
             const index = this.lists.findIndex( list => list.id === task.list_id );
             splice( this.lists[index].tasks, task );
+        },
+
+        removeTaskList( list: List ) {
+            splice( this.lists, list );
         }
     }
 });

@@ -37,7 +37,11 @@
 import { Icon } from "@iconify/vue"
 import IconColumn from "@/components/IconColumn.vue"
 import List from "@/core/model/List";
-import {computed} from "vue";
+import {computed, ref, onMounted} from "vue";
+import type {Ref} from "vue";
+import {registerMenu} from "@/components/context_menu/data";
+import accessor from "@/core/accessor/AccessorInstance";
+import {useTodoStore} from "@/stores/todo";
 
 const props = defineProps({
     list: {
@@ -54,5 +58,25 @@ const openTasksLength = computed(() => {
             return total;
         }
     }, 0)
+});
+
+const el: Ref<null|HTMLElement> = ref(null);
+const todo = useTodoStore();
+
+onMounted(() => {
+    if( el.value instanceof HTMLElement ) {
+        registerMenu(el.value, {
+            items: [
+                {
+                    name: "Remove List",
+                    action: () => {
+                        accessor.removeTaskList( props.list.id ).then( r => {
+                            todo.removeTaskList( props.list );
+                        });
+                    }
+                }
+            ]
+        });
+    }
 });
 </script>

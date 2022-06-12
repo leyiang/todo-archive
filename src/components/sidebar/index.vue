@@ -80,13 +80,4 @@ function addNewList( name: string ) {
 function focusList( list: List ) : void {
     todo.setList( list );
 }
-
-registerMenu("list-item", {
-    items: [
-        {
-            name: "Remove List",
-            action: (el:any) => console.log("Remove List", el)
-        }
-    ]
-});
 </script>
