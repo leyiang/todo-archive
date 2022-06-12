@@ -3,7 +3,7 @@
     background-color: #73d197;
 }
 .task-list {
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-right: 5px;
 }
 

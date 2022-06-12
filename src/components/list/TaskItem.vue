@@ -8,7 +8,7 @@
         <IconColumn>
             <FinishButton
                 class="text-2xl"
-                @click="$emit('toggleStatus', task)"
+                @click.stop="$emit('toggleStatus', task)"
                 :finish="task.finish"
             />
         </IconColumn>

@@ -8,3 +8,7 @@ export function splice( arr:any[], item:any ) {
     if( index < 0 ) return;
     arr.splice(index, 1);
 }
+
+export function last( arr: any[] ) {
+    return arr[ arr.length - 1 ];
+}

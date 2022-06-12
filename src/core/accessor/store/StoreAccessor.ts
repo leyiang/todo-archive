@@ -3,6 +3,7 @@ import LocalStoreManager from "@/core/accessor/store/LocalStorageManager";
 import Task from "@/core/model/Task";
 import List from "@/core/model/List";
 import Step from "@/core/model/Step";
+import {last} from "@/core/shared/utils";
 
 export default class StoreAccessor implements iAccessor {
     #tasks: Task[];
@@ -100,7 +101,16 @@ export default class StoreAccessor implements iAccessor {
 
     addTask( name: string, list_id: number ) : Promise<Task> {
         return new Promise((resolve) => {
-            const id = this.#tasks.length;
+            let id = this.#tasks.length;
+
+            /**
+             * Assume last element in array
+             * has the biggest id
+             */
+            if( this.#tasks.length !== 0 ) {
+                id = last( this.#tasks ).id + 1;
+            }
+
             const task = new Task( id, name, list_id );
             this.#tasks.push( task );
             this.#save();
@@ -135,6 +145,7 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
             this.#tasks[ index ].finish = type;
+            console.log( this.#tasks[index].finish );
             this.#save();
             resolve();
         });
