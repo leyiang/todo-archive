@@ -33,7 +33,9 @@ export const useTodoStore = defineStore("list", {
                     index = state.get("list");
                 }
 
-                this.setList( loaded[index] );
+                if( index < loaded.length ) {
+                    this.setList( loaded[index] );
+                }
             });
         },
 
