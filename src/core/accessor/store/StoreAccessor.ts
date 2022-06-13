@@ -124,7 +124,6 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
             this.#tasks[ index ].finish = type;
-            console.log( this.#tasks[index].finish );
             this.#save();
             resolve();
         });

@@ -59,7 +59,8 @@
                     v-for="task in todo.list.tasks"
                     :key="task.id"
                     :task="task"
-                    @click="focusTask(task)"
+                    @click="toggleTaskDetail(task)"
+                    @keydown.enter="toggleTaskDetail(task)"
                 />
             </div>
 
@@ -93,7 +94,7 @@ function addNewTask(name: string) {
     }
 }
 
-function focusTask(task: Task) {
+function toggleTaskDetail(task: Task) {
     todo.toggleTask(task);
 }
 </script>

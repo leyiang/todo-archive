@@ -24,6 +24,7 @@
         v-if="menuSpec"
         v-show="pos"
         :style="style"
+        ref="el"
     >
         <button
             v-for="item in menuSpec.items"
@@ -62,12 +63,14 @@ const style = computed(() => {
     }
 });
 
-let target: HTMLElement | null = null;
+let target: Element | null = null;
+const el: Ref<null|Element> = ref(null);
+
 onMounted(() => {
     window.addEventListener("contextmenu", (e) => {
         let spec = null, el = null;
 
-        if( e.target instanceof HTMLElement ) {
+        if( e.target instanceof Element ) {
             const raw = getSpec( e.target );
 
             if( raw !== null ) {
@@ -95,7 +98,51 @@ onMounted(() => {
             pos.value = null;
         }
     });
+
+    window.addEventListener("keydown", e => {
+        if( pos.value ) {
+            if( e.key === "Escape" ) {
+                pos.value = null;
+            }
+
+            if( ["Tab", "ArrowDown"].includes(e.key) ) {
+                e.preventDefault();
+                selectNextItem();
+            }
+
+            if( e.key === "ArrowUp" ) {
+                e.preventDefault();
+                selectNextItem( true );
+            }
+        }
+    });
 });
+
+let currentFocus: null | Element = null;
+
+function selectNextItem(reverse=false) {
+    if( ! el.value ) return;
+
+    let defaultValue = reverse
+        ? el.value?.lastElementChild
+        : el.value?.firstElementChild;
+
+    if( ! (defaultValue instanceof Element) ) return;
+
+    if( ! (currentFocus instanceof Element) ) {
+        currentFocus = defaultValue;
+    } else {
+        const next = reverse
+            ? currentFocus.previousElementSibling
+            : currentFocus.nextElementSibling;
+
+        currentFocus = next || defaultValue;
+    }
+
+    if( currentFocus instanceof HTMLElement ) {
+        currentFocus.focus();
+    }
+}
 
 function trigger( callback:Function, args:{}, event: Event) {
     callback( args, target );
