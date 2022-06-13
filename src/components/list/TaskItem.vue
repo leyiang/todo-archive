@@ -8,16 +8,22 @@
         <IconColumn>
             <FinishButton
                 class="text-2xl"
-                @click.stop="$emit('toggleStatus', task)"
                 :finish="task.finish"
+                @click.stop="toggleTaskStatus"
             />
         </IconColumn>
 
         <span>{{ task.name }}</span>
 
         <IconColumn class="ml-auto">
-            <button class="text-2xl">
-                <Icon icon="ic:round-star-border" />
+            <button
+                class="text-2xl"
+                @click.stop="setTaskImportantStatus"
+            >
+                <Icon
+                    :icon="iconType"
+                    style="color: goldenrod"
+                />
             </button>
         </IconColumn>
     </StepWrap>
@@ -30,7 +36,7 @@ import IconColumn from "@/components/IconColumn.vue";
 import StepWrap from "@/components/StepWrap.vue";
 import Task from "@/core/model/Task";
 import {registerMenu} from "@/components/context_menu/data";
-import {ref, onMounted} from "vue";
+import {ref, onMounted, computed} from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
 import {format} from "@/core/shared/utils";
@@ -44,6 +50,11 @@ const props = defineProps({
 
 const root = ref(null);
 const todo = useTodoStore();
+const iconType = computed(() => {
+    return props.task.important
+        ? "ic:round-star"
+        : "ic:round-star-border";
+});
 
 onMounted(() => {
     const el = root.value.el;
@@ -75,7 +86,39 @@ onMounted(() => {
             }
         ]
     });
-
 });
 
+function toggleTaskStatus() {
+    const task = props.task;
+    const type = !task.finish;
+
+    accessor.setTaskFinishStatus(task.id, type).then(r => {
+        /**
+         * Update Array element from Pinia is not reactive
+         * Not sure what happens, temporarily use this hack
+         *
+         * Update:
+         * No need for this hack anymore.
+         * Guess In StoreAccessor it only affects the value,
+         * not the reference, so it won't trigger reactive changes
+         * And even though we Set the Property here,
+         * The value is the same -> Accessor set task.finish to by type
+         * So the solution here is we don't need to set finish in accessor
+         * Just set finish here will solve our problem
+         */
+        task.finish = !type;
+        task.finish = type;
+    });
+}
+
+function setTaskImportantStatus() {
+    const task = props.task;
+    const status = ! task.important;
+    accessor.setTaskImportantStatus(task.id, status).then(list_id_list => {
+        task.important = ! status;
+        task.important = status;
+
+        todo.updateSpecialLists( task, list_id_list );
+    });
+}
 </script>

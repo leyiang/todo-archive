@@ -130,6 +130,22 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 
+    setTaskImportantStatus(task_id: number, status: boolean): Promise<number[]> {
+        return new Promise(resolve => {
+            const index = this.#tasks.findIndex(task => task.id === task_id);
+            this.#tasks[ index ].important = status;
+            this.#save();
+
+            const list_id_list = this.#lists
+                .filter(list => list.filterOptions?.equal )
+                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important') )
+                .filter(list => ! list.tasks.map(task => task.id).includes(task_id) )
+                .map(list => list.id)
+
+            resolve(list_id_list);
+        });
+    }
+
     removeTask(task_id: number): Promise<number[]> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id );
