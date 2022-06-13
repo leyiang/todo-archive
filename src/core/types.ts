@@ -1,12 +1,3 @@
-export interface iTask {
-    id: number,
-    name: string;
-    list_id: number;
-    date: Date | null;
-    important: boolean;
-    finish: boolean;
-}
-
 export interface iList {
     id: number,
     name: string,

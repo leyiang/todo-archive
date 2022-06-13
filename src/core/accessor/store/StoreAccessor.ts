@@ -3,15 +3,19 @@ import LocalStoreManager from "@/core/accessor/store/LocalStorageManager";
 import Task from "@/core/model/Task";
 import List from "@/core/model/List";
 import Step from "@/core/model/Step";
-import {last} from "@/core/shared/utils";
+import {format, last} from "@/core/shared/utils";
+import accessor from "@/core/accessor/AccessorInstance";
+import ListFiller from "@/core/accessor/store/ListFiller";
 
 export default class StoreAccessor implements iAccessor {
     #tasks: Task[];
     #lists: List[];
     #steps: Step[];
     #manager: LocalStoreManager;
+    filler: ListFiller;
 
     constructor() {
+        this.filler = new ListFiller();
         this.#manager = new LocalStoreManager();
 
         this.#tasks = [];
@@ -26,7 +30,6 @@ export default class StoreAccessor implements iAccessor {
     }
 
     #load() : void {
-        const types = ["lists", "tasks"];
         const listMap : any = {};
         const taskMap : any = {};
 
@@ -34,46 +37,12 @@ export default class StoreAccessor implements iAccessor {
         const rawTasks = this.#manager.get("tasks", []);
         const rawSteps = this.#manager.get("steps", []);
 
-        if( Array.isArray( rawLists ) ) {
-            const lists : List[] = [];
-
-            rawLists.forEach( raw => {
-                const list = List.Load(raw);
-                listMap[ list.id ] = list;
-                lists.push( list );
-            });
-
-            this.#lists = lists;
-        }
-
-        if( Array.isArray(rawTasks) ) {
-            const tasks : Task[] = [];
-
-            rawTasks.forEach( raw => {
-                const task = Task.Load( raw );
-                taskMap[ task.id ] = task;
-                tasks.push( task );
-            });
-
-            this.#tasks = tasks;
-        }
-
+        if( Array.isArray( rawLists ) ) this.#lists = rawLists.map( List.Load );
+        if( Array.isArray(rawTasks) ) this.#tasks = rawTasks.map( Task.Load );
         if( Array.isArray(rawSteps) ) this.#steps = rawSteps.map(Step.Load);
 
-        this.#tasks.forEach( task => {
-            const list = listMap[ task.list_id ];
-            if( list ) {
-                list.tasks.push( task );
-            }
-        });
-
-        this.#steps.forEach( step => {
-            const task = taskMap[ step.task_id ];
-
-            if( task ) {
-                task.steps.push( step );
-            }
-        });
+        this.filler.set( this.#tasks, this.#lists, this.#steps );
+        this.filler.fill();
     }
 
     #save() : void {
@@ -96,7 +65,7 @@ export default class StoreAccessor implements iAccessor {
     getTasks() : Promise<Task[]> {
         return this.fetchTasks().then(tasks => {
             return tasks;
-        })
+        });
     }
 
     addTask( name: string, list_id: number ) : Promise<Task> {
@@ -130,15 +99,20 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 
-    addTaskList( name: string, icon: string | null = null, isDefault=false): Promise<List> {
+    addTaskList(
+        name: string,
+        icon: string | null = null,
+        isDefault=false,
+        filterOptions: {} | null = null,
+    ): Promise<List> {
         return new Promise(resolve => {
             let id = this.#lists.length;
 
-            if( this.#tasks.length !== 0 ) {
+            if( this.#lists.length !== 0 ) {
                 id = last( this.#lists ).id + 1;
             }
 
-            const list = new List(id, name, icon, isDefault);
+            const list = new List(id, name, icon, isDefault, filterOptions);
             this.#lists.push( list );
             this.#save();
 
@@ -202,6 +176,42 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
             this.#steps.splice( index, 1 );
+            this.#save();
+            resolve();
+        });
+    }
+
+
+    factory() {
+        this.#lists = [];
+
+        accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
+            equal: [
+                {
+                    key: "date",
+                    value: "__today__"
+                }
+            ]
+        });
+
+        accessor.addTaskList("Important", "ic:round-star-border", true, {
+            equal: [
+                {
+                    key: "important",
+                    value: true
+                }
+            ]
+        });
+
+        accessor.addTaskList("All", "ic:baseline-list-alt", true, {
+            all: true
+        });
+    }
+
+    setTaskToday( task_id: number ): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.#tasks.findIndex(task => task.id === task_id);
+            this.#tasks[ index ].date = format("Y-m-d");
             this.#save();
             resolve();
         });

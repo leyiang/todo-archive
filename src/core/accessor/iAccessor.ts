@@ -1,14 +1,15 @@
-import type { iTask, iList } from "../types";
 import type Step from "@/core/model/Step";
+import type Task from "@/core/model/Task";
+import type List from "@/core/model/List";
 
 export interface iAccessor {
-    getTasks() : Promise<iTask[]>;
-    addTask( name: string, list_id: number ) : Promise<iTask>;
+    getTasks() : Promise<Task[]>;
+    addTask( name: string, list_id: number ) : Promise<Task>;
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void>;
     removeTask( task_id: number ): Promise<void>;
 
-    getTaskLists() : Promise<iList[]>;
-    addTaskList( name: string, icon: string | null ) : Promise<iList>;
+    getTaskLists() : Promise<List[]>;
+    addTaskList( name: string, icon: string | null ) : Promise<List>;
     removeTaskList( list_id: number ): Promise<void>;
 
     addStep( name: string, task_id: number ) : Promise<Step>;

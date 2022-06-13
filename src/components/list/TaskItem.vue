@@ -33,6 +33,7 @@ import {registerMenu} from "@/components/context_menu/data";
 import {ref, onMounted} from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
+import {format} from "@/core/shared/utils";
 
 const props = defineProps({
     task: {
@@ -61,6 +62,16 @@ onMounted(() => {
 
                     accessor.removeTask( props.task.id ).then( r => {
                         todo.removeTask( props.task );
+                    });
+                }
+            },
+            {
+                name: "Set as today",
+
+                action: () => {
+                    accessor.setTaskToday( props.task.id ).then( r => {
+                        props.task.date = format("Y-m-d");
+                        todo.setToday( props.task );
                     });
                 }
             }

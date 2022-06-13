@@ -68,9 +68,7 @@ const userList : ComputedRef<List[]> = computed(() => {
 
 todo.getList();
 
-// accessor.addTaskList("My Day", "ic:outline-wb-sunny", true);
-// accessor.addTaskList("Important", "ic:round-star-border", true);
-// accessor.addTaskList("All", "ic:baseline-list-alt", true);
+// accessor.factory();
 
 function addNewList( name: string ) {
     accessor.addTaskList(name).then( list => {

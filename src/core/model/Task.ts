@@ -1,22 +1,22 @@
-import type {iTask} from "@/core/types";
+import Step from "@/core/model/Step";
 
-export default class Task implements iTask {
+export default class Task {
     id: number;
     name: string;
     list_id: number;
-    date: Date | null;
+    date: string | null;
     important: boolean;
     finish: boolean;
-    steps: string[];
+    steps: Step[];
 
     constructor(
         id: number,
         name: string,
         list_id: number,
-        date: Date | null = null,
+        date: string | null = null,
         important: boolean = false,
         finish: boolean = false,
-        steps: string[] = [],
+        steps: Step[] = [],
     ) {
         this.id = id;
         this.name = name;

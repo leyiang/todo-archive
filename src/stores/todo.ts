@@ -9,10 +9,12 @@ export const useTodoStore = defineStore("list", {
     state: () => {
         const data : {
             lists: List[],
+            specialList: List[],
             list: List | null
             task: Task | null
         } = {
             lists: [],
+            specialList: [],
             list: null,
             task: null,
         }
@@ -25,7 +27,6 @@ export const useTodoStore = defineStore("list", {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
                 this.setList( loaded[0] );
-                console.log( this.lists );
             });
         },
 
@@ -58,6 +59,10 @@ export const useTodoStore = defineStore("list", {
             if( this.task ) {
                 splice( this.task.steps, step );
             }
+        },
+
+        setToday( task ) {
+            this.lists[0].tasks.push( task );
         }
     }
 });
