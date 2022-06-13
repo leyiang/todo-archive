@@ -61,8 +61,19 @@ export const useTodoStore = defineStore("list", {
             }
         },
 
-        setToday( task ) {
-            this.lists[0].tasks.push( task );
+        /**
+         * This method is used to update special lists
+         * we need to get the update detail from backend
+         * because we don't know which list will be updated
+         * when some property on task is patched.
+         * @param task
+         * @param list_id_list
+         */
+        updateSpecialLists( task: Task, list_id_list: number[] ) {
+            list_id_list.forEach( id => {
+                const index = this.lists.findIndex(list => list.id === id );
+                this.lists[index].tasks.push( task );
+            });
         }
     }
 });
