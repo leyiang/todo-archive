@@ -35,3 +35,12 @@ export function format(
         return (esc === '' && supportChars[chr]) ? supportChars[chr]() : chr;
     });
 }
+
+export function triggerDownload( data: {}, name: string = "export.json") {
+    const content = "data:text/json;charset=utf-8," + encodeURIComponent( JSON.stringify(data) );
+    const link = document.createElement("a");
+
+    link.href = content;
+    link.download = name;
+    link.click();
+}
