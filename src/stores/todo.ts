@@ -46,9 +46,15 @@ export const useTodoStore = defineStore("list", {
             this.lists.push( list );
         },
 
-        removeTask( task: Task ) {
-            const index = this.lists.findIndex( list => list.id === task.list_id );
-            splice( this.lists[index].tasks, task );
+        removeTask( task: Task, list_id_list: number[] = [] ) {
+            if( ! list_id_list.includes(task.list_id) ) {
+                list_id_list.push( task.list_id );
+            }
+
+            list_id_list.forEach( id => {
+                const index = this.lists.findIndex( list => list.id === id );
+                splice( this.lists[index].tasks, task );
+            });
         },
 
         removeTaskList( list: List ) {

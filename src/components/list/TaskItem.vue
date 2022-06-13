@@ -58,10 +58,8 @@ onMounted(() => {
                 },
 
                 action: (args) => {
-                    console.log( props.task, el );
-
-                    accessor.removeTask( props.task.id ).then( r => {
-                        todo.removeTask( props.task );
+                    accessor.removeTask( props.task.id ).then( list_id_list => {
+                        todo.removeTask( props.task, list_id_list );
                     });
                 }
             },
