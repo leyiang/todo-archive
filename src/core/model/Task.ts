@@ -1,4 +1,4 @@
-import Step from "@/core/model/Step";
+import type Step from "@/core/model/Step";
 
 export default class Task {
     id: number;
@@ -8,6 +8,7 @@ export default class Task {
     important: boolean;
     finish: boolean;
     steps: Step[];
+    [index: string]: any;
 
     constructor(
         id: number,

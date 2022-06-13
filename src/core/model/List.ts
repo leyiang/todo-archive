@@ -1,5 +1,6 @@
 import type Task from "@/core/model/Task";
 import type { ComputedRef } from "vue";
+import FilterOptions from "@/core/model/FilterOptions";
 
 export default class List {
     id: number;
@@ -7,7 +8,7 @@ export default class List {
     icon: string | null;
     tasks: Task[];
     isDefault: boolean;
-    filterOptions: {} | null;
+    filterOptions: FilterOptions | null;
 
     constructor(
         id: number,
@@ -20,7 +21,7 @@ export default class List {
         this.name = name;
         this.icon = icon
         this.isDefault = isDefault;
-        this.filterOptions = filterOptions;
+        this.filterOptions = FilterOptions.Load( filterOptions );
         this.tasks = [];
     }
 

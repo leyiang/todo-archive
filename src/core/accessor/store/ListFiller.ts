@@ -2,6 +2,7 @@ import {format} from "@/core/shared/utils";
 import type Task from "@/core/model/Task";
 import type List from "@/core/model/List";
 import type Step from "@/core/model/Step";
+import type FilterOptions from "@/core/model/FilterOptions";
 
 export default class ListFiller {
     #tasks: Task[];
@@ -66,7 +67,7 @@ export default class ListFiller {
         });
     }
 
-    #checkFilter(task: Task, filterOptions: {}): boolean {
+    #checkFilter(task: Task, filterOptions: FilterOptions): boolean {
         if( filterOptions.all ) {
             return true;
         }

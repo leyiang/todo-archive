@@ -216,7 +216,7 @@ export default class StoreAccessor implements iAccessor {
 
             const list_id_list = this.#lists
                 .filter(list => list.filterOptions?.equal )
-                .filter(list => list.filterOptions.equal.map(item => item.key).includes('date') )
+                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('date') )
                 .filter(list => ! list.tasks.map(task => task.id).includes(task_id) )
                 .map(list => list.id)
 
