@@ -104,7 +104,7 @@ export const useTodoStore = defineStore("list", {
                 steps: manager.get("steps"),
             };
 
-            // triggerDownload( data );
+            triggerDownload( data );
         }
     }
 });

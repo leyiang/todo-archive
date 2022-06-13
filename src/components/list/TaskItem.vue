@@ -1,3 +1,9 @@
+<style>
+.task-name {
+    text-align: left;
+}
+</style>
+
 <template>
     <button
         class="cursor-auto"
@@ -8,15 +14,17 @@
             :finish="task.finish"
             tabindex="0"
         >
-            <IconColumn>
-                <FinishButton
-                    class="text-2xl"
-                    :finish="task.finish"
-                    @click.stop="toggleTaskStatus"
-                />
-            </IconColumn>
+            <div class="flex items-start">
+                <IconColumn>
+                    <FinishButton
+                        class="text-2xl mt-0.5"
+                        :finish="task.finish"
+                        @click.stop="toggleTaskStatus"
+                    />
+                </IconColumn>
 
-            <span>{{ task.name }}</span>
+                <span class="task-name">{{ task.name }}</span>
+            </div>
 
             <IconColumn class="ml-auto">
                 <button
