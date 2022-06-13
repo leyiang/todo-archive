@@ -38,6 +38,10 @@
 .icon-svg.showCompleted {
     transform: rotate(180deg);
 }
+
+.active >>> .task-item {
+    background: #F3F3F3;
+}
 </style>
 
 <template>
@@ -73,6 +77,7 @@
                     :task="task"
                     @click="toggleTaskDetail(task)"
                     @keydown.enter="toggleTaskDetail(task)"
+                    :class="task.id === todo.task?.id ? 'active' : ''"
                 />
 
                 <div
