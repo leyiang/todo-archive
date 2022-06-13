@@ -10,7 +10,7 @@
         ref="el"
     >
         <StepWrap
-            class="task-item flex bg-white rounded text-lg py-5"
+            class="task-item flex bg-white rounded text-lg py-4"
             :finish="task.finish"
             tabindex="0"
         >

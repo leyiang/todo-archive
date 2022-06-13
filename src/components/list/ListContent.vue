@@ -14,6 +14,11 @@
     background: rgba(0, 0, 0, 0.3);
 }
 
+.task-list::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .task-input {
     background: rgba(0, 0, 0, 0.2);
     color: #FFF;
@@ -41,6 +46,7 @@
             <h2 class="text-4xl font-bold text-white">
                 <GhostInput
                     :value="list.name"
+                    @change="updateListName"
                 />
             </h2>
         </header>
@@ -149,5 +155,17 @@ function addNewTask(name: string) {
 
 function toggleTaskDetail(task: Task) {
     todo.toggleTask(task);
+}
+
+function updateListName(e: Event) {
+    if( ! e.target ) return;
+    const target = e.target;
+    if( ! (target instanceof HTMLInputElement) ) return;
+    const name = target.value;
+
+    accessor.updateTaskListProp(props.list.id, "name", name).then( r => {
+        props.list.name = '';
+        props.list.name = name;
+    });
 }
 </script>

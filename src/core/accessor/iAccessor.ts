@@ -13,6 +13,7 @@ export interface iAccessor {
     getTaskLists() : Promise<List[]>;
     addTaskList( name: string, icon: string | null ) : Promise<List>;
     removeTaskList( list_id: number ): Promise<void>;
+    updateTaskListProp( list_id:number, key:string, val: any ): Promise<void>;
 
     addStep( name: string, task_id: number ) : Promise<Step>;
     setStepStatus( step_id: number, type: boolean ) : Promise<void>;
