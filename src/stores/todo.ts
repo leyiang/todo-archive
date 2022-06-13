@@ -4,6 +4,7 @@ import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import { splice } from "@/core/shared/utils";
 import type Step from "@/core/model/Step";
+import state from "@/core/StatePreserver";
 
 export const useTodoStore = defineStore("list", {
     state: () => {
@@ -26,12 +27,19 @@ export const useTodoStore = defineStore("list", {
         getList() {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
-                this.setList( loaded[0] );
+                let index = 0;
+
+                if( typeof state.get("list") === "number" ) {
+                    index = state.get("list");
+                }
+
+                this.setList( loaded[index] );
             });
         },
 
         setList( list : List ) {
             this.list = list;
+            state.save("list", list.id);
         },
 
         toggleTask( task: Task ) {
