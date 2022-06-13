@@ -33,7 +33,8 @@ export const useTodoStore = defineStore("list", {
                 let index = 0;
 
                 if( typeof state.get("list") === "number" ) {
-                    index = state.get("list");
+                    const id = state.get("list");
+                    index = this.lists.findIndex(list => list.id === id);
                 }
 
                 if( index < loaded.length ) {
