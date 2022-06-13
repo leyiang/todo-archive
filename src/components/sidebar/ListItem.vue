@@ -27,7 +27,9 @@
             <span class="">{{ list.name }}</span>
         </div>
 
-        <IconColumn>
+        <IconColumn
+            v-if="openTasksLength > 0"
+        >
             <span class=text-gray-400>{{ openTasksLength }}</span>
         </IconColumn>
     </button>
