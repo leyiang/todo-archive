@@ -8,6 +8,7 @@ export default class Task {
     important: boolean;
     finish: boolean;
     steps: Step[];
+    notes: string;
     [index: string]: any;
 
     constructor(
@@ -17,6 +18,7 @@ export default class Task {
         date: string | null = null,
         important: boolean = false,
         finish: boolean = false,
+        notes: string = "",
         steps: Step[] = [],
     ) {
         this.id = id;
@@ -26,6 +28,7 @@ export default class Task {
         this.important = important;
         this.finish = finish;
         this.steps = steps;
+        this.notes = notes;
     }
 
     static Load( task: Task ) : Task {
@@ -36,6 +39,7 @@ export default class Task {
             task.date,
             task.important,
             task.finish,
+            task.notes
         );
     }
 }

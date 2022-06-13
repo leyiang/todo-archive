@@ -1,14 +1,13 @@
 <style>
 .task-detail {
     max-width: 340px;
-    background-color: #F9F9F9;
+    background-color: #F3F3F3;
 }
-
 </style>
 
 <template>
     <div
-        class="task-detail"
+        class="task-detail flex gap-4 flex-col p-3"
     >
         <div class="bg-white p-3">
             <div class="">
@@ -48,6 +47,15 @@
                     @submit="addNewStep"
                 />
             </div>
+        </div>
+
+        <div class="bg-white">
+            <textarea
+                placeholder="Add notes"
+                class="w-full h-full p-3"
+                @change="updateNotes"
+                v-model="task.notes"
+            >{{ task.notes }}</textarea>
         </div>
     </div>
 </template>
@@ -109,6 +117,12 @@ function toggleStepStatus( step ) {
          */
         step.finish = ! status;
         step.finish = status;
+    });
+}
+
+function updateNotes() {
+    accessor.setTaskNotes( props.task.id, props.task.notes ).then( r => {
+
     });
 }
 </script>
