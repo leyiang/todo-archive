@@ -69,7 +69,10 @@
                     @keydown.enter="toggleTaskDetail(task)"
                 />
 
-                <div class="flex">
+                <div
+                    class="flex"
+                    v-if="completedTasks.length"
+                >
                     <button
                         class="completed-toggle text-white flex items-center"
                         @click="showCompleted = ! showCompleted"
