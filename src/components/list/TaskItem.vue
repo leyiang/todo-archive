@@ -1,32 +1,36 @@
 <template>
-    <StepWrap
-        class="task-item flex bg-white rounded text-lg py-5"
-        :finish="task.finish"
-        tabindex="0"
-        ref="root"
+    <button
+        class="cursor-auto"
+        ref="el"
     >
-        <IconColumn>
-            <FinishButton
-                class="text-2xl"
-                :finish="task.finish"
-                @click.stop="toggleTaskStatus"
-            />
-        </IconColumn>
-
-        <span>{{ task.name }}</span>
-
-        <IconColumn class="ml-auto">
-            <button
-                class="text-2xl"
-                @click.stop="setTaskImportantStatus"
-            >
-                <Icon
-                    :icon="iconType"
-                    style="color: goldenrod"
+        <StepWrap
+            class="task-item flex bg-white rounded text-lg py-5"
+            :finish="task.finish"
+            tabindex="0"
+        >
+            <IconColumn>
+                <FinishButton
+                    class="text-2xl"
+                    :finish="task.finish"
+                    @click.stop="toggleTaskStatus"
                 />
-            </button>
-        </IconColumn>
-    </StepWrap>
+            </IconColumn>
+
+            <span>{{ task.name }}</span>
+
+            <IconColumn class="ml-auto">
+                <button
+                    class="text-2xl"
+                    @click.stop="setTaskImportantStatus"
+                >
+                    <Icon
+                        :icon="iconType"
+                        style="color: goldenrod"
+                    />
+                </button>
+            </IconColumn>
+        </StepWrap>
+    </button>
 </template>
 
 <script setup>
@@ -48,7 +52,7 @@ const props = defineProps({
     }
 });
 
-const root = ref(null);
+const el = ref(null);
 const todo = useTodoStore();
 const iconType = computed(() => {
     return props.task.important
@@ -57,14 +61,12 @@ const iconType = computed(() => {
 });
 
 onMounted(() => {
-    const el = root.value.el;
-
-    registerMenu(el, {
+    registerMenu(el.value, {
         items: [
             {
                 name: "Remove Task",
                 args: {
-                    el,
+                    el: el.value,
                     task: props.task
                 },
 
