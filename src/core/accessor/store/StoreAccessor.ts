@@ -87,6 +87,19 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 
+    updateTaskProp(task_id: number, key: string, val: any): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.#tasks.findIndex(task => task.id === task_id);
+
+            if( key === "name" ) {
+                this.#tasks[ index ].name = val;
+            }
+
+            this.#save();
+            resolve();
+        });
+    }
+
     getTaskLists() : Promise<List[]> {
         return new Promise(resolve => {
             /**

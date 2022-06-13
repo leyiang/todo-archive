@@ -10,6 +10,7 @@ export interface iAccessor {
     setTaskNotes( task_id: number, notes: string ): Promise<void>;
     removeTask( task_id: number ): Promise<number[]>;
     setTaskToday( task_id:number ): Promise<number[]>
+    updateTaskProp( task_id:number, key: string, val: any ): Promise<void>;
 
     getTaskLists() : Promise<List[]>;
     addTaskList( name: string, icon: string | null ) : Promise<List>;

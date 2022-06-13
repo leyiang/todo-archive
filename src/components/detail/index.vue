@@ -26,6 +26,7 @@
                     <h1 class="text-xl">
                         <GhostInput
                             :value="task.name"
+                            @change="updateTaskName"
                         />
                     </h1>
 
@@ -122,7 +123,14 @@ function toggleStepStatus( step ) {
 
 function updateNotes() {
     accessor.setTaskNotes( props.task.id, props.task.notes ).then( r => {
+    });
+}
 
+function updateTaskName(e) {
+    const name = e.target.value;
+    accessor.updateTaskProp(props.task.id, "name", name).then( r => {
+        props.task.name = '';
+        props.task.name = name;
     });
 }
 </script>
