@@ -48,7 +48,17 @@ export const useTodoStore = defineStore("list", {
             state.save("list", list.id);
         },
 
-        toggleTask( task: Task ) {
+        toggleTask( task: Task | null ) {
+            /**
+             * Even though this three lines
+             * is dismissible
+             * I choose to leave it here
+             * to have a clearer logic
+             */
+            if( task === null ) {
+                return this.task = null;
+            }
+
             if( this.task === task ) {
                 this.task = null;
             } else {

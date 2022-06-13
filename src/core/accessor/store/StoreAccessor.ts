@@ -266,4 +266,17 @@ export default class StoreAccessor implements iAccessor {
             resolve(list_id_list);
         });
     }
+
+    updateStepProp(step_id: number, key: string, val: any): Promise<void> {
+        return new Promise(resolve => {
+            const index = this.#steps.findIndex(step => step.id === step_id);
+
+            if( key === "name" ) {
+                this.#steps[index].name = val;
+            }
+
+            this.#save();
+            resolve();
+        });
+    }
 }

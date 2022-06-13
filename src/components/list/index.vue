@@ -5,7 +5,9 @@
 </style>
 
 <template>
-    <div class="task-list-wrap p-5">
+    <div
+        class="task-list-wrap p-5"
+    >
         <ListContent
             v-if="todo.list"
             :list="todo.list"
@@ -20,4 +22,8 @@ import {useTodoStore} from "@/stores/todo";
 
 const todo = useTodoStore();
 provide("icon-column-width", 50);
+
+function hideTaskDetail() {
+    todo.toggleTask( null );
+}
 </script>

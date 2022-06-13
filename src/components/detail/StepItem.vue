@@ -14,6 +14,7 @@
 
         <GhostInput
             :value="step.name"
+            @change="updateStepName"
         />
     </StepWrap>
 </template>
@@ -54,4 +55,11 @@
             ]
         })
     });
+
+    function updateStepName(e) {
+        const name = e.target.value;
+
+        accessor.updateStepProp(props.step.id, "name", name).then( r => {
+        });
+    }
 </script>

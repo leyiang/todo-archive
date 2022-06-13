@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="bg-white">
+        <div class="bg-white flex-1">
             <textarea
                 placeholder="Add notes"
                 class="w-full h-full p-3"
