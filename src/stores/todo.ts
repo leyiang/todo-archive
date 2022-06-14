@@ -99,10 +99,14 @@ export const useTodoStore = defineStore("list", {
          * @param task
          * @param list_id_list
          */
-        updateSpecialLists( task: Task, list_id_list: number[] ) {
+        updateSpecialLists( task: Task, list_id_list: number[], append: boolean = true) {
             list_id_list.forEach( id => {
                 const index = this.lists.findIndex(list => list.id === id );
-                this.lists[index].tasks.push( task );
+                if( append ) {
+                    this.lists[index].tasks.push( task );
+                } else {
+                    splice( this.lists[index].tasks, task );
+                }
             });
         },
 

@@ -128,7 +128,7 @@ function setTaskImportantStatus() {
         task.important = ! status;
         task.important = status;
 
-        todo.updateSpecialLists( task, list_id_list );
+        todo.updateSpecialLists( task, list_id_list, status );
     });
 }
 </script>
