@@ -31,14 +31,27 @@ export const useTodoStore = defineStore("list", {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
                 let index = 0;
+                let task_id:number | null = null
+                let list_id:number | null = null;
 
-                if( typeof state.get("list") === "number" ) {
-                    const id = state.get("list");
-                    index = this.lists.findIndex(list => list.id === id);
+                if( typeof state.get("task") === "number" ) task_id = state.get("task");
+                if( typeof state.get("list") === "number" ) list_id = state.get("list");
+
+                if( list_id !== null ) {
+                    index = this.lists.findIndex(list => list.id === list_id);
+                    index = Math.max(0, index);
                 }
 
                 if( index < loaded.length ) {
+                    const list = loaded[index];
                     this.setList( loaded[index] );
+
+                    if( task_id !== null ) {
+                        index = list.tasks.findIndex(task => task.id === task_id);
+                        if( index !== -1 ) {
+                            this.toggleTask( list.tasks[index] );
+                        }
+                    }
                 }
             });
         },
@@ -71,6 +84,7 @@ export const useTodoStore = defineStore("list", {
                 this.task = null;
             } else {
                 this.task = task;
+                state.save("task", task.id);
             }
         },
 
