@@ -1,6 +1,6 @@
 <style>
 .task-detail {
-    max-width: 340px;
+    max-width: 440px;
     background-color: #F3F3F3;
 }
 </style>
@@ -12,10 +12,12 @@
         <div class="bg-white p-3">
             <div class="">
                 <StepWrap
-                    class="flex items-center"
+                    class="flex items-start"
                     :finish="task.finish"
                 >
-                    <IconColumn>
+                    <IconColumn
+                        class="mt-2"
+                    >
                         <FinishButton
                             class="text-2xl"
                             :finish="task.finish"
@@ -23,10 +25,14 @@
                         />
                     </IconColumn>
 
-                    <h1 class="text-xl">
-                        <GhostInput
-                            :value="task.name"
-                            @change="updateTaskName"
+                    <h1 class="text-xl flex-1">
+<!--                        <GhostInput-->
+<!--                            :value="task.name"-->
+<!--                            @change="updateTaskName"-->
+<!--                        />-->
+                        <ResizableTextarea
+                            class="p-2 w-full"
+                            v-text="task.name"
                         />
                     </h1>
 
@@ -72,6 +78,7 @@ import { useTodoStore } from "@/stores/todo";
 import accessor from "@/core/accessor/AccessorInstance";
 import { defineProps } from "vue";
 import Task from "@/core/model/Task";
+import ResizableTextarea from "@/components/ResizableTextarea.vue";
 
 const todo = useTodoStore();
 const props = defineProps({

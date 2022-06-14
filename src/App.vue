@@ -15,7 +15,7 @@ const todo = useTodoStore();
         <TaskList class="flex-1" />
 
         <TaskDetail
-            class="w-1/4"
+            class="w-1/3"
             v-if="todo.task"
             :task="todo.task"
         />

@@ -4,7 +4,8 @@
     text-decoration: line-through;
 }
 
-.finished input {
+.finished input,
+.finished textarea{
     text-decoration: line-through;
 }
 </style>
