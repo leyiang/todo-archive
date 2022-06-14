@@ -44,6 +44,14 @@ export const useTodoStore = defineStore("list", {
         },
 
         setList( list : List ) {
+            /**
+             * Need to de-select task detail
+             * when change list
+             */
+            if( this.task ) {
+                this.toggleTask( null );
+            }
+
             this.list = list;
             state.save("list", list.id);
         },
