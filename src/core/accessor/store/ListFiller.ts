@@ -75,11 +75,11 @@ export default class ListFiller {
         return filterOptions.equal.every( spec => {
             const key = spec.key;
             const value = spec.value;
-            return task[key] === this.#parseValue(value);
+            return task[key] === this.parseValue(value);
         });
     }
 
-    #parseValue( value: string | boolean ) {
+    parseValue( value: string | boolean ) {
         if( value === "__today__" ) {
             const date = new Date();
             return format("Y-m-d");

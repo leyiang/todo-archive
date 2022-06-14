@@ -69,6 +69,8 @@ export default class StoreAccessor implements iAccessor {
     }
 
     addTask( name: string, list_id: number ) : Promise<Task> {
+        const list: List | undefined = this.#lists.find(list => list.id === list_id );
+
         return new Promise((resolve) => {
             let id = this.#tasks.length;
 
@@ -81,6 +83,14 @@ export default class StoreAccessor implements iAccessor {
             }
 
             const task = new Task( id, name, list_id );
+
+            if( list !== undefined && list.isDefault ) {
+                list.filterOptions?.equal.forEach(item => {
+                    const val = this.filler.parseValue( item.value );
+                    task[ item.key ] = val;
+                });
+            }
+
             this.#tasks.push( task );
             this.#save();
             resolve( task );

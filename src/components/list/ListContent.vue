@@ -151,11 +151,9 @@ if( normalTasks.value.length === 0 ) {
 }
 
 function addNewTask(name: string) {
-    if (props.list !== null) {
-        accessor.addTask(name, props.list.id).then(task => {
-            todo?.list?.tasks.push(task);
-        });
-    }
+    accessor.addTask(name, props.list.id).then(task => {
+        todo?.list?.tasks.push(task);
+    });
 }
 
 function toggleTaskDetail(task: Task) {
