@@ -75,7 +75,7 @@ export default class StoreAccessor implements iAccessor {
     }
 
     parseTaskName( name: string ): {} {
-        let tags = [];
+        let tags: string[] = [];
 
         /**
          * :book Book Name Here
@@ -108,7 +108,7 @@ export default class StoreAccessor implements iAccessor {
                 id = last( this.#tasks ).id + 1;
             }
 
-            const task = new Task( id, info.name, list_id );
+            const task = new Task( id, info.name, list_id);
             task.tags = info.tags;
 
             if( list !== undefined && list.filterOptions ) {
@@ -277,7 +277,6 @@ export default class StoreAccessor implements iAccessor {
 
     //
     factory() {
-
         // accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
         //     equal: [
         //         {

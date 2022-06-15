@@ -10,6 +10,7 @@ export default class Task {
     steps: Step[];
     tags: string[];
     notes: string;
+    due_date: null | Date;
     [index: string]: any;
 
     constructor(
@@ -21,6 +22,7 @@ export default class Task {
         finish: boolean = false,
         notes: string = "",
         tags: string[] = [],
+        due_date: null | Date = null,
         steps: Step[] = [],
     ) {
         this.id = id;
@@ -32,9 +34,14 @@ export default class Task {
         this.notes = notes;
         this.tags = tags;
         this.steps = steps;
+        this.due_date = due_date;
     }
 
     static Load( task: Task ) : Task {
+        const date = task.due_date
+            ? new Date( task.due_date )
+            : null;
+
         return new Task(
             task.id,
             task.name,
@@ -43,7 +50,8 @@ export default class Task {
             task.important,
             task.finish,
             task.notes,
-            task.tags
+            task.tags,
+            date,
         );
     }
 }

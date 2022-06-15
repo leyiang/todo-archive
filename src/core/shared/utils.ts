@@ -44,3 +44,7 @@ export function triggerDownload( data: {}, name: string = "export.json") {
     link.download = name;
     link.click();
 }
+
+export function diffDate( date: Date, cur: Date = new Date ) {
+    return date.getDate() - cur.getDate();
+}

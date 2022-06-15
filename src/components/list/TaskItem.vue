@@ -10,6 +10,10 @@
     padding: 0px 10px;
     font-size: small;
 }
+
+.due-date {
+    font-weight: 700;
+}
 </style>
 
 <template>
@@ -33,18 +37,31 @@
                 <div class="flex flex-col content-start">
                     <span class="task-name">{{ task.name }}</span>
 
-                    <!-- Tags -->
-                    <template v-if="! listSettings.hideTags">
-                        <div
-                            class="tags flex gap-1"
-                            v-if="task.tags.length"
-                        >
+                    <div
+                        class="additional-info flex gap-3"
+                        v-if="! listSettings.hideAdditional"
+                    >
+                        <!-- Tags -->
+                        <template v-if="! listSettings.hideTags">
+                            <div
+                                class="tags flex gap-1"
+                                v-if="task.tags.length"
+                            >
                             <span
                                 class="tag"
                                 v-for="tag in task.tags"
                             >{{ tag }}</span>
+                            </div>
+                        </template>
+
+                        <!-- Due Date-->
+                        <div
+                            class="due-date"
+                            v-if="task.due_date"
+                        >
+                            <span>{{ displayDueDate( task.due_date ) }}</span>
                         </div>
-                    </template>
+                    </div>
                 </div>
             </div>
 
@@ -73,7 +90,7 @@ import {registerMenu} from "@/components/context_menu/data";
 import {ref, onMounted, computed} from "vue";
 import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
-import {format} from "@/core/shared/utils";
+import {diffDate, format} from "@/core/shared/utils";
 
 const props = defineProps({
     task: {
@@ -170,5 +187,12 @@ function setTaskImportantStatus() {
 
         todo.updateSpecialLists( task, list_id_list, status );
     });
+}
+
+function displayDueDate( date ) {
+    const days = diffDate( date );
+    const noun = Math.abs( days ) <= 1 ? "day" : "days";
+
+    return `${days} ${noun} left`;
 }
 </script>
