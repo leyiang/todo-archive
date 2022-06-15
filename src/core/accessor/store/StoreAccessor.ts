@@ -68,8 +68,27 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 
+    parseTaskName( name: string ): {} {
+        let tags = [];
+
+        /**
+         * :book Book Name Here
+         */
+        if( name[0] === ":" ) {
+            const firstSpaceIndex = name.indexOf(" ");
+            const rawTag = name.slice(1, firstSpaceIndex);
+            tags = rawTag.split(",");
+            name = name.slice(firstSpaceIndex + 1);
+        }
+
+        return {
+            name,
+            tags
+        }
+    }
     addTask( name: string, list_id: number ) : Promise<Task> {
         const list: List | undefined = this.#lists.find(list => list.id === list_id );
+        const info = this.parseTaskName( name );
 
         return new Promise((resolve) => {
             let id = this.#tasks.length;
@@ -82,7 +101,8 @@ export default class StoreAccessor implements iAccessor {
                 id = last( this.#tasks ).id + 1;
             }
 
-            const task = new Task( id, name, list_id );
+            const task = new Task( id, info.name, list_id );
+            task.tags = info.tags;
 
             if( list !== undefined && list.filterOptions ) {
                 list.filterOptions?.equal.forEach(item => {

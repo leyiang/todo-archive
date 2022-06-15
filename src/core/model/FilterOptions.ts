@@ -4,19 +4,24 @@ interface rawOption {
         value: any
     }[],
 
-    all?: boolean
+    all?: boolean,
+
+    tags?: string[]
 }
 
 export default class FilterOptions {
     all: boolean;
     equal: { key: string, value: any } [];
+    tags: string[];
 
     constructor(
         equal:{key: string, value: any}[] = [],
-        all:boolean = false
+        tags: string[] = [],
+        all:boolean = false,
     ) {
         this.all = all;
         this.equal = equal;
+        this.tags = tags;
     }
 
     static Load( raw: null | rawOption ) {
@@ -24,6 +29,7 @@ export default class FilterOptions {
 
         return new FilterOptions(
             raw.equal,
+            raw.tags,
             raw.all
         )
     }

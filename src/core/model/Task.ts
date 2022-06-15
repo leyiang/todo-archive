@@ -8,6 +8,7 @@ export default class Task {
     important: boolean;
     finish: boolean;
     steps: Step[];
+    tags: string[];
     notes: string;
     [index: string]: any;
 
@@ -19,6 +20,7 @@ export default class Task {
         important: boolean = false,
         finish: boolean = false,
         notes: string = "",
+        tags: string[] = [],
         steps: Step[] = [],
     ) {
         this.id = id;
@@ -27,8 +29,9 @@ export default class Task {
         this.date = date;
         this.important = important;
         this.finish = finish;
-        this.steps = steps;
         this.notes = notes;
+        this.tags = tags;
+        this.steps = steps;
     }
 
     static Load( task: Task ) : Task {
@@ -39,7 +42,8 @@ export default class Task {
             task.date,
             task.important,
             task.finish,
-            task.notes
+            task.notes,
+            task.tags
         );
     }
 }
