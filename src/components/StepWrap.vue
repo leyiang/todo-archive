@@ -8,6 +8,7 @@
 .finished textarea{
     text-decoration: line-through;
 }
+
 </style>
 
 <template>

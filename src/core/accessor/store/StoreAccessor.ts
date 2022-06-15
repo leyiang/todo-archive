@@ -293,6 +293,10 @@ export default class StoreAccessor implements iAccessor {
         // accessor.addTaskList("All", "ic:baseline-list-alt", true, {
         //     all: true
         // });
+
+        accessor.addTaskList("Books", "ic:round-menu-book", {
+            tags: ["book"],
+        });
     }
 
     setTaskToday( task_id: number ): Promise<number[]> {

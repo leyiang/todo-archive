@@ -34,7 +34,7 @@
                 <div class="flex flex-col content-start">
                     <span class="task-name">{{ task.name }}</span>
                     <div
-                        class="tags flex"
+                        class="tags flex gap-1"
                         v-if="task.tags.length"
                     >
                         <span
