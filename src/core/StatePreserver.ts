@@ -15,7 +15,7 @@ class StatePreserver {
         return this.#record[ key ];
     }
 
-    save(key: string, val: number) {
+    save(key: string, val: number | null) {
         this.#record[key] = val;
         this.#manager.set("app-state", this.#record);
     }

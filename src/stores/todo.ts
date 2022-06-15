@@ -82,6 +82,7 @@ export const useTodoStore = defineStore("list", {
 
             if( this.task === task ) {
                 this.task = null;
+                state.save("task", null);
             } else {
                 this.task = task;
                 state.save("task", task.id);
