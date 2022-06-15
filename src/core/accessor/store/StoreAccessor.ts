@@ -46,8 +46,14 @@ export default class StoreAccessor implements iAccessor {
     }
 
     #save() : void {
-        this.#manager.set("lists", this.#lists);
-        this.#manager.set("tasks", this.#tasks);
+        const lists = JSON.parse( JSON.stringify(this.#lists) );
+        lists.forEach( list => list.tasks = [] );
+
+        const tasks = JSON.parse( JSON.stringify(this.#tasks) );
+        tasks.forEach( task => task.steps = [] );
+
+        this.#manager.set("lists", lists);
+        this.#manager.set("tasks", tasks);
         this.#manager.set("steps", this.#steps);
     }
 

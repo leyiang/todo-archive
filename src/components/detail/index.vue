@@ -26,16 +26,12 @@
                     </IconColumn>
 
                     <h1 class="text-xl flex-1">
-<!--                        <GhostInput-->
-<!--                            :value="task.name"-->
-<!--                            @change="updateTaskName"-->
-<!--                        />-->
                         <ResizableTextarea
                             class="p-2 w-full"
                             v-text="task.name"
+                            @change="updateTaskName"
                         />
                     </h1>
-
                 </StepWrap>
             </div>
 
