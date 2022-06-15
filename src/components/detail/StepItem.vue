@@ -42,6 +42,7 @@
 
     onMounted(() => {
         const el = root.value.el;
+        if( ! el ) return;
         registerMenu(el, {
             items: [
                 {
