@@ -4,6 +4,7 @@ export default class LocalStoreManager {
     }
 
     encrypt( key : string ) : string {
+        return key;
         return btoa( key );
     }
 

@@ -14,9 +14,9 @@
 
 <template>
     <aside class="todo-aside py-5 flex flex-col">
-        <div class="flex flex-col defaultList">
+        <div class="flex flex-col specialList">
             <ListItem
-                v-for="list in defaultList"
+                v-for="list in specialList"
                 :list="list"
                 :class="['', todo.list?.id === list.id ? 'active' : '' ]"
                 @click="focusList( list )"
@@ -58,18 +58,18 @@ const todo = useTodoStore();
 /**
  * Computed
  */
-const defaultList : ComputedRef<List[]> = computed(() => {
-    return todo.lists.filter( list => list.isDefault );
+const specialList : ComputedRef<List[]> = computed(() => {
+    return todo.lists.filter( list => list.filterOptions );
 });
 
 const userList : ComputedRef<List[]> = computed(() => {
-    return todo.lists.filter( list => ! list.isDefault );
+    return todo.lists.filter( list => ! list.filterOptions );
 });
 
 todo.getList();
 
 // accessor.factory();
-
+//
 function addNewList( name: string ) {
     accessor.addTaskList(name).then( list => {
         todo.addList( list );

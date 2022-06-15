@@ -32,7 +32,7 @@ export default class ListFiller {
 
         this.#lists.forEach( list => {
             this.#listMap[ list.id ] = list;
-            if( list.isDefault ) {
+            if( list.filterOptions ) {
                 this.#specialLists.push( list );
             }
         });
@@ -49,7 +49,7 @@ export default class ListFiller {
         this.#tasks.forEach( task => {
             const list = this.#listMap[ task.list_id ];
 
-            if( list && ! list.isDefault ) {
+            if( list && ! list.filterOptions ) {
                 list.tasks.push( task );
             }
         });

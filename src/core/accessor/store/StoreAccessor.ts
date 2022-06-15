@@ -84,7 +84,7 @@ export default class StoreAccessor implements iAccessor {
 
             const task = new Task( id, name, list_id );
 
-            if( list !== undefined && list.isDefault ) {
+            if( list !== undefined && list.filterOptions ) {
                 list.filterOptions?.equal.forEach(item => {
                     const val = this.filler.parseValue( item.value );
                     task[ item.key ] = val;
@@ -125,7 +125,6 @@ export default class StoreAccessor implements iAccessor {
     addTaskList(
         name: string,
         icon: string | null = null,
-        isDefault=false,
         filterOptions: {} | null = null,
     ): Promise<List> {
         return new Promise(resolve => {
@@ -135,7 +134,7 @@ export default class StoreAccessor implements iAccessor {
                 id = last( this.#lists ).id + 1;
             }
 
-            const list = new List(id, name, icon, isDefault, filterOptions);
+            const list = new List(id, name, icon, filterOptions);
             this.#lists.push( list );
             this.#save();
 
@@ -250,31 +249,30 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 
-
+    //
     factory() {
-        this.#lists = [];
 
-        accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
-            equal: [
-                {
-                    key: "date",
-                    value: "__today__"
-                }
-            ]
-        });
-
-        accessor.addTaskList("Important", "ic:round-star-border", true, {
-            equal: [
-                {
-                    key: "important",
-                    value: true
-                }
-            ]
-        });
-
-        accessor.addTaskList("All", "ic:baseline-list-alt", true, {
-            all: true
-        });
+        // accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
+        //     equal: [
+        //         {
+        //             key: "date",
+        //             value: "__today__"
+        //         }
+        //     ]
+        // });
+        //
+        // accessor.addTaskList("Important", "ic:round-star-border", true, {
+        //     equal: [
+        //         {
+        //             key: "important",
+        //             value: true
+        //         }
+        //     ]
+        // });
+        //
+        // accessor.addTaskList("All", "ic:baseline-list-alt", true, {
+        //     all: true
+        // });
     }
 
     setTaskToday( task_id: number ): Promise<number[]> {
