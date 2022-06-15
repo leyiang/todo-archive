@@ -52,6 +52,7 @@
                 <AddNewInput
                     placeholder="Add a task"
                     @submit="addNewStep"
+                    maxlength="50"
                 />
             </div>
         </div>

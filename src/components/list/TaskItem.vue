@@ -14,13 +14,12 @@
 
 <template>
     <button
-        class="cursor-auto"
+        class="task-item cursor-auto"
         ref="el"
     >
         <StepWrap
-            class="task-item flex bg-white rounded text-lg py-4"
+            class="flex bg-white rounded text-lg py-4"
             :finish="task.finish"
-            tabindex="0"
         >
             <div class="flex items-start">
                 <IconColumn>
@@ -112,6 +111,18 @@ onMounted(() => {
                         todo.updateSpecialLists( props.task, list_id_list );
                     });
                 }
+            },
+
+            {
+                name: "Move this task to",
+                children: [
+                    {
+                        name: "Todolist",
+                        action: () => {
+                            console.log(1);
+                        }
+                    }
+                ]
             }
         ]
     });
@@ -143,6 +154,7 @@ function toggleTaskStatus() {
 function setTaskImportantStatus() {
     const task = props.task;
     const status = ! task.important;
+
     accessor.setTaskImportantStatus(task.id, status).then(list_id_list => {
         task.important = ! status;
         task.important = status;

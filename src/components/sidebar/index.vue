@@ -23,7 +23,7 @@
             />
         </div>
 
-        <div class="flex flex-col userList mt-8">
+        <div class="flex flex-col userList mt-6">
             <ListItem
                 v-for="list in userList"
                 :list="list"
@@ -36,6 +36,7 @@
             <AddNewInput
                 placeholder="New List"
                 @submit="addNewList"
+                maxlength="30"
             />
         </div>
     </aside>

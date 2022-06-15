@@ -1,6 +1,7 @@
 <style>
+.sub-menu,
 .context-menu {
-    width: 320px;
+    width: 280px;
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     background: #FFF;
@@ -17,6 +18,21 @@
 .context-menu-item:hover {
     background-color: #F9F9F9;
 }
+
+.menu-item-wrap.has-sub {
+    position: relative;
+}
+
+.menu-item-wrap.has-sub:hover .sub-menu {
+    display: flex;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
 </style>
 
 <template>
@@ -27,11 +43,34 @@
         :style="style"
         ref="el"
     >
-        <button
+        <div
             v-for="item in menuSpec.items"
-            class="context-menu-item"
-            @click="trigger(item.action, item.args, $event)"
-        >{{ item.name }}</button>
+            :class="['menu-item-wrap', item.children ? 'has-sub' : '' ]"
+        >
+            <button
+                class="context-menu-item w-full flex items-center justify-between"
+                @click="trigger(item.action, item.args, $event)"
+            >
+                <span>{{ item.name }}</span>
+                <Icon
+                    icon="ic:baseline-keyboard-arrow-right"
+                    v-if="item.children"
+                ></Icon>
+            </button>
+
+            <div
+                class="sub-menu flex-col"
+                v-if="item.children"
+            >
+                <button
+                    class="context-menu-item w-full"
+                    v-for="sub in item.children"
+                    @click="trigger(sub.action)"
+                >
+                    <span>{{ sub.name }}</span>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,6 +78,7 @@
 import { ref, computed, onMounted } from "vue";
 import type { Ref } from "vue";
 import { getSpec } from "./data";
+import { Icon } from "@iconify/vue";
 
 const pos: Ref<null|{x: number, y: number}> = ref(null);
 const defaultSpec = null;
@@ -145,7 +185,8 @@ function selectNextItem(reverse=false) {
     }
 }
 
-function trigger( callback:Function, args:{}, event: Event) {
+function trigger( callback:Function|undefined, args:{}, event: Event) {
+    if( ! callback ) return;
     callback( args, target );
 }
 </script>
