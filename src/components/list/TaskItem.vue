@@ -2,6 +2,14 @@
 .task-name {
     text-align: left;
 }
+
+.tag {
+    background-color: pink;
+    color: #FFF;
+    border-radius: 5px;
+    padding: 0px 10px;
+    font-size: small;
+}
 </style>
 
 <template>
@@ -23,7 +31,18 @@
                     />
                 </IconColumn>
 
-                <span class="task-name">{{ task.name }}</span>
+                <div class="flex flex-col content-start">
+                    <span class="task-name">{{ task.name }}</span>
+                    <div
+                        class="tags flex"
+                        v-if="task.tags.length"
+                    >
+                        <span
+                            class="tag"
+                            v-for="tag in task.tags"
+                        >{{ tag }}</span>
+                    </div>
+                </div>
             </div>
 
             <IconColumn class="ml-auto">
