@@ -32,15 +32,19 @@
 
                 <div class="flex flex-col content-start">
                     <span class="task-name">{{ task.name }}</span>
-                    <div
-                        class="tags flex gap-1"
-                        v-if="task.tags.length"
-                    >
-                        <span
-                            class="tag"
-                            v-for="tag in task.tags"
-                        >{{ tag }}</span>
-                    </div>
+
+                    <!-- Tags -->
+                    <template v-if="! listSettings.hideTags">
+                        <div
+                            class="tags flex gap-1"
+                            v-if="task.tags.length"
+                        >
+                            <span
+                                class="tag"
+                                v-for="tag in task.tags"
+                            >{{ tag }}</span>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -74,8 +78,13 @@ import {format} from "@/core/shared/utils";
 const props = defineProps({
     task: {
         type: Task,
-        require: true
-    }
+        required: true
+    },
+
+    listSettings: {
+        type: Object,
+        required: true
+    },
 });
 
 const el = ref(null);

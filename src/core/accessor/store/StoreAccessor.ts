@@ -92,6 +92,7 @@ export default class StoreAccessor implements iAccessor {
             tags
         }
     }
+
     addTask( name: string, list_id: number ) : Promise<Task> {
         const list: List | undefined = this.#lists.find(list => list.id === list_id );
         const info = this.parseTaskName( name );
@@ -143,7 +144,6 @@ export default class StoreAccessor implements iAccessor {
              * To Prevent Local-Array-Reference Problems
              */
             const lists = this.#lists.slice();
-
             resolve( lists );
         });
     }

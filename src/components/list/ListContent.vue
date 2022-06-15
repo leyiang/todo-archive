@@ -77,6 +77,7 @@
                     :task="task"
                     @click="toggleTaskDetail(task)"
                     :class="task.id === todo.task?.id ? 'active' : ''"
+                    :list-settings="list.settings"
                 />
 
                 <div
@@ -102,7 +103,7 @@
                         :key="task.id"
                         :task="task"
                         @click="toggleTaskDetail(task)"
-                        @keydown.enter="toggleTaskDetail(task)"
+                        :list-settings="list.settings"
                     />
                 </template>
             </template>
