@@ -68,15 +68,38 @@ export default class ListFiller {
     }
 
     #checkFilter(task: Task, filterOptions: FilterOptions): boolean {
+        /**
+         * Dominant Prop filterOptions.all
+         * This list will have all tasks
+         */
         if( filterOptions.all ) {
             return true;
         }
 
-        return filterOptions.equal.every( spec => {
+        /**
+         * Check every key inside equal array
+         */
+        const applyToEqual = filterOptions.equal.every( spec => {
             const key = spec.key;
             const value = spec.value;
             return task[key] === this.parseValue(value);
         });
+
+        /**
+         * Task not apply to every equal rule
+         */
+        if( ! applyToEqual ) return false;
+
+        /**
+         * Task need to have every tags inside filterOptions
+         */
+        const applyToTags = filterOptions.tags.every( tag => {
+            return task.tags.includes( tag );
+        });
+
+        if( ! applyToTags ) return false;
+
+        return true;
     }
 
     parseValue( value: string | boolean ) {
