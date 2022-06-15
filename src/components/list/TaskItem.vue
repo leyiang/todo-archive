@@ -18,7 +18,7 @@
         ref="el"
     >
         <StepWrap
-            class="flex bg-white rounded text-lg py-4"
+            class="flex bg-white rounded text-lg py-4 task-item-inner"
             :finish="task.finish"
         >
             <div class="flex items-start">

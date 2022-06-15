@@ -39,7 +39,7 @@
     transform: rotate(180deg);
 }
 
-.active >>> .task-item {
+.active >>> .task-item-inner {
     background: #F3F3F3;
 }
 </style>
