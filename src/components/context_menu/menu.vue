@@ -1,6 +1,6 @@
 <style>
 .context-menu {
-    width: 220px;
+    width: 320px;
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     background: #FFF;
@@ -10,7 +10,8 @@
 }
 
 .context-menu-item {
-    padding: 1rem;
+    padding: 10px 1rem;
+    text-align: left;
 }
 
 .context-menu-item:hover {
