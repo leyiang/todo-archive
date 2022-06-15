@@ -76,7 +76,6 @@
                     :key="task.id"
                     :task="task"
                     @click="toggleTaskDetail(task)"
-                    @keydown.enter="toggleTaskDetail(task)"
                     :class="task.id === todo.task?.id ? 'active' : ''"
                 />
 
