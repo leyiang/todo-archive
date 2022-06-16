@@ -13,6 +13,7 @@
         </IconColumn>
 
         <GhostInput
+            class="flex-1"
             :value="step.name"
             @change="updateStepName"
         />
