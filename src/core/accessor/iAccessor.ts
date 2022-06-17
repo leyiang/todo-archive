@@ -3,7 +3,6 @@ import type Task from "@/core/model/Task";
 import type List from "@/core/model/List";
 
 export interface iAccessor {
-    getTasks() : Promise<Task[]>;
     addTask( name: string, list_id: number ) : Promise<Task>;
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void>;
     setTaskImportantStatus( task_id: number, status: boolean ): Promise<number[]>;

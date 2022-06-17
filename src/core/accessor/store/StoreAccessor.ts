@@ -186,19 +186,6 @@ class StoreAccessor implements iAccessor {
         });
     }
 
-    /**
-     * Return Promise To Be Sync With Other Accessors
-     */
-    getTasks(): Promise<Task[]> {
-        return new Promise((resolve) => {
-            this.#adapter.connected(() => {
-                this.#adapter.getAll("task").then( tasks => {
-                    resolve( tasks );
-                });
-            });
-        });
-    }
-
     getTaskLists(): Promise<List[]> {
         return new Promise(resolve => {
             /**
@@ -324,16 +311,17 @@ class StoreAccessor implements iAccessor {
 
     addStep(name: string, task_id: number): Promise<Step> {
         return new Promise(resolve => {
-            let id = this.#steps.length;
+            this.#adapter.connected(() => {
+                const step = new Step(0, name, task_id);
+                //@ts-ignore
+                delete step["id"];
 
-            if (this.#steps.length !== 0) {
-                id = last(this.#steps).id + 1;
-            }
-
-            const step = new Step(id, name, task_id);
-            this.#steps.push(step);
-            this.#save();
-            resolve(step);
+                this.#adapter.addItem("step", step).then(id => {
+                    step.id = id;
+                    this.#steps.push(step);
+                    resolve(step);
+                });
+            });
         });
     }
 
@@ -415,6 +403,36 @@ class StoreAccessor implements iAccessor {
 
             this.#save();
             resolve();
+        });
+    }
+
+    /**
+     * We don't get tasks directly in the app
+     * But we need to test the feature in the smallest range
+     * So add this func for test purpose
+     */
+    getTasksForTest(): Promise<Task[]> {
+        return new Promise(resolve => {
+            this.#adapter.connected(() => {
+                this.#adapter.getAll("task").then( tasks => {
+                    resolve( tasks );
+                });
+            });
+        });
+    }
+
+    /**
+     * We don't get tasks directly in the app
+     * But we need to test the feature in the smallest range
+     * So add this func for test purpose
+     */
+    getStepsForTest(): Promise<Step[]> {
+        return new Promise(resolve => {
+            this.#adapter.connected(() => {
+                this.#adapter.getAll("step").then( steps => {
+                    resolve( steps );
+                });
+            });
         });
     }
 }

@@ -15,14 +15,11 @@ test("able to add new task", async () => {
 
     await accessor.addTask(info.name, info.list_id);
 
-    await accessor.getTasks().then( tasks => {
-        // Task is added
-        expect(tasks.length).toBe(1);
-
+    await accessor.getTasksForTest().then( tasks => {
+        expect( tasks.length ).toBe( 1 );
         const task = tasks[0];
 
-        // Ensure Data is correct
-        expect(task.name).toBe( info.name );
-        expect(task.list_id).toBe( info.list_id );
+        expect( task.name ).toBe( info.name );
+        expect( task.list_id ).toBe( info.list_id );
     });
 });
