@@ -139,7 +139,7 @@ class StoreAccessor implements iAccessor {
     }
 
     addTask(name: string, list_id: number): Promise<Task> {
-        // const list: List | undefined = this.#lists.find(list => list.id === list_id );
+        const list: List | undefined = this.#lists.find(list => list.id === list_id );
         const info = this.parseTaskName(name);
 
         return new Promise((resolve) => {
@@ -157,20 +157,21 @@ class StoreAccessor implements iAccessor {
             task.tags = info.tags;
 
             delete task[id];
-            // if( list !== undefined && list.filterOptions ) {
-            //     list.filterOptions?.equal.forEach(item => {
-            //         const val = this.filler.parseValue( item.value );
-            //         task[ item.key ] = val;
-            //     });
-            // }
+
+            if( list !== undefined && list.filterOptions ) {
+                list.filterOptions?.equal.forEach(item => {
+                    const val = this.filler.parseValue( item.value );
+                    task[ item.key ] = val;
+                });
+            }
 
             this.#adapter.connected(() => {
-                this.#adapter.addItem("task", task);
+                this.#adapter.addItem("task", task).then(id => {
+                    task.id = id;
+                    this.#tasks.push(task);
+                    resolve(task);
+                });
             });
-
-            this.#tasks.push(task);
-            this.#save();
-            resolve(task);
         });
     }
 
@@ -212,10 +213,10 @@ class StoreAccessor implements iAccessor {
                     this.#adapter.getAll("task"),
                     this.#adapter.getAll("step"),
                 ]).then(([
-                             lists,
-                             tasks,
-                             steps
-                         ]) => {
+                     lists,
+                     tasks,
+                     steps
+                ]) => {
                     lists = lists.map(List.Load);
                     tasks = tasks.map(Task.Load);
                     steps = steps.map(Step.Load);

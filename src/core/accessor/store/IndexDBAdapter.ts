@@ -68,7 +68,7 @@ export default class IndexDBAdapter {
         });
     }
 
-    addItem(store: string, value: {}): Promise<void> {
+    addItem(store: string, value: {}): Promise<number> {
         return new Promise((resolve, reject) => {
             if( this.#db === null ) {
                 return reject("DB Not connected");
@@ -79,12 +79,14 @@ export default class IndexDBAdapter {
                 .objectStore(store)
                 .add(value);
 
-            request.onsuccess = () => {
-                resolve();
+            request.onsuccess = (e) => {
+                // Everything with Event is so annoying
+                //@ts-ignore
+                resolve( e.target.result );
             }
 
             request.onerror = () => {
-                console.log("Write error");
+                reject("Error");
             }
         });
     }
