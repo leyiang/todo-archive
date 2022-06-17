@@ -1,4 +1,4 @@
-import StoreAccessor from "@/core/accessor/store/StoreAccessor";
+// import StoreAccessor from "@/core/accessor/store/StoreAccessor";
 
-const instance = new StoreAccessor();
-export default instance;
+// const instance = new StoreAccessor();
+// export default instance;

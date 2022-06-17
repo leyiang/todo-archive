@@ -8,8 +8,9 @@ import accessor from "@/core/accessor/AccessorInstance";
 import ListFiller from "@/core/accessor/store/ListFiller";
 import FilterOptions from "@/core/model/FilterOptions";
 import IndexDBAdapter from "@/core/accessor/store/IndexDBAdapter";
+import {createLogger} from "vite";
 
-export default class StoreAccessor implements iAccessor {
+class StoreAccessor implements iAccessor {
     #tasks: Task[];
     #lists: List[];
     #steps: Step[];
@@ -33,7 +34,7 @@ export default class StoreAccessor implements iAccessor {
         this.#load();
     }
 
-    #load() : void {
+    #load(): void {
         this.#initDB();
 
         /**
@@ -45,35 +46,35 @@ export default class StoreAccessor implements iAccessor {
     }
 
     #initDB() {
-        this.#adapter.init( (db: IDBDatabase) => {
-            if( ! db.objectStoreNames.contains("list")) {
-                const store = db.createObjectStore("list", { autoIncrement: true, keyPath: 'id' })
+        this.#adapter.init((db: IDBDatabase) => {
+            if (!db.objectStoreNames.contains("list")) {
+                const store = db.createObjectStore("list", {autoIncrement: true, keyPath: 'id'})
 
-                store.createIndex("name", "name", { unique: false });
-                store.createIndex("icon", "icon", { unique: false });
-                store.createIndex("filterOptions", "filterOptions", { unique: false });
-                store.createIndex("settings", "settings", { unique: false });
+                store.createIndex("name", "name", {unique: false});
+                store.createIndex("icon", "icon", {unique: false});
+                store.createIndex("filterOptions", "filterOptions", {unique: false});
+                store.createIndex("settings", "settings", {unique: false});
             }
 
-            if( ! db.objectStoreNames.contains("task")) {
-                const store = db.createObjectStore("task", { autoIncrement: true, keyPath: 'id' })
+            if (!db.objectStoreNames.contains("task")) {
+                const store = db.createObjectStore("task", {autoIncrement: true, keyPath: 'id'})
 
-                store.createIndex("name", "name", { unique: false });
-                store.createIndex("list_id", "list_id", { unique: false });
-                store.createIndex("date", "date", { unique: false });
-                store.createIndex("important", "important", { unique: false });
-                store.createIndex("finish", "finish", { unique: false });
-                store.createIndex("tags", "tags", { unique: false });
-                store.createIndex("notes", "notes", { unique: false });
-                store.createIndex("due_date", "due_date", { unique: false });
+                store.createIndex("name", "name", {unique: false});
+                store.createIndex("list_id", "list_id", {unique: false});
+                store.createIndex("date", "date", {unique: false});
+                store.createIndex("important", "important", {unique: false});
+                store.createIndex("finish", "finish", {unique: false});
+                store.createIndex("tags", "tags", {unique: false});
+                store.createIndex("notes", "notes", {unique: false});
+                store.createIndex("due_date", "due_date", {unique: false});
             }
 
-            if( ! db.objectStoreNames.contains("step")) {
-                const store = db.createObjectStore("step", { autoIncrement: true, keyPath: 'id' })
+            if (!db.objectStoreNames.contains("step")) {
+                const store = db.createObjectStore("step", {autoIncrement: true, keyPath: 'id'})
 
-                store.createIndex("name", "name", { unique: false });
-                store.createIndex("task_id", "task_id", { unique: false });
-                store.createIndex("finish", "finish", { unique: false });
+                store.createIndex("name", "name", {unique: false});
+                store.createIndex("task_id", "task_id", {unique: false});
+                store.createIndex("finish", "finish", {unique: false});
             }
         });
     }
@@ -85,46 +86,46 @@ export default class StoreAccessor implements iAccessor {
         this.#adapter.clear("task");
         this.#adapter.clear("step");
 
-        data.lists.forEach( list => {
-            this.#adapter.addItem("list", list);
-        });
-
-        data.tasks.forEach( task => {
-            this.#adapter.addItem("task", task);
-        });
-
-        data.steps.forEach( step => {
-            this.#adapter.addItem("step", step);
-        });
+        // data.lists.forEach( list => {
+        //     this.#adapter.addItem("list", list);
+        // });
+        //
+        // data.tasks.forEach( task => {
+        //     this.#adapter.addItem("task", task);
+        // });
+        //
+        // data.steps.forEach( step => {
+        //     this.#adapter.addItem("step", step);
+        // });
     }
 
-    #save() : void {
-        const lists = JSON.parse( JSON.stringify(this.#lists) );
-        lists.forEach( list => list.tasks = [] );
+    #save(): void {
+        const lists = JSON.parse(JSON.stringify(this.#lists));
+        lists.forEach(list => list.tasks = []);
 
-        const tasks = JSON.parse( JSON.stringify(this.#tasks) );
-        tasks.forEach( task => task.steps = [] );
+        const tasks = JSON.parse(JSON.stringify(this.#tasks));
+        tasks.forEach(task => task.steps = []);
 
         this.#manager.set("lists", lists);
         this.#manager.set("tasks", tasks);
         this.#manager.set("steps", this.#steps);
     }
 
-    fetchTasks() : Promise<Task[]> {
-        return new Promise((resolve, reject) =>{
+    fetchTasks(): Promise<Task[]> {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve( this.#tasks );
-            }, 2000 )
+                resolve(this.#tasks);
+            }, 2000)
         });
     }
 
-    parseTaskName( name: string ): {} {
+    parseTaskName(name: string): {} {
         let tags: string[] = [];
 
         /**
          * :book Book Name Here
          */
-        if( name[0] === ":" ) {
+        if (name[0] === ":") {
             const firstSpaceIndex = name.indexOf(" ");
             const rawTag = name.slice(1, firstSpaceIndex);
             tags = rawTag.split(",");
@@ -137,9 +138,9 @@ export default class StoreAccessor implements iAccessor {
         }
     }
 
-    addTask( name: string, list_id: number ) : Promise<Task> {
-        const list: List | undefined = this.#lists.find(list => list.id === list_id );
-        const info = this.parseTaskName( name );
+    addTask(name: string, list_id: number): Promise<Task> {
+        // const list: List | undefined = this.#lists.find(list => list.id === list_id );
+        const info = this.parseTaskName(name);
 
         return new Promise((resolve) => {
             let id = this.#tasks.length;
@@ -148,23 +149,28 @@ export default class StoreAccessor implements iAccessor {
              * Assume last element in array
              * has the biggest id
              */
-            if( this.#tasks.length !== 0 ) {
-                id = last( this.#tasks ).id + 1;
+            if (this.#tasks.length !== 0) {
+                id = last(this.#tasks).id + 1;
             }
 
-            const task = new Task( id, info.name, list_id);
+            const task = new Task(id, info.name, list_id);
             task.tags = info.tags;
 
-            if( list !== undefined && list.filterOptions ) {
-                list.filterOptions?.equal.forEach(item => {
-                    const val = this.filler.parseValue( item.value );
-                    task[ item.key ] = val;
-                });
-            }
+            delete task[id];
+            // if( list !== undefined && list.filterOptions ) {
+            //     list.filterOptions?.equal.forEach(item => {
+            //         const val = this.filler.parseValue( item.value );
+            //         task[ item.key ] = val;
+            //     });
+            // }
 
-            this.#tasks.push( task );
+            this.#adapter.connected(() => {
+                this.#adapter.addItem("task", task);
+            });
+
+            this.#tasks.push(task);
             this.#save();
-            resolve( task );
+            resolve(task);
         });
     }
 
@@ -172,8 +178,8 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
 
-            if( key === "name" ) {
-                this.#tasks[ index ].name = val;
+            if (key === "name") {
+                this.#tasks[index].name = val;
             }
 
             this.#save();
@@ -184,10 +190,17 @@ export default class StoreAccessor implements iAccessor {
     /**
      * Return Promise To Be Sync With Other Accessors
      */
-    getTasks() : Promise<Task[]> {
+    getTasks(): Promise<Task[]> {
+        return new Promise((resolve) => {
+            this.#adapter.connected(() => {
+                this.#adapter.getAll("task").then( tasks => {
+                    resolve( tasks );
+                });
+            });
+        });
     }
 
-    getTaskLists() : Promise<List[]> {
+    getTaskLists(): Promise<List[]> {
         return new Promise(resolve => {
             /**
              * Resolve Clone Version Array
@@ -198,19 +211,19 @@ export default class StoreAccessor implements iAccessor {
                     this.#adapter.getAll("list"),
                     this.#adapter.getAll("task"),
                     this.#adapter.getAll("step"),
-                ]).then( ([
-                    lists,
-                    tasks,
-                    steps
-                ]) => {
-                    lists = lists.map( List.Load );
-                    tasks = tasks.map( Task.Load );
-                    steps = steps.map( Step.Load );
+                ]).then(([
+                             lists,
+                             tasks,
+                             steps
+                         ]) => {
+                    lists = lists.map(List.Load);
+                    tasks = tasks.map(Task.Load);
+                    steps = steps.map(Step.Load);
 
-                    this.filler.set( tasks, lists, steps );
+                    this.filler.set(tasks, lists, steps);
                     this.filler.fill();
 
-                    resolve( lists );
+                    resolve(lists);
                 });
             });
         });
@@ -224,22 +237,22 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             let id = this.#lists.length;
 
-            if( this.#lists.length !== 0 ) {
-                id = last( this.#lists ).id + 1;
+            if (this.#lists.length !== 0) {
+                id = last(this.#lists).id + 1;
             }
 
             const list = new List(id, name, icon, filterOptions);
-            this.#lists.push( list );
+            this.#lists.push(list);
             this.#save();
 
-            resolve( list );
+            resolve(list);
         });
     }
 
-    setTaskFinishStatus( task_id: number, type: boolean ): Promise<void> {
+    setTaskFinishStatus(task_id: number, type: boolean): Promise<void> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[ index ].finish = type;
+            this.#tasks[index].finish = type;
             this.#save();
             resolve();
         });
@@ -248,14 +261,14 @@ export default class StoreAccessor implements iAccessor {
     setTaskImportantStatus(task_id: number, status: boolean): Promise<number[]> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[ index ].important = status;
+            this.#tasks[index].important = status;
             this.#save();
 
             const list_id_list = this.#lists
-                .filter(list => list.filterOptions?.equal )
-                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important') )
+                .filter(list => list.filterOptions?.equal)
+                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important'))
                 .filter(list => status
-                    ? ! list.tasks.map(task => task.id).includes(task_id)
+                    ? !list.tasks.map(task => task.id).includes(task_id)
                     : list.tasks.map(task => task.id).includes(task_id)
                 )
                 .map(list => list.id)
@@ -267,7 +280,7 @@ export default class StoreAccessor implements iAccessor {
     setTaskNotes(task_id: number, notes: string): Promise<void> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[ index ].notes = notes;
+            this.#tasks[index].notes = notes;
             this.#save();
 
             resolve();
@@ -276,22 +289,22 @@ export default class StoreAccessor implements iAccessor {
 
     removeTask(task_id: number): Promise<number[]> {
         return new Promise(resolve => {
-            const index = this.#tasks.findIndex(task => task.id === task_id );
-            this.#tasks.splice( index, 1 );
+            const index = this.#tasks.findIndex(task => task.id === task_id);
+            this.#tasks.splice(index, 1);
             this.#save();
 
             const list_id_list = this.#lists
-                .filter(list => list.tasks.map(task => task.id).includes(task_id) )
+                .filter(list => list.tasks.map(task => task.id).includes(task_id))
                 .map(list => list.id);
 
-            resolve( list_id_list );
+            resolve(list_id_list);
         });
     }
 
     removeTaskList(list_id: number): Promise<void> {
         return new Promise(resolve => {
             const index = this.#lists.findIndex(list => list.id === list_id);
-            this.#lists.splice( index, 1 );
+            this.#lists.splice(index, 1);
             this.#save();
             resolve();
         });
@@ -300,35 +313,35 @@ export default class StoreAccessor implements iAccessor {
     updateTaskListProp(list_id: number, key: string, val: any): Promise<void> {
         return new Promise(resolve => {
             const index = this.#lists.findIndex(list => list.id === list_id);
-            const list = this.#lists[ index ];
+            const list = this.#lists[index];
 
             // @ts-ignore
-            list[ key ] = val;
+            list[key] = val;
 
             this.#save();
             resolve();
         });
     }
 
-    addStep( name: string, task_id: number ) : Promise<Step> {
+    addStep(name: string, task_id: number): Promise<Step> {
         return new Promise(resolve => {
             let id = this.#steps.length;
 
-            if( this.#steps.length !== 0 ) {
-                id = last( this.#steps ).id + 1;
+            if (this.#steps.length !== 0) {
+                id = last(this.#steps).id + 1;
             }
 
             const step = new Step(id, name, task_id);
-            this.#steps.push( step );
+            this.#steps.push(step);
             this.#save();
-            resolve( step );
+            resolve(step);
         });
     }
 
     setStepStatus(step_id: number, type: boolean): Promise<void> {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
-            this.#steps[ index ].finish = type;
+            this.#steps[index].finish = type;
             this.#save();
             resolve();
         });
@@ -337,7 +350,7 @@ export default class StoreAccessor implements iAccessor {
     removeStep(step_id: number): Promise<void> {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
-            this.#steps.splice( index, 1 );
+            this.#steps.splice(index, 1);
             this.#save();
             resolve();
         });
@@ -345,7 +358,7 @@ export default class StoreAccessor implements iAccessor {
 
     //
     factory() {
-        const data :any = {};
+        const data: any = {};
         this.#manager.set("lists", data.lists);
         this.#manager.set("tasks", data.tasks);
         this.#manager.set("steps", data.steps);
@@ -377,16 +390,16 @@ export default class StoreAccessor implements iAccessor {
         // });
     }
 
-    setTaskToday( task_id: number ): Promise<number[]> {
+    setTaskToday(task_id: number): Promise<number[]> {
         return new Promise(resolve => {
             const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[ index ].date = format("Y-m-d");
+            this.#tasks[index].date = format("Y-m-d");
             this.#save();
 
             const list_id_list = this.#lists
-                .filter(list => list.filterOptions?.equal )
-                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('date') )
-                .filter(list => ! list.tasks.map(task => task.id).includes(task_id) )
+                .filter(list => list.filterOptions?.equal)
+                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('date'))
+                .filter(list => !list.tasks.map(task => task.id).includes(task_id))
                 .map(list => list.id)
 
             resolve(list_id_list);
@@ -397,7 +410,7 @@ export default class StoreAccessor implements iAccessor {
         return new Promise(resolve => {
             const index = this.#steps.findIndex(step => step.id === step_id);
 
-            if( key === "name" ) {
+            if (key === "name") {
                 this.#steps[index].name = val;
             }
 
@@ -406,3 +419,5 @@ export default class StoreAccessor implements iAccessor {
         });
     }
 }
+
+export default StoreAccessor;
