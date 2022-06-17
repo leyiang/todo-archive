@@ -47,3 +47,23 @@ test("able to set task finish status", async () => {
         })
     });
 });
+
+test("able to remove a task", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+
+    await accessor.addTask("name", 0);
+    await accessor.addTask("name1", 0);
+
+    await accessor.getTasksForTest().then( async tasks => {
+        expect( tasks.length ).toBe( 2 );
+        const task = tasks[1];
+
+        await accessor.removeTask( tasks[0].id );
+
+        await accessor.getTasksForTest().then( async tasks => {
+            expect(tasks.length).toBe(1);
+            expect( task ).toMatchObject( tasks[0] );
+        });
+    });
+});

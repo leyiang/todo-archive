@@ -131,4 +131,19 @@ export default class IndexDBAdapter {
             }
         });
     }
+
+    remove(storeName: string, id: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const store = this.fetchStore( storeName );
+            const request = store.delete( id );
+
+            request.onsuccess = () => {
+                resolve();
+            }
+
+            request.onerror = e => {
+                reject( e );
+            }
+        });
+    }
 }
