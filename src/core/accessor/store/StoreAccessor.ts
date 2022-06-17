@@ -277,6 +277,11 @@ export default class StoreAccessor implements iAccessor {
 
     //
     factory() {
+        const data = {};
+        this.#manager.set("lists", data.lists);
+        this.#manager.set("tasks", data.tasks);
+        this.#manager.set("steps", data.steps);
+
         // accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
         //     equal: [
         //         {
@@ -299,9 +304,9 @@ export default class StoreAccessor implements iAccessor {
         //     all: true
         // });
 
-        accessor.addTaskList("Books", "ic:round-menu-book", {
-            tags: ["book"],
-        });
+        // accessor.addTaskList("Books", "ic:round-menu-book", {
+        //     tags: ["book"],
+        // });
     }
 
     setTaskToday( task_id: number ): Promise<number[]> {
