@@ -1,6 +1,5 @@
 import {test, expect} from "vitest";
-import StoreAccessor from "../core/accessor/store/StoreAccessor";
-import {nextTick} from "vue";
+import StoreAccessor from "@/core/accessor/store/StoreAccessor";
 require("fake-indexeddb/auto");
 
 /**
@@ -11,7 +10,7 @@ test("able to add new task", async () => {
 
     const info = {
         name: "New Task",
-        list_id: 2
+        list_id: 3
     };
 
     await accessor.addTask(info.name, info.list_id);
