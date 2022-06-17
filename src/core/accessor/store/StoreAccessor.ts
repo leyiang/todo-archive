@@ -236,17 +236,17 @@ class StoreAccessor implements iAccessor {
         filterOptions: {} | null = null,
     ): Promise<List> {
         return new Promise(resolve => {
-            let id = this.#lists.length;
 
-            if (this.#lists.length !== 0) {
-                id = last(this.#lists).id + 1;
-            }
+            const list = new List(0, name, icon, filterOptions);
+            //@ts-ignore
+            delete list["id"];
 
-            const list = new List(id, name, icon, filterOptions);
-            this.#lists.push(list);
-            this.#save();
-
-            resolve(list);
+            this.#adapter.connected(() => {
+                this.#adapter.addItem("list", list).then(id => {
+                    this.#lists.push(list);
+                    resolve(list);
+                });
+            });
         });
     }
 
