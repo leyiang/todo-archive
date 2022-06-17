@@ -47,16 +47,25 @@ export default class IndexDBAdapter {
         }
     }
 
-    getAll(store: string,): Promise<any[]> {
+    fetchStore(name: string, mode="readwrite") {
+        if( ! this.#db ) {
+            throw new TypeError("DB Not connect");
+        }
+
+        return this.#db
+            .transaction([ name ], mode )
+            .objectStore( name );
+    }
+
+    getAll(storeName: string,): Promise<any[]> {
         return new Promise((resolve, reject) => {
             if (this.#db === null) {
                 return reject("No DB");
             }
 
-            const request = this.#db
-                .transaction([store], "readwrite")
-                .objectStore(store)
-                .getAll()
+            const store = this.fetchStore(storeName);
+
+            const request = store.getAll();
 
             request.onsuccess = () => {
                 resolve(request.result);
@@ -68,16 +77,14 @@ export default class IndexDBAdapter {
         });
     }
 
-    addItem(store: string, value: {}): Promise<number> {
+    addItem(storeName: string, value: {}): Promise<number> {
         return new Promise((resolve, reject) => {
             if( this.#db === null ) {
                 return reject("DB Not connected");
             }
 
-            const request = this.#db
-                .transaction([store], "readwrite")
-                .objectStore(store)
-                .add(value);
+            const store = this.fetchStore(storeName);
+            const request = store.add(value);
 
             request.onsuccess = (e) => {
                 // Everything with Event is so annoying
@@ -86,21 +93,19 @@ export default class IndexDBAdapter {
             }
 
             request.onerror = () => {
-                reject("Error");
+                reject("Add Error");
             }
         });
     }
 
-    clear(store: string): Promise<void> {
+    clear(storeName: string): Promise<void> {
         return new Promise((resolve, reject) => {
             if( this.#db === null ) {
                 return reject("DB Not connected");
             }
 
-            const request = this.#db
-                .transaction([store], "readwrite")
-                .objectStore(store)
-                .clear();
+            const store = this.fetchStore( storeName );
+            const request = store.clear();
 
             request.onsuccess = () => {
                 resolve();
@@ -108,6 +113,21 @@ export default class IndexDBAdapter {
 
             request.onerror = (e) => {
                 reject(e);
+            }
+        });
+    }
+
+    update(storeName: string, id: number, value: any): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const store = this.fetchStore(storeName);
+            const request = store.put( value );
+
+            request.onsuccess = () => {
+                resolve();
+            }
+
+            request.onerror = () => {
+                reject();
             }
         });
     }

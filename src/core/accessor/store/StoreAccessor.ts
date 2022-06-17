@@ -141,20 +141,10 @@ class StoreAccessor implements iAccessor {
         const info = this.parseTaskName(name);
 
         return new Promise((resolve) => {
-            let id = this.#tasks.length;
-
-            /**
-             * Assume last element in array
-             * has the biggest id
-             */
-            if (this.#tasks.length !== 0) {
-                id = last(this.#tasks).id + 1;
-            }
-
-            const task = new Task(id, info.name, list_id);
+            const task = new Task(0, info.name, list_id);
             task.tags = info.tags;
 
-            delete task[id];
+            delete task["id"];
 
             if( list !== undefined && list.filterOptions ) {
                 list.filterOptions?.equal.forEach(item => {
@@ -209,6 +199,10 @@ class StoreAccessor implements iAccessor {
                     this.filler.set(tasks, lists, steps);
                     this.filler.fill();
 
+                    this.#tasks = tasks;
+                    this.#lists = lists;
+                    this.#steps = steps;
+
                     resolve(lists);
                 });
             });
@@ -236,11 +230,24 @@ class StoreAccessor implements iAccessor {
     }
 
     setTaskFinishStatus(task_id: number, type: boolean): Promise<void> {
-        return new Promise(resolve => {
-            const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[index].finish = type;
-            this.#save();
-            resolve();
+        return new Promise((resolve, reject) => {
+            this.#adapter.connected(() => {
+                const task = this.#tasks.find(task => task.id === task_id);
+
+                if( task ) {
+                    task.finish = type;
+
+                    this.#adapter.update(
+                        "task",
+                        task_id,
+                        task.toObject()
+                    ).then(r => {
+                        resolve();
+                    });
+                } else {
+                    reject("=== task not found");
+                }
+            });
         });
     }
 

@@ -38,7 +38,7 @@ export default class Task {
     }
 
     static Load( task: Task ) : Task {
-        const date = task.due_date
+        const due_date = task.due_date
             ? new Date( task.due_date )
             : null;
 
@@ -51,7 +51,21 @@ export default class Task {
             task.finish,
             task.notes,
             task.tags,
-            date,
+            due_date,
         );
+    }
+
+    toObject() {
+        return {
+            id: this.id,
+            name: this.name,
+            list_id: this.list_id,
+            date: this.date,
+            important: this.important,
+            finish: this.finish,
+            notes: this.notes,
+            tags: this.tags,
+            due_date: this.due_date,
+        }
     }
 }
