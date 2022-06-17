@@ -4,11 +4,9 @@ import Task from "@/core/model/Task";
 import List from "@/core/model/List";
 import Step from "@/core/model/Step";
 import {format, last} from "@/core/shared/utils";
-import accessor from "@/core/accessor/AccessorInstance";
 import ListFiller from "@/core/accessor/store/ListFiller";
 import FilterOptions from "@/core/model/FilterOptions";
 import IndexDBAdapter from "@/core/accessor/store/IndexDBAdapter";
-import {createLogger} from "vite";
 
 class StoreAccessor implements iAccessor {
     #tasks: Task[];

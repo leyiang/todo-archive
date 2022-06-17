@@ -1,5 +1,5 @@
 import {test, expect} from "vitest";
-import StoreAccessor from "@/core/accessor/store/StoreAccessor";
+import StoreAccessor from "../../../core/accessor/store/StoreAccessor";
 require("fake-indexeddb/auto");
 
 /**

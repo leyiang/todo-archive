@@ -1,4 +1,6 @@
+/**
+ * Need to comment this two lines out
+ * When Perform Unit Test
+ */
 // import StoreAccessor from "@/core/accessor/store/StoreAccessor";
-
-// const instance = new StoreAccessor();
-// export default instance;
+// export default new StoreAccessor();
