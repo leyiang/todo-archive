@@ -1,7 +1,7 @@
 import type Task from "@/core/model/Task";
 import FilterOptions from "@/core/model/FilterOptions";
 
-export  interface iSettings {
+export interface iSettings {
     [key: string]: string | boolean
 }
 
