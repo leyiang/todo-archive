@@ -70,6 +70,13 @@ onMounted(() => {
         registerMenu(el.value, {
             items: [
                 {
+                    name: "Setting List",
+                    action: () => {
+                        todo.setSettingList( props.list );
+                    },
+                },
+
+                {
                     name: "Remove List",
                     action: () => {
                         accessor.removeTaskList( props.list.id ).then( r => {

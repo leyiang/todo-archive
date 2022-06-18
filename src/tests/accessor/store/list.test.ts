@@ -46,3 +46,25 @@ test("able to remove list", async () => {
         });
     });
 });
+
+test("able to set list prop", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+    await accessor.addTaskList("name", null, null);
+
+    await accessor.getTaskLists().then( async lists => {
+        // Task is added
+        expect(lists.length).toBe(1);
+        const list = lists[0];
+        expect(list.settings.hideTags).toBe( false );
+
+        const value = JSON.parse( JSON.stringify(list.settings) );
+        value.hideTags = true;
+
+        await accessor.updateTaskListProp( list.id, "settings", value);
+        await accessor.getTaskLists().then( lists => {
+            expect(lists.length).toBe(1);
+            expect(lists[0].settings.hideTags).toBe( true );
+        });
+    });
+});

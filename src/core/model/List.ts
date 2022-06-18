@@ -2,8 +2,14 @@ import type Task from "@/core/model/Task";
 import FilterOptions from "@/core/model/FilterOptions";
 
 export interface iSettings {
-    [key: string]: string | boolean
+    hideAdditional: boolean,
+    hideTags: boolean,
 }
+
+const getDefaultSetting = () => ({
+    hideAdditional: false,
+    hideTags: false
+});
 
 export default class List {
     id: number;
@@ -18,7 +24,7 @@ export default class List {
         name: string,
         icon: string | null = null,
         filterOptions: {} | null = null,
-        settings: iSettings = {}
+        settings: iSettings = getDefaultSetting()
     ) {
         this.id = id;
         this.name = name;

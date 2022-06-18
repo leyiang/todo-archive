@@ -14,13 +14,15 @@ export const useTodoStore = defineStore("list", {
         const data : {
             lists: List[],
             specialList: List[],
-            list: List | null
-            task: Task | null
+            list: List | null,
+            task: Task | null,
+            settingList: List | null,
         } = {
             lists: [],
             specialList: [],
             list: null,
             task: null,
+            settingList: null,
         }
 
         return data;
@@ -143,6 +145,10 @@ export const useTodoStore = defineStore("list", {
             };
 
             triggerDownload( data );
+        },
+
+        setSettingList( list: List ) {
+            this.settingList = list;
         }
     }
 });

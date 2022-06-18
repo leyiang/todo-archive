@@ -245,13 +245,11 @@ class StoreAccessor implements iAccessor {
 
     updateTaskListProp(list_id: number, key: string, val: any): Promise<void> {
         return new Promise(resolve => {
-            const index = this.#lists.findIndex(list => list.id === list_id);
-            const list = this.#lists[index];
-
-            // @ts-ignore
-            list[key] = val;
-
-            resolve();
+            this.#adapter.connected(() => {
+                this.#adapter.update("list", list_id, "settings", val).then( r => {
+                    resolve();
+                });
+            });
         });
     }
 
