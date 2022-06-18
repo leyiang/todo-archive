@@ -425,15 +425,25 @@ class StoreAccessor implements iAccessor {
     }
 
     updateStepProp(step_id: number, key: string, val: any): Promise<void> {
-        return new Promise(resolve => {
-            const index = this.#steps.findIndex(step => step.id === step_id);
+        return new Promise((resolve, reject) => {
+            this.#adapter.connected(() => {
+                const step = this.#steps.find( step => step.id === step_id );
 
-            if (key === "name") {
-                this.#steps[index].name = val;
-            }
+                if( step ) {
+                    const value = step.toObject();
 
-            this.#save();
-            resolve();
+                    if( key === "name" ) {
+                        value.name = val;
+                    }
+
+                    this.#adapter.update("step", step_id, value).then(r => {
+                        resolve();
+                    });
+
+                } else {
+                    reject("No step found");
+                }
+            })
         });
     }
 
