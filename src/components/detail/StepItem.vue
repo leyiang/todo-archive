@@ -1,23 +1,28 @@
 <template>
-    <StepWrap
-        class="flex py-4"
-        :finish="step.finish"
-        ref="root"
+    <div
+        class="step-item"
+        ref="el"
     >
-        <IconColumn>
-            <FinishButton
-                class="text-xl"
-                :finish="step.finish"
-                @click="$emit('toggleStatus')"
-            />
-        </IconColumn>
+        <StepWrap
+            class="flex py-4"
+            :finish="step.finish"
+            ref="root"
+        >
+            <IconColumn>
+                <FinishButton
+                    class="text-xl"
+                    :finish="step.finish"
+                    @click="$emit('toggleStatus')"
+                />
+            </IconColumn>
 
-        <GhostInput
-            class="flex-1"
-            :value="step.name"
-            @change="updateStepName"
-        />
-    </StepWrap>
+            <GhostInput
+                class="flex-1"
+                :value="step.name"
+                @change="updateStepName"
+            />
+        </StepWrap>
+    </div>
 </template>
 
 <script setup>
@@ -38,13 +43,11 @@
         }
     });
 
-    const root = ref(null);
+    const el = ref(null);
     const todo = useTodoStore();
 
     onMounted(() => {
-        const el = root.value.el;
-        if( ! el ) return;
-        registerMenu(el, {
+        registerMenu(el.value, {
             items: [
                 {
                     name: "Remove Step",
