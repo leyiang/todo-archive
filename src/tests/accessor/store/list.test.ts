@@ -1,8 +1,10 @@
 import {test, expect} from "vitest";
 import StoreAccessor from "@/core/accessor/store/StoreAccessor";
 require("fake-indexeddb/auto");
+const FDBFactory = require("fake-indexeddb/lib/FDBFactory");
 
 test("able to add new list", async () => {
+    indexedDB = new FDBFactory();
     const accessor = new StoreAccessor();
 
     const info = {
@@ -25,5 +27,22 @@ test("able to add new list", async () => {
         expect(list.name).toBe( info.name );
         expect(list.icon).toBe( info.icon );
         expect(list.filterOptions).toMatchObject( info.filterOptions );
+    });
+});
+
+test("able to remove list", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+    await accessor.addTaskList("name", null, null);
+
+    await accessor.getTaskLists().then( async lists => {
+        // Task is added
+        expect(lists.length).toBe(1);
+
+        await accessor.removeTaskList( lists[0].id );
+        await accessor.getTaskLists().then( lists => {
+            // Task is added
+            expect(lists.length).toBe(0);
+        });
     });
 });
