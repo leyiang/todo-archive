@@ -47,7 +47,7 @@ export default class IndexDBAdapter {
         }
     }
 
-    fetchStore(name: string, mode="readwrite") {
+    fetchStore(name: string, mode:IDBTransactionMode = "readwrite") {
         if( ! this.#db ) {
             throw new TypeError("DB Not connect");
         }

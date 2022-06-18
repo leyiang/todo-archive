@@ -36,10 +36,7 @@ test("able to set task finish status", async () => {
 
         expect( task.finish ).toBe( false );
 
-        expect(
-            accessor.setTaskSpecialProp( task.id, "finish", true )
-        ).resolves.not.toThrow();
-
+        await accessor.setTaskSpecialProp( task.id, "finish", true )
         await accessor.getTasksForTest().then( async tasks => {
             expect( tasks.length ).toBe(1);
             const task = tasks[0];

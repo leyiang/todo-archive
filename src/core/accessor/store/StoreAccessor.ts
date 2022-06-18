@@ -140,15 +140,13 @@ class StoreAccessor implements iAccessor {
             if( list !== undefined && list.filterOptions ) {
                 list.filterOptions?.equal.forEach(item => {
                     const val = this.filler.parseValue( item.value );
-                    task[ item.key ] = val;
+                    value[ item.key ] = val;
                 });
             }
 
             this.#adapter.connected(() => {
                 this.#adapter.addItem("task", value).then(id => {
-                    task.id = id;
-                    this.#tasks.push(task);
-                    resolve(task);
+                    resolve( Task.Load(value) );
                 });
             });
         });
@@ -297,53 +295,45 @@ class StoreAccessor implements iAccessor {
 
     setTaskSpecialProp(task_id:number, key: string, val: boolean | string | Date): Promise<number[]> {
         return new Promise((resolve, reject) => {
-            const task = this.#tasks.find( task => task.id === task_id );
-
-            if( task ) {
-                switch( key ) {
-                    case "important" :
-                        if( typeof val !== "boolean" ) {
-                            reject( new TypeError() );
-                        }
+            switch( key ) {
+                case "important" :
+                    if( typeof val !== "boolean" ) {
+                        reject( new TypeError() );
+                    }
                     break;
 
-                    case "finish":
-                        if( typeof val !== "boolean" ) {
-                            reject( new TypeError() );
-                        }
+                case "finish":
+                    if( typeof val !== "boolean" ) {
+                        reject( new TypeError() );
+                    }
                     break;
 
-                    case "today":
-                        if( typeof val !== "string" ) {
-                            reject( new TypeError() );
-                        }
+                case "today":
+                    if( typeof val !== "string" ) {
+                        reject( new TypeError() );
+                    }
                     break;
 
-                    default:
-                        reject( new Error("Key is not allowed") );
+                default:
+                    reject( new Error("Key is not allowed") );
                     break;
-                }
-
-                this.#adapter.connected(() => {
-                    this.#adapter.update("task", task.id, key, val).then(() => {
-                        const list_id_list = this.#lists
-                            .filter(list => {
-                                const equals = list.filterOptions
-                                    ? list.filterOptions.equal.map(item => item.key)
-                                    : [];
-
-                                return equals.includes( key );
-                            })
-                            .map(list => list.id)
-
-                        resolve(list_id_list);
-                    });
-                })
-            } else {
-                reject(
-                    new Error("Task Not Found")
-                );
             }
+
+            this.#adapter.connected(() => {
+                this.#adapter.update("task", task_id, key, val).then(() => {
+                    const list_id_list = this.#lists
+                        .filter(list => {
+                            const equals = list.filterOptions
+                                ? list.filterOptions.equal.map(item => item.key)
+                                : [];
+
+                            return equals.includes( key );
+                        })
+                        .map(list => list.id)
+
+                    resolve(list_id_list);
+                });
+            })
         });
     }
 
