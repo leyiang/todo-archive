@@ -126,7 +126,8 @@ function toggleStepStatus( step ) {
 }
 
 function updateNotes() {
-    accessor.setTaskNotes( props.task.id, props.task.notes ).then( r => {
+    accessor.updateTaskProp( props.task.id, "notes", props.task.notes).then( r => {
+
     });
 }
 

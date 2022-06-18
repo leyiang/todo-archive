@@ -6,7 +6,6 @@ export interface iAccessor {
     addTask( name: string, list_id: number ) : Promise<Task>;
     setTaskFinishStatus( task_id: number, type: boolean ): Promise<void>;
     setTaskImportantStatus( task_id: number, status: boolean ): Promise<number[]>;
-    setTaskNotes( task_id: number, notes: string ): Promise<void>;
     removeTask( task_id: number ): Promise<number[]>;
     setTaskToday( task_id:number ): Promise<number[]>
     updateTaskProp( task_id:number, key: string, val: any ): Promise<void>;
