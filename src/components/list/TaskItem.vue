@@ -20,7 +20,6 @@
     <button
         class="task-item cursor-auto"
         ref="el"
-        draggable="true"
     >
         <StepWrap
             class="flex bg-white rounded text-lg py-4 task-item-inner"
@@ -152,7 +151,7 @@ onMounted(() => {
                 ]
             },
             {
-                name: "Test: set sort",
+                name: "Move to the top",
                 action: () => {
                     accessor.updateTaskProp( props.task.id, "sort", -1 ).then( r => {
                         props.task.sort = -1;
