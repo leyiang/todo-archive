@@ -6,11 +6,10 @@ const FDBFactory = require("fake-indexeddb/lib/FDBFactory");
 test("able to add new step", async () => {
     indexedDB = new FDBFactory();
     const accessor = new StoreAccessor();
-    const task = await accessor.addTask("Task Name", 0);
 
     const info = {
         name: "New Step",
-        task_id: task.id
+        task_id: 0
     };
 
     await accessor.addStep(info.name, info.task_id);
@@ -38,6 +37,25 @@ test("able to remove step", async () => {
 
         await accessor.getStepsForTest().then( async steps => {
             expect(steps.length).toBe(0);
+        });
+    });
+});
+
+test("able to finish step", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+
+    await accessor.addStep("name", 1);
+
+    await accessor.getStepsForTest().then( async steps => {
+        expect( steps.length ).toBe( 1 );
+        expect( steps[0].finish ).toBe( false );
+
+        await accessor.setStepStatus( steps[0].id, true )
+
+        await accessor.getStepsForTest().then( async steps => {
+            expect(steps.length).toBe(1);
+            expect( steps[0].finish ).toBe( true );
         });
     });
 });

@@ -24,4 +24,10 @@ export default class Step {
             step.finish
         );
     }
+
+    toObject() {
+        return JSON.parse(
+            JSON.stringify( this )
+        );
+    }
 }

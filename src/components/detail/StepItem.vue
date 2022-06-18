@@ -12,7 +12,7 @@
                 <FinishButton
                     class="text-xl"
                     :finish="step.finish"
-                    @click="$emit('toggleStatus')"
+                    @click="toggleStepStatus"
                 />
             </IconColumn>
 
@@ -65,6 +65,14 @@
         const name = e.target.value;
 
         accessor.updateStepProp(props.step.id, "name", name).then( r => {
+        });
+    }
+
+    function toggleStepStatus() {
+        const status = ! props.step.finish;
+
+        accessor.setStepStatus( props.step.id, status).then( r => {
+            props.step.finish = status;
         });
     }
 </script>
