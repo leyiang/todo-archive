@@ -3,9 +3,7 @@ import LocalStoreManager from "@/core/accessor/store/LocalStorageManager";
 import Task from "@/core/model/Task";
 import List from "@/core/model/List";
 import Step from "@/core/model/Step";
-import {format, last} from "@/core/shared/utils";
 import ListFiller from "@/core/accessor/store/ListFiller";
-import FilterOptions from "@/core/model/FilterOptions";
 import IndexDBAdapter from "@/core/accessor/store/IndexDBAdapter";
 
 class StoreAccessor implements iAccessor {
@@ -97,18 +95,6 @@ class StoreAccessor implements iAccessor {
         // });
     }
 
-    #save(): void {
-        const lists = JSON.parse(JSON.stringify(this.#lists));
-        lists.forEach(list => list.tasks = []);
-
-        const tasks = JSON.parse(JSON.stringify(this.#tasks));
-        tasks.forEach(task => task.steps = []);
-
-        this.#manager.set("lists", lists);
-        this.#manager.set("tasks", tasks);
-        this.#manager.set("steps", this.#steps);
-    }
-
     fetchTasks(): Promise<Task[]> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -117,7 +103,7 @@ class StoreAccessor implements iAccessor {
         });
     }
 
-    parseTaskName(name: string): {} {
+    parseTaskName(name: string) {
         let tags: string[] = [];
 
         /**
@@ -142,10 +128,15 @@ class StoreAccessor implements iAccessor {
 
         return new Promise((resolve) => {
             const task = new Task(0, info.name, list_id);
-            task.tags = info.tags;
 
-            delete task["id"];
+            const value = task.toObject();
+            value.tags = info.tags;
+            delete value["id"];
 
+            /**
+             * Say, if you want to insert in - Today list
+             * This block of code will set it for you.
+             */
             if( list !== undefined && list.filterOptions ) {
                 list.filterOptions?.equal.forEach(item => {
                     const val = this.filler.parseValue( item.value );
@@ -154,7 +145,7 @@ class StoreAccessor implements iAccessor {
             }
 
             this.#adapter.connected(() => {
-                this.#adapter.addItem("task", task).then(id => {
+                this.#adapter.addItem("task", value).then(id => {
                     task.id = id;
                     this.#tasks.push(task);
                     resolve(task);
@@ -268,7 +259,6 @@ class StoreAccessor implements iAccessor {
             // @ts-ignore
             list[key] = val;
 
-            this.#save();
             resolve();
         });
     }
@@ -316,40 +306,6 @@ class StoreAccessor implements iAccessor {
                 });
             });
         });
-    }
-
-    //
-    factory() {
-        const data: any = {};
-        this.#manager.set("lists", data.lists);
-        this.#manager.set("tasks", data.tasks);
-        this.#manager.set("steps", data.steps);
-
-        // accessor.addTaskList("My Day", "ic:outline-wb-sunny", true, {
-        //     equal: [
-        //         {
-        //             key: "date",
-        //             value: "__today__"
-        //         }
-        //     ]
-        // });
-        //
-        // accessor.addTaskList("Important", "ic:round-star-border", true, {
-        //     equal: [
-        //         {
-        //             key: "important",
-        //             value: true
-        //         }
-        //     ]
-        // });
-        //
-        // accessor.addTaskList("All", "ic:baseline-list-alt", true, {
-        //     all: true
-        // });
-
-        // accessor.addTaskList("Books", "ic:round-menu-book", {
-        //     tags: ["book"],
-        // });
     }
 
     #setTaskImportantStatus(task: Task, val: any): void {
