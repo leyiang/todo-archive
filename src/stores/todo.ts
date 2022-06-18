@@ -121,6 +121,7 @@ export const useTodoStore = defineStore("list", {
          * when some property on task is patched.
          * @param task
          * @param list_id_list
+         * @param append
          */
         updateSpecialLists( task: Task, list_id_list: number[], append: boolean = true) {
             list_id_list.forEach( id => {

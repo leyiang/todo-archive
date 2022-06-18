@@ -237,54 +237,6 @@ class StoreAccessor implements iAccessor {
         });
     }
 
-    setTaskFinishStatus(task_id: number, type: boolean): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.#adapter.connected(() => {
-                const task = this.#tasks.find(task => task.id === task_id);
-
-                if( task ) {
-                    task.finish = type;
-
-                    this.#adapter.update(
-                        "task",
-                        task_id,
-                        task.toObject()
-                    ).then(r => {
-                        resolve();
-                    });
-                } else {
-                    reject("=== task not found");
-                }
-            });
-        });
-    }
-
-    setTaskImportantStatus(task_id: number, status: boolean): Promise<number[]> {
-        return new Promise((resolve, reject) => {
-            this.#adapter.connected(() => {
-                const task = this.#tasks.find(task => task.id === task_id);
-
-                if( task ) {
-                    task.important = status;
-                    this.#adapter.update("task", task_id, task.toObject() );
-
-                    const list_id_list = this.#lists
-                        .filter(list => list.filterOptions?.equal)
-                        .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important'))
-                        .filter(list => status
-                            ? !list.tasks.map(task => task.id).includes(task_id)
-                            : list.tasks.map(task => task.id).includes(task_id)
-                        )
-                        .map(list => list.id)
-
-                    resolve(list_id_list);
-                } else {
-                    reject("Task not found");
-                }
-            });
-        });
-    }
-
     removeTask(task_id: number): Promise<number[]> {
         return new Promise(resolve => {
             this.#adapter.connected(() => {
@@ -389,19 +341,72 @@ class StoreAccessor implements iAccessor {
         // });
     }
 
-    setTaskToday(task_id: number): Promise<number[]> {
-        return new Promise(resolve => {
-            const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[index].date = format("Y-m-d");
-            this.#save();
+    #setTaskImportantStatus(task: Task, val: any): void {
+        if( typeof val === "boolean" ) {
+            task.important = val;
+        } else {
+            throw new TypeError("Wrong Type");
+        }
+    }
 
-            const list_id_list = this.#lists
-                .filter(list => list.filterOptions?.equal)
-                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('date'))
-                .filter(list => !list.tasks.map(task => task.id).includes(task_id))
-                .map(list => list.id)
+    #setTaskFinishStatus(task: Task, val: any): void {
+        if( typeof val === "boolean" ) {
+            task.finish = val;
+        } else {
+            new TypeError("Wrong Type");
+        }
+    }
 
-            resolve(list_id_list);
+    #setTaskToday(task: Task, val: any): void {
+        if( typeof val === "string" ) {
+            task.date = val;
+        } else {
+            throw new TypeError("Wrong Type");
+        }
+    }
+
+    setTaskSpecialProp(task_id:number, key: string, val: boolean | string | Date): Promise<number[]> {
+        return new Promise((resolve, reject) => {
+            const task = this.#tasks.find( task => task.id === task_id );
+            if( task ) {
+                switch( key ) {
+                    case "important" :
+                        this.#setTaskImportantStatus( task, val );
+                    break;
+
+                    case "finish":
+                        this.#setTaskFinishStatus( task, val );
+                    break;
+
+                    case "today":
+                        this.#setTaskToday( task, val );
+                    break;
+
+                    default:
+                        reject( new Error("Key is not allowed") );
+                    break;
+                }
+
+                this.#adapter.connected(() => {
+                    this.#adapter.update("task", task.id, task.toObject()).then(() => {
+                        const list_id_list = this.#lists
+                            .filter(list => {
+                                const equals = list.filterOptions
+                                    ? list.filterOptions.equal.map(item => item.key)
+                                    : [];
+
+                                return equals.includes( key );
+                            })
+                            .map(list => list.id)
+
+                        resolve(list_id_list);
+                    });
+                })
+            } else {
+                reject(
+                    new Error("Task Not Found")
+                );
+            }
         });
     }
 

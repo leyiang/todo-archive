@@ -37,7 +37,7 @@ test("able to set task finish status", async () => {
         expect( task.finish ).toBe( false );
 
         expect(
-            accessor.setTaskFinishStatus( task.id, true )
+            accessor.setTaskSpecialProp( task.id, "finish", true )
         ).resolves.not.toThrow();
 
         await accessor.getTasksForTest().then( async tasks => {
@@ -80,7 +80,7 @@ test("able to set task important status", async () => {
         expect( task.important ).toBe( false );
 
         expect(
-            accessor.setTaskImportantStatus( task.id, true )
+            accessor.setTaskSpecialProp( task.id, "important", true )
         ).resolves.not.toThrow();
 
         await accessor.getTasksForTest().then( async tasks => {

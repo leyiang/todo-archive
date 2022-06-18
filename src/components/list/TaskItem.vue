@@ -158,7 +158,7 @@ function toggleTaskStatus() {
     const task = props.task;
     const type = !task.finish;
 
-    accessor.setTaskFinishStatus(task.id, type).then(r => {
+    accessor.setTaskSpecialProp(task.id, "finish", type).then(r => {
         /**
          * Update Array element from Pinia is not reactive
          * Not sure what happens, temporarily use this hack
@@ -181,7 +181,7 @@ function setTaskImportantStatus() {
     const task = props.task;
     const status = ! task.important;
 
-    accessor.setTaskImportantStatus(task.id, status).then(list_id_list => {
+    accessor.setTaskSpecialProp(task.id, "important", status).then(list_id_list => {
         task.important = ! status;
         task.important = status;
 
