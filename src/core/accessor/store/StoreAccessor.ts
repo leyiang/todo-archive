@@ -157,19 +157,13 @@ class StoreAccessor implements iAccessor {
     updateTaskProp(task_id: number, key: string, val: any): Promise<void> {
         return new Promise((resolve, reject) => {
             this.#adapter.connected(() => {
-                const task = this.#tasks.find(task => task.id === task_id);
-
-                if( task ) {
-                    if (key === "name") {
-                        task.name = val;
-                    } else if( key === "notes" ) {
-                        task.notes = val;
-                    }
-
-                    this.#adapter.update("task", task_id, task.toObject());
-                    resolve();
+                const allowed_keys = ["name", "notes"];
+                if( allowed_keys.includes(key) ) {
+                    this.#adapter.update("task", task_id, key, val ).then( r => {
+                        resolve();
+                    });
                 } else {
-                    reject("Task Not Found");
+                    reject("Wrong Key");
                 }
             });
         });
@@ -284,16 +278,9 @@ class StoreAccessor implements iAccessor {
             this.#adapter.connected(() => {
                 const step = this.#steps.find( step => step.id === step_id );
 
-                if( step ) {
-                    const value = step.toObject();
-                    value.finish = type;
-
-                    this.#adapter.update("step", step_id, value).then( r => {
-                        resolve();
-                    });
-                } else {
-                    reject("Step Not Found");
-                }
+                this.#adapter.update("step", step_id, "finish", type).then( r => {
+                    resolve();
+                });
             });
         });
     }
@@ -308,48 +295,28 @@ class StoreAccessor implements iAccessor {
         });
     }
 
-    #setTaskImportantStatus(task: Task, val: any): void {
-        if( typeof val === "boolean" ) {
-            task.important = val;
-        } else {
-            throw new TypeError("Wrong Type");
-        }
-    }
-
-    #setTaskFinishStatus(task: Task, val: any): void {
-        if( typeof val === "boolean" ) {
-            task.finish = val;
-        } else {
-            new TypeError("Wrong Type");
-        }
-    }
-
-    #setTaskToday(task: Task, val: any): void {
-        if( typeof val === "string" ) {
-            task.date = val;
-        } else {
-            throw new TypeError("Wrong Type");
-        }
-    }
-
     setTaskSpecialProp(task_id:number, key: string, val: boolean | string | Date): Promise<number[]> {
         return new Promise((resolve, reject) => {
             const task = this.#tasks.find( task => task.id === task_id );
 
             if( task ) {
-                const value = task.toObject();
-
                 switch( key ) {
                     case "important" :
-                        this.#setTaskImportantStatus( value, val );
+                        if( typeof val !== "boolean" ) {
+                            reject( new TypeError() );
+                        }
                     break;
 
                     case "finish":
-                        this.#setTaskFinishStatus( value, val );
+                        if( typeof val !== "boolean" ) {
+                            reject( new TypeError() );
+                        }
                     break;
 
                     case "today":
-                        this.#setTaskToday( value, val );
+                        if( typeof val !== "string" ) {
+                            reject( new TypeError() );
+                        }
                     break;
 
                     default:
@@ -358,7 +325,7 @@ class StoreAccessor implements iAccessor {
                 }
 
                 this.#adapter.connected(() => {
-                    this.#adapter.update("task", task.id, value).then(() => {
+                    this.#adapter.update("task", task.id, key, val).then(() => {
                         const list_id_list = this.#lists
                             .filter(list => {
                                 const equals = list.filterOptions
@@ -383,21 +350,14 @@ class StoreAccessor implements iAccessor {
     updateStepProp(step_id: number, key: string, val: any): Promise<void> {
         return new Promise((resolve, reject) => {
             this.#adapter.connected(() => {
-                const step = this.#steps.find( step => step.id === step_id );
+                const allowed_keys = ["name"];
 
-                if( step ) {
-                    const value = step.toObject();
-
-                    if( key === "name" ) {
-                        value.name = val;
-                    }
-
-                    this.#adapter.update("step", step_id, value).then(r => {
+                if( allowed_keys.includes(key) ) {
+                    this.#adapter.update("step", step_id, key, val).then(r => {
                         resolve();
                     });
-
                 } else {
-                    reject("No step found");
+                    reject("Key is not allowed");
                 }
             })
         });

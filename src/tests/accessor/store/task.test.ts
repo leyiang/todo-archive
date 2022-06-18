@@ -108,13 +108,8 @@ test("able to set task normal prop", async () => {
         expect( task.name ).toBe("name");
         expect( task.notes ).toBe('');
 
-        expect(
-            accessor.updateTaskProp( task.id, "name", name )
-        ).resolves.not.toThrow();
-
-        expect(
-            accessor.updateTaskProp( task.id, "notes", notes )
-        ).resolves.not.toThrow();
+        await accessor.updateTaskProp( task.id, "name", name )
+        await accessor.updateTaskProp( task.id, "notes", notes )
 
         await accessor.getTasksForTest().then( async tasks => {
             expect( tasks.length ).toBe(1);

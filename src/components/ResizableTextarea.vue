@@ -10,7 +10,7 @@ textarea {
         :style="style"
         ref="el"
         @keydown="updateHeight"
-    ></textarea>
+    >{{ content }}</textarea>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +19,13 @@ import type { Ref } from "vue";
 
 const el: Ref<null| HTMLTextAreaElement> = ref(null);
 const height = ref(0);
+
+const props = defineProps({
+    content: {
+        type: String,
+        default: ''
+    }
+})
 
 function updateHeight() {
     if( el.value ) {

@@ -27,8 +27,9 @@
 
                     <h1 class="text-xl flex-1">
                         <ResizableTextarea
+                            :key="task.id"
                             class="p-2 w-full"
-                            v-text="task.name"
+                            :content="task.name"
                             @change="updateTaskName"
                         />
                     </h1>
@@ -67,7 +68,6 @@
 import FinishButton from "@/components/FinishButton.vue"
 import AddNewInput from "@/components/AddNewInput.vue"
 import IconColumn from "@/components/IconColumn.vue";
-import GhostInput from "@/components/GhostInput.vue";
 import StepWrap from "@/components/StepWrap.vue";
 import StepItem from "./StepItem.vue";
 import { useTodoStore } from "@/stores/todo";
@@ -118,8 +118,8 @@ function updateNotes() {
 
 function updateTaskName(e) {
     const name = e.target.value;
+
     accessor.updateTaskProp(props.task.id, "name", name).then( r => {
-        props.task.name = '';
         props.task.name = name;
     });
 }

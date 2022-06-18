@@ -117,17 +117,28 @@ export default class IndexDBAdapter {
         });
     }
 
-    update(storeName: string, id: number, value: any): Promise<void> {
+    update(storeName: string, id: number, key: string, value: any): Promise<void> {
         return new Promise((resolve, reject) => {
             const store = this.fetchStore(storeName);
-            const request = store.put( value );
+            const request = store.get( id );
 
             request.onsuccess = () => {
-                resolve();
+                const data = request.result;
+                data[ key ] = value;
+
+                const updateRequest = store.put( data );
+
+                updateRequest.onsuccess = () => {
+                    resolve();
+                }
+
+                updateRequest.onerror = e => {
+                    reject( e );
+                }
             }
 
-            request.onerror = () => {
-                reject();
+            request.onerror = (e) => {
+                reject(e);
             }
         });
     }
