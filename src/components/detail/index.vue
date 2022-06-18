@@ -72,7 +72,6 @@ import StepWrap from "@/components/StepWrap.vue";
 import StepItem from "./StepItem.vue";
 import { useTodoStore } from "@/stores/todo";
 import accessor from "@/core/accessor/AccessorInstance";
-import { defineProps } from "vue";
 import Task from "@/core/model/Task";
 import ResizableTextarea from "@/components/ResizableTextarea.vue";
 

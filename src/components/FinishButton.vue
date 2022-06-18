@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
     finish: {

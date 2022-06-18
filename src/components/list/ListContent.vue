@@ -39,7 +39,7 @@
     transform: rotate(180deg);
 }
 
-.active >>> .task-item-inner {
+.active:deep(.task-item-inner) {
     background: #F3F3F3;
 }
 </style>
@@ -118,7 +118,6 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps} from "vue";
 import List from "@/core/model/List";
 import { Icon } from "@iconify/vue";
 import TaskItem from "./TaskItem.vue";

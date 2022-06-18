@@ -30,7 +30,7 @@
     import FinishButton from "@/components/FinishButton.vue"
     import GhostInput from "@/components/GhostInput.vue"
     import StepWrap from "@/components/StepWrap.vue"
-    import { defineProps, ref, onMounted } from "vue";
+    import { ref, onMounted } from "vue";
     import Step from "@/core/model/Step";
     import accessor from "@/core/accessor/AccessorInstance"
     import {useTodoStore} from "@/stores/todo";
