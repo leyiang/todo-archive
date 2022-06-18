@@ -56,16 +56,8 @@ export default class Task {
     }
 
     toObject() {
-        return {
-            id: this.id,
-            name: this.name,
-            list_id: this.list_id,
-            date: this.date,
-            important: this.important,
-            finish: this.finish,
-            notes: this.notes,
-            tags: this.tags,
-            due_date: this.due_date,
-        }
+        return JSON.parse(
+            JSON.stringify( this )
+        );
     }
 }

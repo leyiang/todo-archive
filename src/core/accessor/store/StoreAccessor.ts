@@ -379,18 +379,21 @@ class StoreAccessor implements iAccessor {
     setTaskSpecialProp(task_id:number, key: string, val: boolean | string | Date): Promise<number[]> {
         return new Promise((resolve, reject) => {
             const task = this.#tasks.find( task => task.id === task_id );
+
             if( task ) {
+                const value = task.toObject();
+
                 switch( key ) {
                     case "important" :
-                        this.#setTaskImportantStatus( task, val );
+                        this.#setTaskImportantStatus( value, val );
                     break;
 
                     case "finish":
-                        this.#setTaskFinishStatus( task, val );
+                        this.#setTaskFinishStatus( value, val );
                     break;
 
                     case "today":
-                        this.#setTaskToday( task, val );
+                        this.#setTaskToday( value, val );
                     break;
 
                     default:
@@ -399,7 +402,7 @@ class StoreAccessor implements iAccessor {
                 }
 
                 this.#adapter.connected(() => {
-                    this.#adapter.update("task", task.id, task.toObject()).then(() => {
+                    this.#adapter.update("task", task.id, value).then(() => {
                         const list_id_list = this.#lists
                             .filter(list => {
                                 const equals = list.filterOptions
