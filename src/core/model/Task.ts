@@ -11,6 +11,7 @@ export default class Task {
     tags: string[];
     notes: string;
     due_date: null | Date;
+    sort: number;
     [index: string]: any;
 
     constructor(
@@ -23,6 +24,7 @@ export default class Task {
         notes: string = "",
         tags: string[] = [],
         due_date: null | Date = null,
+        sort:number = 10,
         steps: Step[] = [],
     ) {
         this.id = id;
@@ -35,6 +37,7 @@ export default class Task {
         this.tags = tags;
         this.steps = steps;
         this.due_date = due_date;
+        this.sort = sort;
     }
 
     static Load( task: Task ) : Task {
@@ -52,6 +55,7 @@ export default class Task {
             task.notes,
             task.tags,
             due_date,
+            task.sort
         );
     }
 

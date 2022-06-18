@@ -7,8 +7,6 @@ import type Step from "@/core/model/Step";
 import state from "@/core/StatePreserver";
 import LocalStoreManager from "@/core/accessor/store/LocalStorageManager";
 
-const manager = new LocalStoreManager();
-
 export const useTodoStore = defineStore("list", {
     state: () => {
         const data : {
@@ -32,6 +30,7 @@ export const useTodoStore = defineStore("list", {
         getList() {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
+                console.log( loaded )
                 let index = 0;
                 let task_id:number | null = null
                 let list_id:number | null = null;
@@ -139,12 +138,11 @@ export const useTodoStore = defineStore("list", {
         exportData() {
             const data = {
                 version: "1.0",
-                lists: manager.get("lists"),
-                tasks: manager.get("tasks"),
-                steps: manager.get("steps"),
+                lists: this.lists,
             };
 
-            triggerDownload( data );
+            console.log( this.lists );
+            // triggerDownload( data );
         },
 
         setSettingList( list: List ) {

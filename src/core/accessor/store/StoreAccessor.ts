@@ -5,6 +5,7 @@ import List from "@/core/model/List";
 import Step from "@/core/model/Step";
 import ListFiller from "@/core/accessor/store/ListFiller";
 import IndexDBAdapter from "@/core/accessor/store/IndexDBAdapter";
+import {triggerDownload} from "@/core/shared/utils";
 
 class StoreAccessor implements iAccessor {
     #tasks: Task[];
@@ -17,7 +18,7 @@ class StoreAccessor implements iAccessor {
     constructor() {
         this.filler = new ListFiller();
         this.#manager = new LocalStoreManager();
-        this.#adapter = new IndexDBAdapter("TodoDatabase", 1);
+        this.#adapter = new IndexDBAdapter("TodoDatabase", 2);
 
         this.#tasks = [];
         this.#lists = [];
@@ -50,11 +51,13 @@ class StoreAccessor implements iAccessor {
                 store.createIndex("icon", "icon", {unique: false});
                 store.createIndex("filterOptions", "filterOptions", {unique: false});
                 store.createIndex("settings", "settings", {unique: false});
+                store.createIndex("sort", "sort", {unique: false});
             }
 
             if (!db.objectStoreNames.contains("task")) {
                 const store = db.createObjectStore("task", {autoIncrement: true, keyPath: 'id'})
 
+                store.createIndex("sort", "sort", {unique: false});
                 store.createIndex("name", "name", {unique: false});
                 store.createIndex("list_id", "list_id", {unique: false});
                 store.createIndex("date", "date", {unique: false});
@@ -71,6 +74,7 @@ class StoreAccessor implements iAccessor {
                 store.createIndex("name", "name", {unique: false});
                 store.createIndex("task_id", "task_id", {unique: false});
                 store.createIndex("finish", "finish", {unique: false});
+                store.createIndex("sort", "sort", {unique: false});
             }
         });
     }
@@ -155,7 +159,8 @@ class StoreAccessor implements iAccessor {
     updateTaskProp(task_id: number, key: string, val: any): Promise<void> {
         return new Promise((resolve, reject) => {
             this.#adapter.connected(() => {
-                const allowed_keys = ["name", "notes"];
+                const allowed_keys = ["name", "notes", "sort"];
+
                 if( allowed_keys.includes(key) ) {
                     this.#adapter.update("task", task_id, key, val ).then( r => {
                         resolve();

@@ -139,7 +139,9 @@ const props = defineProps({
 });
 
 const normalTasks = computed(() => {
-    return props.list.tasks.filter(task => ! task.finish);
+    return props.list.tasks
+        .filter(task => ! task.finish)
+        .sort((task, task1) => task.sort - task1.sort);
 });
 
 const completedTasks = computed(() => {

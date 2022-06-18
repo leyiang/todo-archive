@@ -18,12 +18,14 @@ export default class List {
     tasks: Task[];
     filterOptions: FilterOptions | null;
     settings: iSettings;
+    sort: number;
 
     constructor(
         id: number,
         name: string,
         icon: string | null = null,
         filterOptions: {} | null = null,
+        sort: number = 10,
         settings: iSettings = getDefaultSetting()
     ) {
         this.id = id;
@@ -31,6 +33,7 @@ export default class List {
         this.icon = icon
         this.filterOptions = FilterOptions.Load( filterOptions );
         this.tasks = [];
+        this.sort = sort;
         this.settings = settings;
     }
 
@@ -40,6 +43,7 @@ export default class List {
             raw.name,
             raw.icon,
             raw.filterOptions,
+            raw.sort,
             raw.settings
         );
     }
