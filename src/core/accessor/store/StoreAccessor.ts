@@ -164,15 +164,23 @@ class StoreAccessor implements iAccessor {
     }
 
     updateTaskProp(task_id: number, key: string, val: any): Promise<void> {
-        return new Promise(resolve => {
-            const index = this.#tasks.findIndex(task => task.id === task_id);
+        return new Promise((resolve, reject) => {
+            this.#adapter.connected(() => {
+                const task = this.#tasks.find(task => task.id === task_id);
 
-            if (key === "name") {
-                this.#tasks[index].name = val;
-            }
+                if( task ) {
+                    if (key === "name") {
+                        task.name = val;
+                    } else if( key === "notes" ) {
+                        task.notes = val;
+                    }
 
-            this.#save();
-            resolve();
+                    this.#adapter.update("task", task_id, task.toObject());
+                    resolve();
+                } else {
+                    reject("Task Not Found");
+                }
+            });
         });
     }
 
@@ -252,21 +260,28 @@ class StoreAccessor implements iAccessor {
     }
 
     setTaskImportantStatus(task_id: number, status: boolean): Promise<number[]> {
-        return new Promise(resolve => {
-            const index = this.#tasks.findIndex(task => task.id === task_id);
-            this.#tasks[index].important = status;
-            this.#save();
+        return new Promise((resolve, reject) => {
+            this.#adapter.connected(() => {
+                const task = this.#tasks.find(task => task.id === task_id);
 
-            const list_id_list = this.#lists
-                .filter(list => list.filterOptions?.equal)
-                .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important'))
-                .filter(list => status
-                    ? !list.tasks.map(task => task.id).includes(task_id)
-                    : list.tasks.map(task => task.id).includes(task_id)
-                )
-                .map(list => list.id)
+                if( task ) {
+                    task.important = status;
+                    this.#adapter.update("task", task_id, task.toObject() );
 
-            resolve(list_id_list);
+                    const list_id_list = this.#lists
+                        .filter(list => list.filterOptions?.equal)
+                        .filter(list => list.filterOptions && list.filterOptions.equal.map(item => item.key).includes('important'))
+                        .filter(list => status
+                            ? !list.tasks.map(task => task.id).includes(task_id)
+                            : list.tasks.map(task => task.id).includes(task_id)
+                        )
+                        .map(list => list.id)
+
+                    resolve(list_id_list);
+                } else {
+                    reject("Task not found");
+                }
+            });
         });
     }
 

@@ -67,3 +67,61 @@ test("able to remove a task", async () => {
         });
     });
 });
+
+test("able to set task important status", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+
+    await accessor.addTask("name", 0);
+
+    await accessor.getTasksForTest().then( async tasks => {
+        const task = tasks[0];
+
+        expect( task.important ).toBe( false );
+
+        expect(
+            accessor.setTaskImportantStatus( task.id, true )
+        ).resolves.not.toThrow();
+
+        await accessor.getTasksForTest().then( async tasks => {
+            expect( tasks.length ).toBe(1);
+            const task = tasks[0];
+            expect( task.important ).toBe( true );
+        })
+    });
+});
+
+test("able to set task normal prop", async () => {
+    indexedDB = new FDBFactory();
+    const accessor = new StoreAccessor();
+
+    const name = "This is the new name";
+    const notes = `SOmethinga
+    aslkfjallkajf
+    afjlaskf Just great`;
+
+    await accessor.addTask("name", 0);
+
+    await accessor.getTasksForTest().then( async tasks => {
+        const task = tasks[0];
+
+        expect( task.name ).toBe("name");
+        expect( task.notes ).toBe('');
+
+        expect(
+            accessor.updateTaskProp( task.id, "name", name )
+        ).resolves.not.toThrow();
+
+        expect(
+            accessor.updateTaskProp( task.id, "notes", notes )
+        ).resolves.not.toThrow();
+
+        await accessor.getTasksForTest().then( async tasks => {
+            expect( tasks.length ).toBe(1);
+            const task = tasks[0];
+
+            expect( task.name ).toBe( name );
+            expect( task.notes ).toBe( notes );
+        })
+    });
+});
