@@ -10,7 +10,7 @@ const todo = useTodoStore();
 
 <template>
     <main class="main-content flex h-screen">
-        <Sidebar class="w-1/4" />
+        <Sidebar class="w-1/4"/>
         <TaskList class="flex-1" />
 
         <TaskDetail
