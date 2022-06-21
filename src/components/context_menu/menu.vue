@@ -109,7 +109,6 @@ let target: Element | null = null;
 const el: Ref<null|Element> = ref(null);
 
 useEventListener(window, "contextmenu", (e: PointerEvent) => {
-    console.log(e );
     let spec = null, el = null;
 
     if( e.target instanceof HTMLElement ) {

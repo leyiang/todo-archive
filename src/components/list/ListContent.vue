@@ -162,14 +162,15 @@ function toggleTaskDetail(task: Task) {
     todo.toggleTask(task);
 }
 
-function updateListName(e: Event) {
-    if( ! e.target ) return;
+interface iEvent {
+    target: HTMLInputElement
+}
+
+function updateListName(e: iEvent) {
     const target = e.target;
-    if( ! (target instanceof HTMLInputElement) ) return;
     const name = target.value;
 
     accessor.updateTaskListProp(props.list.id, "name", name).then( r => {
-        props.list.name = '';
         props.list.name = name;
     });
 }
