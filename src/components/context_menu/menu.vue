@@ -79,6 +79,7 @@ import { ref, computed, onMounted } from "vue";
 import type { Ref } from "vue";
 import { getSpec } from "./data";
 import { Icon } from "@iconify/vue";
+import {useEventListener} from "@/composables/useEventListener";
 
 const pos: Ref<null|{x: number, y: number}> = ref(null);
 const defaultSpec = null;
@@ -107,56 +108,55 @@ const style = computed(() => {
 let target: Element | null = null;
 const el: Ref<null|Element> = ref(null);
 
-onMounted(() => {
-    window.addEventListener("contextmenu", (e) => {
-        let spec = null, el = null;
+useEventListener(window, "contextmenu", (e: PointerEvent) => {
+    console.log(e );
+    let spec = null, el = null;
 
-        if( e.target instanceof Element ) {
-            const raw = getSpec( e.target );
+    if( e.target instanceof HTMLElement ) {
+        const raw = getSpec( e.target );
 
-            if( raw !== null ) {
-                [spec, el] = raw;
-            }
+        if( raw !== null ) {
+            [spec, el] = raw;
+        }
+    }
+
+    if( defaultSpec || spec ) {
+        e.preventDefault();
+        target = el;
+        menuSpec.value = spec || defaultSpec;
+
+        pos.value = {
+            x: e.clientX,
+            y: e.clientY
+        }
+    } else {
+        pos.value = null;
+        target = null;
+    }
+});
+
+useEventListener(window, "click", e => {
+    if( pos.value ) {
+        pos.value = null;
+    }
+});
+
+useEventListener(window,"keydown", (e: KeyboardEvent) => {
+    if( pos.value ) {
+        if( e.key === "Escape" ) {
+            pos.value = null;
         }
 
-        if( defaultSpec || spec ) {
+        if( ["Tab", "ArrowDown"].includes(e.key) ) {
             e.preventDefault();
-            target = el;
-            menuSpec.value = spec || defaultSpec;
-
-            pos.value = {
-                x: e.clientX,
-                y: e.clientY
-            }
-        } else {
-            pos.value = null;
-            target = null;
+            selectNextItem();
         }
-    });
 
-    window.addEventListener("click", e => {
-        if( pos.value ) {
-            pos.value = null;
+        if( e.key === "ArrowUp" ) {
+            e.preventDefault();
+            selectNextItem( true );
         }
-    });
-
-    window.addEventListener("keydown", e => {
-        if( pos.value ) {
-            if( e.key === "Escape" ) {
-                pos.value = null;
-            }
-
-            if( ["Tab", "ArrowDown"].includes(e.key) ) {
-                e.preventDefault();
-                selectNextItem();
-            }
-
-            if( e.key === "ArrowUp" ) {
-                e.preventDefault();
-                selectNextItem( true );
-            }
-        }
-    });
+    }
 });
 
 let currentFocus: null | Element = null;
