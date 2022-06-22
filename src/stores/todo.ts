@@ -30,7 +30,6 @@ export const useTodoStore = defineStore("list", {
         getList() {
             accessor.getTaskLists().then( loaded => {
                 this.lists = loaded;
-                console.log( loaded )
                 let index = 0;
                 let task_id:number | null = null
                 let list_id:number | null = null;
@@ -140,8 +139,6 @@ export const useTodoStore = defineStore("list", {
                 version: "1.0",
                 lists: this.lists,
             };
-
-            console.log( this.lists );
             // triggerDownload( data );
         },
 

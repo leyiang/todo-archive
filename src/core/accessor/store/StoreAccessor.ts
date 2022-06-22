@@ -199,7 +199,7 @@ class StoreAccessor implements iAccessor {
                     this.#lists = lists;
                     this.#steps = steps;
 
-                    resolve(lists);
+                    resolve(lists.slice());
                 });
             });
         });
