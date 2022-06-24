@@ -1,5 +1,6 @@
 import {test, expect} from "vitest";
 import StoreAccessor from "@/core/accessor/store/StoreAccessor";
+import { format } from "@/core/shared/utils";
 require("fake-indexeddb/auto");
 const FDBFactory = require("fake-indexeddb/lib/FDBFactory");
 /**
@@ -65,7 +66,7 @@ test("able to remove a task", async () => {
     });
 });
 
-test("able to set task important status", async () => {
+test("able to set task special status", async () => {
     indexedDB = new FDBFactory();
     const accessor = new StoreAccessor();
 
@@ -76,14 +77,15 @@ test("able to set task important status", async () => {
 
         expect( task.important ).toBe( false );
 
-        expect(
-            accessor.setTaskSpecialProp( task.id, "important", true )
-        ).resolves.not.toThrow();
+        const date = format("Y-m-d");
+        await accessor.setTaskSpecialProp( task.id, "important", true );
+        await accessor.setTaskSpecialProp( task.id, "date", date );
 
         await accessor.getTasksForTest().then( async tasks => {
             expect( tasks.length ).toBe(1);
             const task = tasks[0];
             expect( task.important ).toBe( true );
+            expect( task.date ).toBe( date );
         })
     });
 });

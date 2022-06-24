@@ -311,7 +311,7 @@ class StoreAccessor implements iAccessor {
                     }
                     break;
 
-                case "today":
+                case "date":
                     if( typeof val !== "string" ) {
                         reject( new TypeError() );
                     }

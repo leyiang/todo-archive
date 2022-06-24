@@ -132,8 +132,10 @@ onMounted(() => {
                 name: "Set as today",
 
                 action: () => {
-                    accessor.setTaskToday( props.task.id ).then( list_id_list => {
-                        props.task.date = format("Y-m-d");
+                    const date = format("Y-m-d");
+
+                    accessor.setTaskSpecialProp( props.task.id, "date", date).then( list_id_list => {
+                        props.task.date = date;
                         todo.updateSpecialLists( props.task, list_id_list );
                     });
                 }
