@@ -123,15 +123,13 @@ import { Icon } from "@iconify/vue";
 import TaskItem from "./TaskItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
-import {ref, computed} from "vue";
+import {ref, computed, watch} from "vue";
 import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
 
 const todo = useTodoStore();
-const showCompleted = computed(() => {
-    return normalTasks.value.length === 0;
-});
+const showCompleted = ref(false);
 
 const props = defineProps({
     list: {
@@ -149,6 +147,10 @@ const normalTasks = computed(() => {
 const completedTasks = computed(() => {
     return props.list.tasks.filter(task => task.finish);
 });
+
+watch( () => props.list, () => {
+    showCompleted.value = normalTasks.value.length === 0;
+}, { immediate: true });
 
 function addNewTask(name: string) {
     accessor.addTask(name, props.list.id).then(task => {
