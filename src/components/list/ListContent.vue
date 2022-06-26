@@ -129,7 +129,9 @@ import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
 
 const todo = useTodoStore();
-const showCompleted = ref(false);
+const showCompleted = computed(() => {
+    return normalTasks.value.length === 0;
+});
 
 const props = defineProps({
     list: {
@@ -147,10 +149,6 @@ const normalTasks = computed(() => {
 const completedTasks = computed(() => {
     return props.list.tasks.filter(task => task.finish);
 });
-
-if( normalTasks.value.length === 0 ) {
-    showCompleted.value = true;
-}
 
 function addNewTask(name: string) {
     accessor.addTask(name, props.list.id).then(task => {
