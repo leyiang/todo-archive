@@ -79,6 +79,7 @@ onMounted(() => {
                 {
                     name: "Remove List",
                     action: () => {
+                        console.log( props.list );
                         accessor.removeTaskList( props.list.id ).then( r => {
                             todo.removeTaskList( props.list );
                         });

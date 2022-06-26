@@ -106,6 +106,8 @@ export const useTodoStore = defineStore("list", {
 
         removeTaskList( list: List ) {
             splice( this.lists, list );
+            this.list = null;
+            this.task = null;
         },
 
         removeStep( step: Step ) {

@@ -12,6 +12,10 @@
             v-if="todo.list"
             :list="todo.list"
         />
+
+        <div class="h-full flex items-center justify-center text-white text-3xl" v-else>
+            <span>Let's choose a list</span>
+        </div>
     </div>
 </template>
 

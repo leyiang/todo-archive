@@ -24,6 +24,7 @@ test("able to add new list", async () => {
         const list = lists[0];
 
         // Ensure Data is correct
+        expect(list.id).toBeDefined();
         expect(list.name).toBe( info.name );
         expect(list.icon).toBe( info.icon );
         expect(list.filterOptions).toMatchObject( info.filterOptions );

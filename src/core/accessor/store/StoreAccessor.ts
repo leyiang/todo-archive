@@ -218,6 +218,8 @@ class StoreAccessor implements iAccessor {
 
             this.#adapter.connected(() => {
                 this.#adapter.addItem("list", list).then(id => {
+                    list.id = id;
+
                     this.#lists.push(list);
                     resolve(list);
                 });
@@ -241,6 +243,7 @@ class StoreAccessor implements iAccessor {
 
     removeTaskList(list_id: number): Promise<void> {
         return new Promise(resolve => {
+            resolve();
             this.#adapter.connected(() => {
                 this.#adapter.remove("list", list_id);
                 resolve();
