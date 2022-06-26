@@ -388,6 +388,22 @@ class StoreAccessor implements iAccessor {
             });
         });
     }
+
+
+    /**
+     * This method is to delete all tasks
+     * that have task_list_id, but cannot find task_list
+     * Which is caused by dev tests
+     */
+    devRemoveAllTaskWithoutTaskList() {
+        this.#tasks.forEach( task => {
+            const list = this.#lists.findIndex( list => list.id === task.list_id );
+
+            if( list === -1 ) {
+                this.removeTask( task.id );
+            }
+        });
+    }
 }
 
 export default StoreAccessor;

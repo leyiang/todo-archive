@@ -53,6 +53,8 @@ export const useTodoStore = defineStore("list", {
                         }
                     }
                 }
+
+                // accessor.devRemoveAllTaskWithoutTaskList();
             });
         },
 
