@@ -242,10 +242,17 @@ class StoreAccessor implements iAccessor {
     }
 
     removeTaskList(list_id: number): Promise<void> {
+        const list = this.#lists.find( list => list.id === list_id );
+
         return new Promise(resolve => {
-            resolve();
             this.#adapter.connected(() => {
                 this.#adapter.remove("list", list_id);
+
+                if( list && Array.isArray(list.tasks) ) {
+                    list.tasks.forEach( task => {
+                        this.#adapter.remove("task", task.id );
+                    });
+                }
                 resolve();
             });
         });
