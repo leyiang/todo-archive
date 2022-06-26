@@ -112,31 +112,20 @@ const iconType = computed(() => {
         : "ic:round-star-border";
 });
 
+const isTaskToday = props.task.date === format("Y-m-d");
+
 onMounted(() => {
     registerMenu(el.value, {
         items: [
             {
-                name: "Remove Task",
-                args: {
-                    el: el.value,
-                    task: props.task
-                },
-
-                action: (args) => {
-                    accessor.removeTask( props.task.id ).then( list_id_list => {
-                        todo.removeTask( props.task, list_id_list );
-                    });
-                }
-            },
-            {
-                name: "Set as today",
+                name: isTaskToday ? "Today's part done" : "Set as today",
 
                 action: () => {
-                    const date = format("Y-m-d");
+                    const date = isTaskToday ? "" : format("Y-m-d");
 
                     accessor.setTaskSpecialProp( props.task.id, "date", date).then( list_id_list => {
                         props.task.date = date;
-                        todo.updateSpecialLists( props.task, list_id_list );
+                        todo.updateSpecialLists( props.task, list_id_list, ! isTaskToday);
                     });
                 }
             },
@@ -159,7 +148,20 @@ onMounted(() => {
                         props.task.sort = -1;
                     });
                 }
-            }
+            },
+            {
+                name: "Remove Task",
+                args: {
+                    el: el.value,
+                    task: props.task
+                },
+
+                action: (args) => {
+                    accessor.removeTask( props.task.id ).then( list_id_list => {
+                        todo.removeTask( props.task, list_id_list );
+                    });
+                }
+            },
         ]
     });
 });
