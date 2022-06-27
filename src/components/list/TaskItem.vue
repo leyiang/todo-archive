@@ -112,22 +112,27 @@ const iconType = computed(() => {
         : "ic:round-star-border";
 });
 
-const isTaskToday = props.task.date === format("Y-m-d");
+// const isTaskToday = props.task.date === format("Y-m-d");
+const isTaskToday = computed(() => {
+    return props.task.date === format("Y-m-d");
+});
 
 onMounted(() => {
     registerMenu(el.value, {
         items: [
             {
-                name: isTaskToday ? "Today's part done" : "Set as today",
+                name: computed(() => {
+                    return isTaskToday.value ? "Today's part done" : "Set as today";
+                }),
 
-                action: () => {
-                    const date = isTaskToday ? "" : format("Y-m-d");
+                action: computed(() => () => {
+                    const date = isTaskToday.value ? "" : format("Y-m-d");
 
                     accessor.setTaskSpecialProp( props.task.id, "date", date).then( list_id_list => {
                         props.task.date = date;
                         todo.updateSpecialLists( props.task, list_id_list, ! isTaskToday);
                     });
-                }
+                })
             },
 
             {

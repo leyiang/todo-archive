@@ -1,6 +1,8 @@
+import {isRef} from "vue";
+
 export const data = new Map();
 
-export function registerMenu( key: HTMLElement | string, options:{} ) {
+export function registerMenu( key: HTMLElement | string, options:{ items: [] } ) {
     data.set( key, options );
 }
 

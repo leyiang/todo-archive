@@ -79,20 +79,10 @@ import { ref, computed, onMounted } from "vue";
 import type { Ref } from "vue";
 import { getSpec } from "./data";
 import { Icon } from "@iconify/vue";
-import {useEventListener} from "@/composables/useEventListener";
+import { useEventListener } from "@/composables/useEventListener";
 
 const pos: Ref<null|{x: number, y: number}> = ref(null);
 const defaultSpec = null;
-// const defaultSpec = {
-//     items: [
-//         {
-//             name: "Default Item",
-//             action: () => {
-//                 console.log( 1 );
-//             }
-//         }
-//     ]
-// };
 
 const menuSpec: Ref<{} | null> = ref( defaultSpec );
 
@@ -105,8 +95,8 @@ const style = computed(() => {
     }
 });
 
-let target: Element | null = null;
-const el: Ref<null|Element> = ref(null);
+let target: HTMLElement | null = null;
+const el: Ref<null|HTMLElement> = ref(null);
 
 useEventListener(window, "contextmenu", (e: PointerEvent) => {
     let spec = null, el = null;
