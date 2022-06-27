@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import type List from "@/core/model/List";
 import type Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
-import { splice } from "@/core/shared/utils";
+import {splice, triggerDownload} from "@/core/shared/utils";
 import type Step from "@/core/model/Step";
 import state from "@/core/StatePreserver";
 
@@ -147,7 +147,8 @@ export const useTodoStore = defineStore("list", {
                 version: "1.0",
                 lists: this.lists,
             };
-            // triggerDownload( data );
+
+            triggerDownload( data );
         },
 
         setSettingList( list: List ) {

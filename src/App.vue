@@ -6,6 +6,7 @@ import ContextMenu from "./components/context_menu/menu.vue";
 import {useTodoStore} from "@/stores/todo";
 
 const todo = useTodoStore();
+// todo.exportData();
 </script>
 
 <template>

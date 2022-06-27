@@ -51,6 +51,7 @@
                 <GhostInput
                     :value="list.name"
                     @change="updateListName"
+                    class="list-name-input"
                 />
             </h2>
         </header>
