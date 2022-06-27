@@ -1,4 +1,4 @@
-import {checkTwice, clear, createList, focusFirstList, randomName} from "./utils";
+import {checkTwice, clear, createList, focusFirstList, placeholder, randomName} from "./utils";
 import {options} from "../options";
 
 const spec = {
@@ -42,5 +42,21 @@ describe('Task basic tests', () => {
                 .first()
                 .should("contain.text", spec.name );
         });
+    });
+
+    it('able to remove a task', function () {
+        placeholder();
+    });
+
+    it('able to finish a task', function () {
+        placeholder();
+    });
+
+    it('able to set task important', function () {
+        placeholder();
+    });
+
+    it('able to expand completed tasks', function () {
+        placeholder();
     });
 });

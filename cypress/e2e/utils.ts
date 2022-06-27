@@ -49,3 +49,14 @@ export function checkTwice( check: Function ) {
     cy.reload();
     check();
 }
+
+/**
+ * This will always being rejected
+ * Work as a placeholder for future test
+ */
+export function placeholder() {
+    expect("Test placeholder")
+        .to
+        .be
+        .a("You need to complete this");
+}

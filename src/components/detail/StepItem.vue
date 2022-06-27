@@ -50,6 +50,13 @@
         registerMenu(el.value, {
             items: [
                 {
+                    name: "Set as today",
+                    action: () => {
+
+                    }
+                },
+
+                {
                     name: "Remove Step",
                     action: () => {
                         accessor.removeStep( props.step.id ).then( r => {

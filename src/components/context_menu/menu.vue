@@ -105,6 +105,7 @@ useEventListener(window, "contextmenu", (e: PointerEvent) => {
         const raw = getSpec( e.target );
 
         if( raw !== null ) {
+            e.preventDefault();
             [spec, el] = raw;
         }
     }
