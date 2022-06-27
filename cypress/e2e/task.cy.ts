@@ -7,9 +7,11 @@ const spec = {
 }
 
 describe('Task basic tests', () => {
-    it("Able to add new Task", () => {
+    beforeEach(() => {
         clear();
+    });
 
+    it("Able to add new Task", () => {
         createList(spec.list_name);
         focusFirstList();
 

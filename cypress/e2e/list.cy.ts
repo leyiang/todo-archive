@@ -1,12 +1,16 @@
-import {checkHasList, checkTwice, clear, createList, randomName} from "./utils";
+import {checkHasList, checkTwice, clear, createList, focusFirstList, randomName} from "./utils";
+import {options} from "../options";
 
 const spec = {
     name: randomName("list")
 }
 
 describe('List basic tests', () => {
-    it("Able to add new List", () => {
+    beforeEach(() => {
         clear();
+    });
+
+    it("Able to add new List", () => {
         createList(spec.name);
 
         checkTwice(() => {
@@ -15,19 +19,16 @@ describe('List basic tests', () => {
     });
 
     it("Able to focus a list", () => {
-        clear();
         createList(spec.name );
 
-        cy.get("aside .userList .sidebar-item")
-            .click()
+        focusFirstList()
             .should("have.class", "active");
 
-        cy.get(".task-list-wrap .list-name-input")
+        cy.get(`${ options.id.tasksContainer } .list-name-input`)
             .should("have.value", spec.name);
     });
 
     it("Able to remove a list", () => {
-        clear();
         createList(spec.name );
 
         /**

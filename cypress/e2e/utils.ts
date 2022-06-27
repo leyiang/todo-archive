@@ -18,7 +18,15 @@ export function checkHasList(name: string, len=1, from=".userList") {
 }
 
 export function clear() {
+    /**
+     * Clear IndexDB
+     */
     indexedDB.deleteDatabase(options.id.db);
+
+    /**
+     * Visit The app
+     * to initialize the database
+     */
     cy.visit('/')
 }
 
@@ -27,7 +35,7 @@ export function randomName( prefix:string ) {
 }
 
 export function focusFirstList() {
-    cy.get("aside")
+    return cy.get("aside")
         .find( options.id.taskListItem )
         .first()
         .click();
