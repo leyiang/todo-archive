@@ -132,7 +132,9 @@ export const useTodoStore = defineStore("list", {
         updateSpecialLists( task: Task, list_id_list: number[], append: boolean = true) {
             list_id_list.forEach( id => {
                 const index = this.lists.findIndex(list => list.id === id );
+
                 if( append ) {
+                    console.log( this.lists[index], append );
                     this.lists[index].tasks.push( task );
                 } else {
                     splice( this.lists[index].tasks, task );

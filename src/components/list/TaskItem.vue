@@ -112,7 +112,6 @@ const iconType = computed(() => {
         : "ic:round-star-border";
 });
 
-// const isTaskToday = props.task.date === format("Y-m-d");
 const isTaskToday = computed(() => {
     return props.task.date === format("Y-m-d");
 });
@@ -130,7 +129,7 @@ onMounted(() => {
 
                     accessor.setTaskSpecialProp( props.task.id, "date", date).then( list_id_list => {
                         props.task.date = date;
-                        todo.updateSpecialLists( props.task, list_id_list, ! isTaskToday);
+                        todo.updateSpecialLists( props.task, list_id_list, date !== "");
                     });
                 })
             },
