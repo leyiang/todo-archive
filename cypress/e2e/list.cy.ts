@@ -1,42 +1,34 @@
-import {checkHasList, checkList, clear, createList} from "./utils";
+import {checkHasList, checkTwice, clear, createList, randomName} from "./utils";
 
-const options = {
-    name: "list_" + Math.random().toFixed(4)
+const spec = {
+    name: randomName("list")
 }
 
-describe('Basic', () => {
+describe('List basic tests', () => {
     it("Able to add new List", () => {
         clear();
-        cy.visit('/')
+        createList(spec.name);
 
-        createList(options.name);
-
-        checkHasList( options.name );
-
-        cy.reload();
-
-        checkHasList( options.name );
+        checkTwice(() => {
+            checkHasList( spec.name );
+        });
     });
 
     it("Able to focus a list", () => {
         clear();
-        cy.visit('/')
-
-        createList(options.name );
+        createList(spec.name );
 
         cy.get("aside .userList .sidebar-item")
             .click()
             .should("have.class", "active");
 
         cy.get(".task-list-wrap .list-name-input")
-            .should("have.value", options.name);
+            .should("have.value", spec.name);
     });
 
     it("Able to remove a list", () => {
         clear();
-        cy.visit('/')
-
-        createList(options.name );
+        createList(spec.name );
 
         /**
          * Open Menu
@@ -58,7 +50,7 @@ describe('Basic', () => {
         /**
          * Make Sure list removed
          */
-        checkHasList( options.name, 0 );
+        checkHasList( spec.name, 0 );
 
         /**
          * List should be de-focused

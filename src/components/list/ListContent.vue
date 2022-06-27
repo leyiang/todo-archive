@@ -114,6 +114,7 @@
             placeholder="Add a task"
             @submit="addNewTask"
             maxlength="50"
+            class="add-new-input"
         />
     </div>
 </template>
