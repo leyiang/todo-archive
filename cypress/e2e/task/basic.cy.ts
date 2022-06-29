@@ -12,7 +12,7 @@ describe('Task basic tests', () => {
         clear();
     });
 
-    it("Able to add new Task", () => {
+    it("able to add new Task", () => {
         TaskUtils.Create( spec.name, spec.list_name, () => {
             TaskUtils.LengthIs( 0 );
 
@@ -31,6 +31,17 @@ describe('Task basic tests', () => {
 
             cy.get( options.id.tasksContainer )
                 .should("not.contain.text", "Let's add some task");
+        });
+    });
+
+    it("empty name will not be added", () => {
+        TaskUtils.Create( " ", spec.list_name );
+
+        checkTwice(() => {
+            TaskUtils.LengthIs( 0 )
+
+            cy.get( options.id.tasksContainer )
+                .should("contain.text", "Let's add some task");
         });
     });
 

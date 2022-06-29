@@ -155,6 +155,9 @@ watch( () => props.list, () => {
 }, { immediate: true });
 
 function addNewTask(name: string) {
+    name = name.trim();
+    if( name.length === 0 ) return;
+
     accessor.addTask(name, props.list.id).then(task => {
         todo?.list?.tasks.push(task);
     });

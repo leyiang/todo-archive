@@ -94,6 +94,9 @@ todo.getList();
 // accessor.factory();
 //
 function addNewList( name: string ) {
+    name = name.trim();
+    if( name.length === 0 ) return;
+
     accessor.addTaskList(name).then( list => {
         todo.addList( list );
     });

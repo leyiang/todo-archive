@@ -11,13 +11,21 @@ describe('List basic tests', () => {
         clear();
     });
 
-    it("Able to add new List", () => {
+    it("able to add new List", () => {
         ListUtils.Create( spec.name );
 
         checkTwice(() => {
             ListUtils
                 .LengthIs(1)
                 .should("have.text", spec.name );
+        });
+    });
+
+    it("empty list name will not be added", () => {
+        ListUtils.Create( " " );
+
+        checkTwice(() => {
+            ListUtils.LengthIs(0)
         });
     });
 

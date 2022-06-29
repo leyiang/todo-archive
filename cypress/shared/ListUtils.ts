@@ -17,7 +17,9 @@ export class ListUtils {
     }
 
     static FocusFirst() {
-        ListUtils.GetFirst().click();
+        return ListUtils
+            .GetFirst()
+            .click();
     }
 
     static LengthIs( len = 1, from=".userList" ) {
