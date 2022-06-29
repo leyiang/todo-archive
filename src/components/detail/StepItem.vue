@@ -20,6 +20,7 @@
                 class="flex-1"
                 :value="step.name"
                 @change="updateStepName"
+                @keydown.delete="removeStep"
             />
         </StepWrap>
     </div>
@@ -68,11 +69,25 @@
         })
     });
 
-    function updateStepName(e) {
-        const name = e.target.value;
+    function removeStep(e) {
+        const name = String(e.target.value).trim();
 
-        accessor.updateStepProp(props.step.id, "name", name).then( r => {
-        });
+        if( name.length === 0 ) {
+            accessor.removeStep( props.step.id ).then( r => {
+                todo.removeStep( props.step );
+            });
+        }
+    }
+    function updateStepName(e) {
+        const name = String(e.target.value).trim();
+
+        if( name.length === 0 ) {
+            accessor.removeStep( props.step.id ).then( r => {
+                todo.removeStep( props.step );
+            });
+        } else {
+            accessor.updateStepProp(props.step.id, "name", name);
+        }
     }
 
     function toggleStepStatus() {
