@@ -1,4 +1,4 @@
-import {clear, randomName} from "../../shared/utils";
+import {clear, placeholder, randomName} from "../../shared/utils";
 import {TaskUtils} from "../../shared/TaskUtils";
 import {options} from "../../shared/options";
 
@@ -46,5 +46,37 @@ describe("Set Task Important Status", () => {
             .find("svg")
             .should("have.attr", "data-icon")
             .should("equal", "ic:outline-check-circle");
+    });
+
+    it("able to un-finish a task", () => {
+        TaskUtils.Create( spec.name, spec.list_name );
+
+        /**
+         * Finish A Task
+         */
+        TaskUtils
+            .GetFirst()
+            .find( options.id.finishButton )
+            .click()
+
+        /**
+         * Un-Finish a Task
+         */
+        TaskUtils
+            .GetFirst()
+            .find( options.id.finishButton )
+            .click()
+
+        TaskUtils
+            .GetFirst()
+            .should("not.have.class", "finished")
+            .find( options.id.finishButton )
+            .find("svg")
+            .should("have.attr", "data-icon")
+            .should("equal", "ic:outline-circle");
+    });
+
+    it('able to expand completed tasks', function () {
+        placeholder();
     });
 });
