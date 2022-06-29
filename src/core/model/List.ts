@@ -34,6 +34,8 @@ export default class List {
         this.filterOptions = FilterOptions.Load( filterOptions );
         this.tasks = [];
         this.sort = sort;
+
+        if( typeof settings === "string" ) settings = getDefaultSetting();
         this.settings = settings;
     }
 

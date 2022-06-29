@@ -18,7 +18,7 @@ class StoreAccessor implements iAccessor {
     constructor() {
         this.filler = new ListFiller();
         this.#manager = new LocalStoreManager();
-        this.#adapter = new IndexDBAdapter("TodoDatabase", 2);
+        this.#adapter = new IndexDBAdapter("TodoDatabase", 3);
 
         this.#tasks = [];
         this.#lists = [];
@@ -75,26 +75,43 @@ class StoreAccessor implements iAccessor {
                 store.createIndex("task_id", "task_id", {unique: false});
                 store.createIndex("finish", "finish", {unique: false});
                 store.createIndex("sort", "sort", {unique: false});
+                store.createIndex("date", "date", {unique: false});
             }
         });
     }
 
     #factory() {
-        const data = {};
-
-        this.#adapter.clear("list");
-        this.#adapter.clear("task");
-        this.#adapter.clear("step");
-
-        // data.lists.forEach( list => {
+        let data = {};
+        // const tasks = [];
+        // const steps = [];
+        // let lists = data.lists;
+        //
+        // lists.forEach( list => {
+        //     tasks.push( ...list.tasks );
+        // })
+        //
+        // tasks.forEach( task => {
+        //     steps.push( ...task.steps );
+        // })
+        //
+        // lists.map( list => list.tasks = [] );
+        // tasks.map( task => task.steps = [] );
+        //
+        // console.log( lists, tasks, steps );
+        //
+        // this.#adapter.clear("list");
+        // this.#adapter.clear("task");
+        // this.#adapter.clear("step");
+        // //
+        // lists.forEach( list => {
         //     this.#adapter.addItem("list", list);
         // });
         //
-        // data.tasks.forEach( task => {
+        // tasks.forEach( task => {
         //     this.#adapter.addItem("task", task);
         // });
         //
-        // data.steps.forEach( step => {
+        // steps.forEach( step => {
         //     this.#adapter.addItem("step", step);
         // });
     }

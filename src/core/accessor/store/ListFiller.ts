@@ -32,6 +32,7 @@ export default class ListFiller {
 
         this.#lists.forEach( list => {
             this.#listMap[ list.id ] = list;
+
             if( list.filterOptions ) {
                 this.#specialLists.push( list );
             }
@@ -62,6 +63,10 @@ export default class ListFiller {
             if( options !== null ) {
                 list.tasks = this.#tasks.filter( task => {
                     return this.#checkFilter(task, options);
+                });
+
+                this.#steps.forEach( setp => {
+
                 });
             }
         });
