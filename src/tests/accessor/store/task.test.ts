@@ -15,7 +15,10 @@ test("able to add new task", async () => {
         list_id: 3
     };
 
-    await accessor.addTask(info.name, info.list_id);
+    await accessor.addTask(info.name, info.list_id).then( task => {
+        expect( task.id ).toBeDefined();
+        expect( typeof task.id ).toBe("number");
+    });
 
     await accessor.getTasksForTest().then( tasks => {
         expect( tasks.length ).toBe( 1 );
