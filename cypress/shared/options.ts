@@ -6,5 +6,6 @@ export const options = {
         tasksContainer: ".task-list-wrap",
 
         menu: ".context-menu",
+        finishButton: ".finish-button",
     }
 };

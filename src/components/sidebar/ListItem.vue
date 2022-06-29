@@ -30,7 +30,7 @@
         <IconColumn
             v-if="openTasksLength > 0"
         >
-            <span class=text-gray-400>{{ openTasksLength }}</span>
+            <span class="text-gray-400 task-length">{{ openTasksLength }}</span>
         </IconColumn>
     </button>
 </template>

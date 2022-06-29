@@ -1,6 +1,10 @@
 <template>
     <button class="finish-button">
-        <Icon :icon="iconType" />
+        <!-- data-icon is for cypress to test -->
+        <Icon
+            :icon="iconType"
+            :data-icon="iconType"
+        />
     </button>
 </template>
 

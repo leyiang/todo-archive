@@ -10,11 +10,14 @@ export class ListUtils {
         return ListUtils;
     }
 
-    static FocusFirst() {
+    static GetFirst() {
         return cy.get("aside")
             .find( options.id.taskListItem )
             .first()
-            .click();
+    }
+
+    static FocusFirst() {
+        ListUtils.GetFirst().click();
     }
 
     static LengthIs( len = 1, from=".userList" ) {

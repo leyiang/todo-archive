@@ -14,69 +14,74 @@
 .due-date {
     font-weight: 700;
 }
+
+.finished {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.finished input,
+.finished textarea {
+    text-decoration: line-through;
+}
 </style>
 
 <template>
     <button
-        class="task-item cursor-auto"
+        :class="['task-item cursor-auto flex bg-white rounded text-lg py-4 task-item-inner', task.finish ? 'finished' : '' ]"
         ref="el"
     >
-        <StepWrap
-            class="flex bg-white rounded text-lg py-4 task-item-inner"
-            :finish="task.finish"
-        >
-            <div class="flex items-start">
-                <IconColumn>
-                    <FinishButton
-                        class="text-2xl mt-0.5"
-                        :finish="task.finish"
-                        @click.stop="toggleTaskStatus"
-                    />
-                </IconColumn>
+        <div class="flex items-start">
+            <IconColumn>
+                <FinishButton
+                    class="text-2xl mt-0.5"
+                    :finish="task.finish"
+                    @click.stop="toggleTaskStatus"
+                />
+            </IconColumn>
 
-                <div class="flex flex-col content-start">
-                    <span class="task-name">{{ task.name }}</span>
+            <div class="flex flex-col content-start">
+                <span class="task-name">{{ task.name }}</span>
 
-                    <div
-                        class="additional-info flex gap-3"
-                        v-if="! listSettings.hideAdditional"
-                    >
-                        <!-- Tags -->
-                        <template v-if="! listSettings.hideTags">
-                            <div
-                                class="tags flex gap-1"
-                                v-if="task.tags.length"
-                            >
+                <div
+                    class="additional-info flex gap-3"
+                    v-if="! listSettings.hideAdditional"
+                >
+                    <!-- Tags -->
+                    <template v-if="! listSettings.hideTags">
+                        <div
+                            class="tags flex gap-1"
+                            v-if="task.tags.length"
+                        >
                             <span
                                 class="tag"
                                 v-for="tag in task.tags"
                             >{{ tag }}</span>
-                            </div>
-                        </template>
-
-                        <!-- Due Date-->
-                        <div
-                            class="due-date"
-                            v-if="task.due_date"
-                        >
-                            <span>{{ displayDueDate( task.due_date ) }}</span>
                         </div>
+                    </template>
+
+                    <!-- Due Date-->
+                    <div
+                        class="due-date"
+                        v-if="task.due_date"
+                    >
+                        <span>{{ displayDueDate( task.due_date ) }}</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <IconColumn class="ml-auto">
-                <button
-                    class="text-2xl"
-                    @click.stop="setTaskImportantStatus"
-                >
-                    <Icon
-                        :icon="iconType"
-                        style="color: goldenrod"
-                    />
-                </button>
-            </IconColumn>
-        </StepWrap>
+        <IconColumn class="ml-auto">
+            <button
+                class="text-2xl"
+                @click.stop="setTaskImportantStatus"
+            >
+                <Icon
+                    :icon="iconType"
+                    style="color: goldenrod"
+                />
+            </button>
+        </IconColumn>
     </button>
 </template>
 
