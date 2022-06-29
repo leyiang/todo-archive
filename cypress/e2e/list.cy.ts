@@ -1,5 +1,6 @@
-import {checkHasList, checkTwice, clear, createList, focusFirstList, randomName} from "./utils";
-import {options} from "../options";
+import {checkTwice, clear, randomName} from "../shared/utils";
+import {options} from "../shared/options";
+import {ListUtils} from "../shared/ListUtils";
 
 const spec = {
     name: randomName("list")
@@ -11,17 +12,19 @@ describe('List basic tests', () => {
     });
 
     it("Able to add new List", () => {
-        createList(spec.name);
+        ListUtils.Create( spec.name );
 
         checkTwice(() => {
-            checkHasList( spec.name );
+            ListUtils
+                .LengthIs(1)
+                .should("have.text", spec.name );
         });
     });
 
     it("Able to focus a list", () => {
-        createList(spec.name );
-
-        focusFirstList()
+        ListUtils
+            .Create( spec.name )
+            .FocusFirst()
             .should("have.class", "active");
 
         cy.get(`${ options.id.tasksContainer } .list-name-input`)
@@ -29,7 +32,7 @@ describe('List basic tests', () => {
     });
 
     it("Able to remove a list", () => {
-        createList(spec.name );
+        ListUtils.Create( spec.name );
 
         /**
          * Open Menu
@@ -51,7 +54,7 @@ describe('List basic tests', () => {
         /**
          * Make Sure list removed
          */
-        checkHasList( spec.name, 0 );
+        ListUtils.LengthIs( 0 );
 
         /**
          * List should be de-focused

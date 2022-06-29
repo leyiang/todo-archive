@@ -3,7 +3,8 @@ export const options = {
         db: "TodoDatabase",
         taskListItem: ".sidebar-item",
         taskItem: ".task-item",
-
         tasksContainer: ".task-list-wrap",
+
+        menu: ".context-menu",
     }
 };

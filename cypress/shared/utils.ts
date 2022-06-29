@@ -1,21 +1,6 @@
-import {options} from "../options";
+import {options} from "./options";
 
-export function createList(name: string) {
-    cy
-        .get("aside input")
-        .type( name )
-        .type("{enter}");
-}
-
-export function checkHasList(name: string, len=1, from=".userList") {
-    const chainable = cy.get("aside " + from)
-        .find( options.id.taskListItem )
-        .should("have.length", len);
-
-    if( len > 0 ) {
-        chainable.should("have.text", name );
-    }
-}
+export const nullFunc = () => {}
 
 export function clear() {
     /**
@@ -32,13 +17,6 @@ export function clear() {
 
 export function randomName( prefix:string ) {
     return prefix + "_" + Math.random().toFixed(4);
-}
-
-export function focusFirstList() {
-    return cy.get("aside")
-        .find( options.id.taskListItem )
-        .first()
-        .click();
 }
 
 /**

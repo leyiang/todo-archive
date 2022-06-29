@@ -1,5 +1,6 @@
-import {checkTwice, clear, createList, focusFirstList, placeholder, randomName} from "./utils";
-import {options} from "../options";
+import {checkTwice, clear, placeholder, randomName} from "../shared/utils";
+import {options} from "../shared/options";
+import {TaskUtils} from "../shared/TaskUtils";
 
 const spec = {
     name: randomName("task"),
@@ -12,24 +13,13 @@ describe('Task basic tests', () => {
     });
 
     it("Able to add new Task", () => {
-        createList(spec.list_name);
-        focusFirstList();
+        TaskUtils.Create( spec.name, spec.list_name, () => {
+            TaskUtils.LengthIs( 0 );
 
-        /**
-         * Be sure No Tasks
-         */
-        cy.get( options.id.tasksContainer )
-            .should("contain.text", "Let's add some task")
-            .get(options.id.taskItem )
-            .should("have.length", 0)
-
-        /**
-         * Add New task
-         */
-        cy.get( options.id.tasksContainer )
-            .get( ".add-new-input" )
-            .type( spec.name )
-            .type("{enter}")
+            cy
+                .get( options.id.tasksContainer )
+                .should("contain.text", "Let's add some task")
+        });
 
         /**
          * Make new task Sure Exists
@@ -45,18 +35,18 @@ describe('Task basic tests', () => {
     });
 
     it('able to remove a task', function () {
-        placeholder();
-    });
 
-    it('able to finish a task', function () {
-        placeholder();
     });
-
-    it('able to set task important', function () {
-        placeholder();
-    });
-
-    it('able to expand completed tasks', function () {
-        placeholder();
-    });
+    //
+    // it('able to finish a task', function () {
+    //     placeholder();
+    // });
+    //
+    // it('able to set task important', function () {
+    //     placeholder();
+    // });
+    //
+    // it('able to expand completed tasks', function () {
+    //     placeholder();
+    // });
 });
