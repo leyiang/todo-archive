@@ -36,6 +36,7 @@
     import accessor from "@/core/accessor/AccessorInstance"
     import {useTodoStore} from "@/stores/todo";
     import {registerMenu} from "@/components/context_menu/data";
+    import { format } from "@/core/shared/utils";
 
     const props = defineProps({
         step: {
@@ -53,7 +54,8 @@
                 {
                     name: "Set as today",
                     action: () => {
-
+                        accessor.updateStepProp( props.step.id, "date", format("Y-m-d") ).then( r => {
+                        });
                     }
                 },
 

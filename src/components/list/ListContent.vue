@@ -81,6 +81,11 @@
                     :list-settings="list.settings"
                 />
 
+                <StepItem
+                    v-for="step in list.steps"
+                    :step="step"
+                ></StepItem>
+
                 <div
                     class="flex"
                     v-if="completedTasks.length"
@@ -123,6 +128,7 @@
 import List from "@/core/model/List";
 import { Icon } from "@iconify/vue";
 import TaskItem from "./TaskItem.vue";
+import StepItem from "@/components/detail/StepItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
 import {ref, computed, watch} from "vue";

@@ -65,8 +65,12 @@ export default class ListFiller {
                     return this.#checkFilter(task, options);
                 });
 
-                this.#steps.forEach( setp => {
-
+                list.steps = this.#steps.filter( step => {
+                    if( options.equal[0]?.key === "date" ) {
+                        return step.date === format("Y-m-d");
+                    } else {
+                        return false;
+                    }
                 });
             }
         });

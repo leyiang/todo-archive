@@ -1,5 +1,6 @@
 import type Task from "@/core/model/Task";
 import FilterOptions from "@/core/model/FilterOptions";
+import Step from "@/core/model/Step";
 
 export interface iSettings {
     hideAdditional: boolean,
@@ -15,6 +16,7 @@ export default class List {
     id: number;
     name: string;
     icon: string | null;
+    steps: Step[];
     tasks: Task[];
     filterOptions: FilterOptions | null;
     settings: iSettings;
@@ -33,6 +35,7 @@ export default class List {
         this.icon = icon
         this.filterOptions = FilterOptions.Load( filterOptions );
         this.tasks = [];
+        this.steps = [];
         this.sort = sort;
 
         if( typeof settings === "string" ) settings = getDefaultSetting();

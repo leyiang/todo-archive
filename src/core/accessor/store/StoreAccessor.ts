@@ -371,7 +371,7 @@ class StoreAccessor implements iAccessor {
     updateStepProp(step_id: number, key: string, val: any): Promise<void> {
         return new Promise((resolve, reject) => {
             this.#adapter.connected(() => {
-                const allowed_keys = ["name"];
+                const allowed_keys = ["name", "date"];
 
                 if( allowed_keys.includes(key) ) {
                     this.#adapter.update("step", step_id, key, val).then(r => {
