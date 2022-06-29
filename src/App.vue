@@ -7,6 +7,14 @@ import {useTodoStore} from "@/stores/todo";
 
 const todo = useTodoStore();
 // todo.exportData();
+
+if( typeof globalThis === "object" ) {
+    // Export this api to globalThis
+    // So that we may recue data when emergency
+    globalThis.exportData = () : void => {
+        todo.exportData();
+    };
+}
 </script>
 
 <template>
