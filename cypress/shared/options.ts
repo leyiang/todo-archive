@@ -7,5 +7,6 @@ export const options = {
 
         menu: ".context-menu",
         finishButton: ".finish-button",
+        importantButton: ".important-button",
     }
 };

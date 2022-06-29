@@ -73,11 +73,12 @@
 
         <IconColumn class="ml-auto">
             <button
-                class="text-2xl"
+                class="text-2xl important-button"
                 @click.stop="setTaskImportantStatus"
             >
                 <Icon
                     :icon="iconType"
+                    :data-icon="iconType"
                     style="color: goldenrod"
                 />
             </button>
