@@ -102,6 +102,9 @@ function toggleStatus() {
 }
 
 function addNewStep( name ) {
+    name = name.trim();
+    if( name.length === 0 ) return;
+
     if( props.task ) {
         accessor.addStep( name, props.task.id ).then( step => {
             props.task.steps.push( step );
