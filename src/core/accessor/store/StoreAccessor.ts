@@ -231,7 +231,6 @@ class StoreAccessor implements iAccessor {
     removeTask(task_id: number): Promise<number[]> {
         return new Promise(resolve => {
             this.#adapter.connected(() => {
-                console.log( task_id );
                 this.#adapter.remove( "task", task_id );
 
                 const list_id_list = this.#lists

@@ -20,12 +20,25 @@ export class TaskUtils {
             .get( ".add-new-input" )
             .type( name )
             .type("{enter}")
+
+        return TaskUtils;
+    }
+
+    static getContainer() {
+        return cy.get( options.id.tasksContainer );
+    }
+
+    static GetFirst() {
+        return TaskUtils
+            .getContainer()
+            .get(options.id.taskItem )
+            .first();
     }
 
     static LengthIs( len: number ) {
         return cy.get( options.id.tasksContainer )
             .get( options.id.taskItem )
-            .should("have.length", 0)
+            .should("have.length", len )
     }
 }
 

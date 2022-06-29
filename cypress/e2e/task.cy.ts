@@ -25,17 +25,34 @@ describe('Task basic tests', () => {
          * Make new task Sure Exists
          */
         checkTwice(() => {
-            cy.get( options.id.tasksContainer )
-                .should("not.contain.text", "Let's add some task")
-                .get(options.id.taskItem )
-                .should("have.length", 1)
-                .first()
+            TaskUtils
+                .LengthIs( 1 )
                 .should("contain.text", spec.name );
+
+            cy.get( options.id.tasksContainer )
+                .should("not.contain.text", "Let's add some task");
         });
     });
 
     it('able to remove a task', function () {
+        TaskUtils
+            .Create( spec.name, spec.list_name )
+            .LengthIs( 1 );
 
+        /**
+         * Right Click task to open Menu
+         */
+        TaskUtils
+            .GetFirst()
+            .rightclick();
+
+        cy.get( options.id.menu )
+            .contains("Remove Task")
+            .click();
+
+        checkTwice(() => {
+            TaskUtils.LengthIs( 0 );
+        });
     });
     //
     // it('able to finish a task', function () {
