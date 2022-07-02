@@ -57,11 +57,11 @@
         </header>
 
         <div
-            :class="['task-list flex flex-col gap-2 task-list flex-1', list.tasks.length === 0 ? 'nothing-found' : '' ]"
+            :class="['task-list flex flex-col gap-2 task-list flex-1', {'nothing-found': list.tasks.length === 0 && list.steps.length === 0 } ]"
         >
             <div
                 class="text-white text-3xl flex items-center content-center flex-col"
-                v-if="list.tasks.length === 0"
+                v-if="list.tasks.length === 0 && list.steps.length === 0"
             >
                 <img
                     src="@/assets/cute.svg"
@@ -72,19 +72,22 @@
             </div>
 
             <template v-else>
-                <TaskItem
-                    v-for="task in normalTasks"
-                    :key="task.id"
-                    :task="task"
-                    @click="toggleTaskDetail(task)"
-                    :class="task.id === todo.task?.id ? 'active' : ''"
-                    :list-settings="list.settings"
-                />
 
-                <StepItem
-                    v-for="step in list.steps"
-                    :step="step"
-                ></StepItem>
+                <template v-for="task in normalTasks">
+                    <TaskItem
+                        v-if="task instanceof Task"
+                        :key="task.id"
+                        :task="task"
+                        @click="toggleTaskDetail(task)"
+                        :class="task.id === todo.task?.id ? 'active' : ''"
+                        :list-settings="list.settings"
+                    />
+
+                    <StepItem
+                        v-else
+                        :step="task"
+                    ></StepItem>
+                </template>
 
                 <div
                     class="flex"
@@ -132,7 +135,7 @@ import StepItem from "@/components/detail/StepItem.vue";
 import AddNewInput from "@/components/AddNewInput.vue";
 import GhostInput from "@/components/GhostInput.vue";
 import {ref, computed, watch} from "vue";
-import type Task from "@/core/model/Task";
+import Task from "@/core/model/Task";
 import accessor from "@/core/accessor/AccessorInstance";
 import {useTodoStore} from "@/stores/todo";
 
@@ -147,9 +150,13 @@ const props = defineProps({
 });
 
 const normalTasks = computed(() => {
-    return props.list.tasks
-        .filter(task => ! task.finish)
-        .sort((task, task1) => task.sort - task1.sort);
+    return [
+        ... props.list.tasks
+            .filter(task => ! task.finish),
+
+        ... props.list.steps
+            .filter(step => ! step.finish )
+    ];
 });
 
 const completedTasks = computed(() => {
