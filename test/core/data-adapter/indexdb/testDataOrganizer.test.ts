@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
+//@ts-ignore
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
+//@ts-ignore
 import {getRawFolder, getRawTask, getRawStep, isRawTask} from "@/core/model/rawTypes.ts";
 
 describe('Data Organizer', () => {

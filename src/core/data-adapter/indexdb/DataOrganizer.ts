@@ -49,11 +49,13 @@ export default class DataOrganizer {
      */
     organize(folders: localFolder[], tasks: localTask[], steps: localStep[]): localFolder[] {
         folders.forEach(folder => {
+            folder.plans = [];
             this.folderMap[folder.id] = folder;
         });
 
         tasks.forEach(task => {
             task.steps = [];
+
             const folder = this.folderMap[ task.folder_id ];
 
             if( folder ) {

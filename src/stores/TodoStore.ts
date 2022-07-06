@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import Folder from "@/core/model/folder/Folder";
 
+export const adapter = new IndexDBAdapter();
 export const useTodoStore = defineStore({
     id: "todo",
 
@@ -12,8 +13,6 @@ export const useTodoStore = defineStore({
 
     actions: {
         init() {
-            const adapter = new IndexDBAdapter();
-
             adapter.loadData().then( folders => {
                 this.folders = folders.map( folder => Folder.Load(folder) );
             });
@@ -21,7 +20,10 @@ export const useTodoStore = defineStore({
 
         setActiveFolder( folder: Folder ) {
             this.activeFolder = folder;
+        },
+
+        addFolder( folder: Folder ) {
+            this.folders.push( folder );
         }
     }
-
 });
