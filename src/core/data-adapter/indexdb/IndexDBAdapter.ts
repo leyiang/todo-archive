@@ -1,6 +1,6 @@
 import IndexDBAccessor from "./IndexDBAccessor";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
-import type {rawFolder, rawStep} from "@/core/model/rawTypes";
+import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -67,6 +67,28 @@ export default class IndexDBAdapter {
                         order: 10,
                         plans: []
                     })
+                });
+            });
+        });
+    }
+
+    addTask( name: string, folder_id: number ): Promise<rawTask> {
+        return new Promise((resolve, reject) => {
+            this.accessor.onReady(() => {
+                this.accessor.add("task", {
+                    name,
+                    folder_id,
+                }).then( id => {
+                    resolve({
+                        id,
+                        name,
+                        folder_id,
+                        important: false,
+                        description: "",
+                        date: "",
+                        finished: false,
+                        steps: [],
+                    });
                 });
             });
         });
