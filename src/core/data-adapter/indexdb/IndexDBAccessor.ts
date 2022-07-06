@@ -98,7 +98,6 @@ export default class IndexDBAccessor {
 
     add( storeName:string, item: any ): Promise<number> {
         return new Promise(resolve => {
-            console.log( item );
             const request = this.#getStore(storeName, "readwrite")
                 .add( item );
 

@@ -55,6 +55,16 @@ export default class IndexDBAdapter {
         });
     }
 
+    getTasksForTest(): Promise<rawTask[]> {
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.get("task").then( tasks => {
+                    resolve( tasks );
+                });
+            })
+        })
+    }
+
     addFolder( name: string ): Promise<rawFolder> {
         return new Promise((resolve) => {
             this.accessor.onReady(() => {
