@@ -1,35 +1,32 @@
 import IndexDBAccessor from "./IndexDBAccessor";
-import type Folder from "@/core/model/folder/Folder";
-import type Task from "@/core/model/Task";
-import type Step from "@/core/model/Step";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
+import type { rawFolder } from "@/core/model/rawTypes";
+import {getRawFolder, getRawStep, getRawTask} from "@/core/model/rawTypes";
 
 export default class IndexDBAdapter {
     public accessor = new IndexDBAccessor();
     private organizer = new DataOrganizer();
 
-    loadData(): Promise<object[]> {
+    loadData(): Promise<rawFolder[]> {
         return new Promise(resolve => {
-            const folders = JSON.parse(JSON.stringify([
-                { id: 1, name: "Today", filterOptions: { today: true } },
-                { id: 2, name: "Foo" },
-                { id: 3, name: "Bar" , filterOptions: { today: true, important: true } },
-            ]));
+            const folders = [
+                getRawFolder(1, "Today", { today: true }),
+                getRawFolder(2, "Foo" ),
+                getRawFolder(3, "Important", { important: true } ),
+            ];
 
             const tasks = [
-                { id: 1, name: "Task 1", date: "2022-07-05", folder_id: 2 },
-                { id: 1, name: "Task 1", date: null, folder_id: 1, important: true },
+                getRawTask(1, "Base in Foo", 2, "2022-07-05"),
+                getRawTask(2, "Important Task", 1, null, true),
             ];
 
             const steps = [
-                { id: 1, name: "Step 1", date: "2022-07-05", task_id: 1, },
+                getRawStep(1, "Step 1", 1, "2022-07-05")
             ];
 
-
             const data = this.organizer.organize( folders, tasks, steps );
-            console.table( data );
 
-            resolve([]);
+            resolve( data );
         });
     }
 }

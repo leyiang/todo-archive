@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
+import {getRawFolder, getRawTask, getRawStep, isRawTask} from "@/core/model/rawTypes.ts";
 
 describe('Data Organizer', () => {
 
@@ -7,9 +8,9 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today" },
-            { id: 2, name: "Foo" },
-            { id: 3, name: "Bar" },
+            getRawFolder( 1, "Today" ),
+            getRawFolder( 2, "Foo" ),
+            getRawFolder( 3, "Bar" ),
         ];
 
         const data = organizer.organize( folders, [], [] );
@@ -22,11 +23,11 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today" },
+            getRawFolder( 1, "Today" ),
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", folder_id: 1 },
+            getRawTask(1, "Task 1", 1)
         ];
 
         const data = organizer.organize( folders, tasks, [] );
@@ -39,15 +40,15 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today" },
+            getRawFolder( 1, "Today" ),
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", folder_id: 1 },
+            getRawTask( 1, "Task 1", 1 )
         ];
 
         const steps = [
-            { id: 1, name: "Step 1", date: "2022-07-05", task_id: 1, },
+            getRawStep( 1, "Step 1", 1, "2022-07-05"),
         ];
 
         const data = organizer.organize( folders, tasks, steps );
@@ -55,20 +56,22 @@ describe('Data Organizer', () => {
         const folder = data[0];
         const task = folder.plans[0];
 
-        expect( task.steps.length ).toBe( steps.length );
-        expect( task.steps[0] ).toMatchObject( steps[0] );
+        if( isRawTask(task) ) {
+            expect( task.steps.length ).toBe( steps.length );
+            expect( task.steps[0] ).toMatchObject( steps[0] );
+        }
     });
 
     it('Organize Today Task Properly', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today", filterOptions: { today: true } },
-            { id: 2, name: "Sample" },
+            getRawFolder(1, "Today", { today: true } ),
+            getRawFolder( 2, "Sample" )
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", date: "2022-07-05", folder_id: 2 },
+            getRawTask( 1, "Task 1", 2, "2022-07-05" )
         ];
 
         const data = organizer.organize( folders, tasks, [] );
@@ -79,12 +82,12 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today", filterOptions: { important: true } },
-            { id: 2, name: "Sample" },
+            getRawFolder(1, "Today", { important: true }),
+            getRawFolder( 2, "Sample" )
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", folder_id: 2, important: true },
+            getRawTask( 1, "Task 1", 2, null, true )
         ];
 
         const data = organizer.organize( folders, tasks, [] );
@@ -96,20 +99,19 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today", filterOptions: { today: true } },
+            getRawFolder(1, "Today", {today: true}),
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", date: null, folder_id: 1 },
+            getRawTask( 1, "Task 1", 1 )
         ];
 
         const steps = [
-            { id: 1, name: "Step 1", date: "2022-07-05", task_id: 1 },
+            getRawStep( 1, "Step 1", 1, "2022-07-05" )
         ];
 
         const data = organizer.organize( folders, tasks, steps );
         expect( data[0].plans.length ).toBe( 2 );
-
         expect( data[0].plans[1] ).toMatchObject( steps[0] );
     });
 
@@ -117,11 +119,11 @@ describe('Data Organizer', () => {
         const organizer = new DataOrganizer;
 
         const folders = [
-            { id: 1, name: "Today", filterOptions: { today: true, important: true } },
+            getRawFolder(1, "Today", {today: true, important: true} ),
         ];
 
         const tasks = [
-            { id: 1, name: "Task 1", date: "2022-07-05", folder_id: 1, important: true },
+            getRawTask(1, "Task 1", 1, "2022-07-05", true )
         ];
 
         const data = organizer.organize( folders, tasks, [] );

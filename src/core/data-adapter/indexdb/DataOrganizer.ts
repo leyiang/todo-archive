@@ -2,13 +2,14 @@ import type Folder from "@/core/model/folder/Folder";
 import type Task from "@/core/model/Task";
 import FilterParser, {availableOptions, type filterOptionsType} from "@/core/model/folder/FilterOptions";
 import type Step from "@/core/model/Step";
+import type {localFolder, localStep, localTask} from "@/core/data-adapter/indexdb/IndexDBAdapter";
 
 interface OrganizerOptionList {
     [key: string]: {
         /**
          * list store all plan(task, step) that satisfies check method
          */
-        list: any[];
+        list: (localTask | localStep)[];
 
         /**
          * Check Filter Option By Using FilterParser
@@ -18,8 +19,8 @@ interface OrganizerOptionList {
 }
 
 export default class DataOrganizer {
-    private folderMap: { [index: number]: Folder } = {}
-    private taskMap: { [index: number]: Task } = {};
+    private folderMap: { [index: number]: localFolder } = {}
+    private taskMap: { [index: number]: localTask } = {};
     private options: OrganizerOptionList = {};
 
     constructor() {
@@ -46,19 +47,22 @@ export default class DataOrganizer {
      * @param tasks
      * @param steps
      */
-    organize(folders: any[], tasks: any[], steps: any[]) {
+    organize(folders: localFolder[], tasks: localTask[], steps: localStep[]): localFolder[] {
         folders.forEach(folder => {
-            folder.plans = [];
             this.folderMap[folder.id] = folder;
         });
 
         tasks.forEach(task => {
             task.steps = [];
+            const folder = this.folderMap[ task.folder_id ];
 
-            this.folderMap[task.folder_id].plans.push(task);
-            this.taskMap[task.id] = task;
+            if( folder ) {
+                folder.plans.push( task );
+                this.taskMap[task.id] = task;
 
-            this.checkPlanForFilter( task );
+                this.checkPlanForFilter( task );
+            }
+
         });
 
         steps.forEach(step => {
