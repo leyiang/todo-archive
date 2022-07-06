@@ -64,6 +64,15 @@ export default class IndexDBAdapter {
             })
         })
     }
+    getStepsForTest(): Promise<rawStep[]> {
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.get("step").then( steps => {
+                    resolve( steps );
+                });
+            })
+        })
+    }
 
     addFolder( name: string ): Promise<rawFolder> {
         return new Promise((resolve) => {
@@ -98,6 +107,25 @@ export default class IndexDBAdapter {
                         date: "",
                         finished: false,
                         steps: [],
+                    });
+                });
+            });
+        });
+    }
+
+    addStep( name: string, task_id: number ): Promise<rawStep> {
+        return new Promise((resolve) => {
+            this.accessor.onReady(() => {
+                this.accessor.add("step", {
+                    name,
+                    task_id,
+                }).then( id => {
+                    resolve({
+                        id,
+                        name,
+                        task_id,
+                        date: "",
+                        finished: false
                     });
                 });
             });

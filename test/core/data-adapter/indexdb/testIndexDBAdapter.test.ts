@@ -23,7 +23,7 @@ describe('IndexDB Adapter', () => {
 
         await adapter.loadData().then( folders => {
             expect( folders.length ).toBe( 1 );
-            expect( folders[0].name === name );
+            expect( folders[0].name ).toBe( name );
         })
     });
 
@@ -35,8 +35,22 @@ describe('IndexDB Adapter', () => {
 
         await adapter.getTasksForTest().then( tasks => {
             expect( tasks.length ).toBe( 1 );
-            expect( tasks[0].name === name );
-            expect( tasks[0].folder_id === rawFolder.id );
+            expect( tasks[0].name ).toBe( name );
+            expect( tasks[0].folder_id ).toBe( rawFolder.id );
+        });
+    });
+
+    it("Able to add step", async () => {
+        const name = "Step Name";
+
+        const rawFolder = await adapter.addFolder("Folder Name");
+        const rawTask = await adapter.addTask("Task Name", rawFolder.id );
+        await adapter.addStep(name, rawTask.id);
+
+        await adapter.getStepsForTest().then( steps => {
+            expect( steps.length ).toBe( 1 );
+            expect( steps[0].name ).toBe( name );
+            expect( steps[0].task_id ).toBe( rawTask.id );
         });
     });
 });
