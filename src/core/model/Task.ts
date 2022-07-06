@@ -1,17 +1,18 @@
-import type Task from "@/core/model/Task";
 import type Step from "@/core/model/Step";
 
-export default class Folder {
-    public plans: (Task | Step)[] = [];
+export default class Task {
+    public steps: Step[] = [];
 
     constructor(
         public id: number,
         public name: string,
-        public order = 10,
+        public finished: boolean = false,
+        public date: Date | null = null,
+        public description: string,
     ) {
     }
 
-    static isFolderParameters( obj: {} ) : obj is Folder {
+    static isFolderParameters( obj: {} ) : obj is Task {
         const requiredKeys = [ "id", "name" ];
 
         for(let key of requiredKeys) {
@@ -28,11 +29,13 @@ export default class Folder {
             throw "Load don't accept undefined or null as parameter";
         }
 
-        if( Folder.isFolderParameters(raw) ) {
-            return new Folder(
+        if( Task.isFolderParameters(raw) ) {
+            return new Task(
                 raw.id,
                 raw.name,
-                raw.order,
+                raw.finished,
+                raw.date,
+                raw.description
             );
         } else {
             throw "Wrong Properties for Folder.Load";

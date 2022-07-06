@@ -1,13 +1,17 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
+import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 
 export const useTodoStore = defineStore({
-  id: "todo",
+    id: "todo",
 
-  state: () => ({
+    state: () => ({
+        folders: []
+    }),
 
-  }),
-
-  actions: {
-
-  }
+    actions: {
+        init() {
+            const adapter = new IndexDBAdapter();
+            adapter.loadData();
+        }
+    }
 });
