@@ -25,7 +25,7 @@ export default class DataOrganizer {
     constructor() {
         const parser: FilterParser = new FilterParser();
 
-        availableOptions.forEach( option => {
+        availableOptions.forEach( (option:string) => {
             this.options[ option ] = {
                 list: [],
 
@@ -84,9 +84,11 @@ export default class DataOrganizer {
 
     parseFilterOptions( folder: Folder, filterOptions: filterOptionsType ) {
         for(let option in filterOptions) {
-            folder.plans.push( ...this.options[ option ].list );
+            for( let item of this.options[ option ].list ) {
+                if( ! folder.plans.includes( item ) ) {
+                    folder.plans.push( item );
+                }
+            }
         }
-
-        console.log( folder, filterOptions );
     }
 }
