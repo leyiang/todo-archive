@@ -1,7 +1,8 @@
+// @ts-ignore
+import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
-import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import {isRawStep, type rawStep } from "@/core/model/rawTypes";
 
 let adapter = new IndexDBAdapter();
