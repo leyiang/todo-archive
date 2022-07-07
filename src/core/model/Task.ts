@@ -10,6 +10,7 @@ export default class Task {
         public finished: boolean = false,
         public date: string | null = null,
         public description: string,
+        public priority = 10,
     ) {
     }
 

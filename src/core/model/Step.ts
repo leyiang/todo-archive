@@ -6,6 +6,7 @@ export default class Step {
         public name: string,
         public finished: boolean = false,
         public date: string | null = null,
+        public priority = 10
     ) {
         
     }

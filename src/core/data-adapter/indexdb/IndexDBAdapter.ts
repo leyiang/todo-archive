@@ -221,4 +221,24 @@ export default class IndexDBAdapter {
 
         return affecting;
     }
+
+
+    setStepProp( step_id: number, key: string, val: any ): Promise<number[]> {
+        const allowed_keys = ["name", "date", "finished"];
+        if( ! allowed_keys.includes(key) ) {
+            throw `Key: ${ key } is not supported in setTaskProp`;
+        }
+
+        return new Promise((resolve) => {
+            this.accessor.onReady(() => {
+                this.accessor.get("step", step_id ).then( raw => {
+                    raw[ key ] = val;
+
+                    this.accessor.set("step", raw).then(() => {
+                        resolve([]);
+                    });
+                });
+            });
+        });
+    }
 }

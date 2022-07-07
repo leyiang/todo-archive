@@ -40,6 +40,7 @@ export interface rawTask extends Task {
     finished: boolean;
     steps: rawStep[];
     description: string;
+    priority: number;
 }
 
 export function getRawTask(
@@ -49,9 +50,10 @@ export function getRawTask(
     date: string | null = null,
     important= false,
     finished = false,
-    description = ""
+    description = "",
+    priority = 10,
 ): rawTask {
-    return { id, name, folder_id, date, important, finished, description, steps: [] };
+    return { id, name, folder_id, date, important, finished, description, priority, steps: [] };
 }
 
 export interface rawStep extends Step {
@@ -60,6 +62,7 @@ export interface rawStep extends Step {
     date: null | string;
     task_id: number;
     finished: boolean
+    priority: number;
 }
 
 export function isRawStep(raw: any): raw is rawStep {
@@ -79,9 +82,10 @@ export function getRawStep(
     name: string,
     task_id: number,
     date: string | null = null,
-    finished = false
+    finished = false,
+    priority = 10,
 ): rawStep {
-    return { id, name, date, task_id, finished };
+    return { id, name, date, task_id, finished, priority };
 }
 
 export function isRawTask(raw: any): raw is rawTask {
