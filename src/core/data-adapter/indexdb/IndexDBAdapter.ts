@@ -6,6 +6,9 @@ import {loadRouteLocation} from "vue-router";
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
     private organizer = new DataOrganizer();
+    private folders: rawFolder[] = [];
+    private tasks: rawTask[] = [];
+    private steps: rawStep[] = [];
 
     constructor() {
         this.accessor = new IndexDBAccessor("TodoApp", 1);
@@ -49,6 +52,10 @@ export default class IndexDBAdapter {
                     this.accessor.getAll("task"),
                     this.accessor.getAll("step"),
                 ]).then(([ folders, tasks, steps ]) => {
+                    this.folders = folders;
+                    this.tasks = tasks;
+                    this.steps = steps;
+
                     const data = this.organizer.organize( folders, tasks, steps );
                     resolve( data );
                 });
@@ -162,7 +169,16 @@ export default class IndexDBAdapter {
         key: string,
         val: any
     ): Promise<number[]> {
-        const allowed_keys = ["name", "description", "finished", "important"];
+        const normal_keys = [
+            "name", "description", "finished"
+        ];
+
+        const special_keys = [
+            "important", "folder_id", "date",
+        ];
+
+        const allowed_keys = [ ...normal_keys, ...special_keys ];
+
         if( ! allowed_keys.includes(key) ) {
             throw `Key: ${ key } is not supported in setTaskProp`;
         }
@@ -172,11 +188,38 @@ export default class IndexDBAdapter {
                 this.accessor.get("task", task_id).then( raw => {
                     raw[ key ] = val;
 
+                    let affecting:number[] = [];
+
                     this.accessor.set("task", raw).then( r => {
-                        resolve([]);
+                        if( special_keys.includes(key) ) {
+                            this.accessor.getAll("folder").then( folders => {
+                                affecting = this.getAffecting( folders, key );
+                                resolve(affecting);
+                            });
+                        } else {
+                            resolve(affecting);
+                        }
                     });
                 });
             });
         });
+    }
+
+    getAffecting( folders: rawFolder[], key: string ) {
+        let affecting = [] as number[];
+
+        folders.forEach( folder => {
+            if( ! folder.filterOptions ) return;
+
+            if( key === "date" && folder.filterOptions.today ) {
+                affecting.push( folder.id );
+            }
+
+            if( key === "important" && folder.filterOptions.important ) {
+                affecting.push( folder.id );
+            }
+        });
+
+        return affecting;
     }
 }
