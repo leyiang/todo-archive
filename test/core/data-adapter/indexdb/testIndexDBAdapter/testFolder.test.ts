@@ -2,8 +2,8 @@ import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
-import {isRawFolder, rawFolder} from "../../../../../src/core/model/rawTypes";
-import {filterOptionsType} from "../../../../../src/core/model/folder/FilterOptions";
+import {isRawFolder, type rawFolder} from "@/core/model/rawTypes";
+import type {filterOptionsType} from "@/core/model/folder/FilterOptions";
 
 let adapter = new IndexDBAdapter();
 

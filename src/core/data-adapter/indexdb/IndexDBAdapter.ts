@@ -1,7 +1,6 @@
 import IndexDBAccessor from "./IndexDBAccessor";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
-import {loadRouteLocation} from "vue-router";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;

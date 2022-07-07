@@ -27,8 +27,7 @@ describe('IndexDB Adapter - Task', () => {
     });
 
     it("Able to set task props", async () => {
-        const name = "Task Name";
-        const props = {
+        const name = "Task Name"; const props = {
             name: "New Task Name",
             desc: "This is the description",
             finished: true,
