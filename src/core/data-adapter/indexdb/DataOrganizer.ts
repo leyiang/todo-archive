@@ -68,7 +68,12 @@ export default class DataOrganizer {
         });
 
         steps.forEach(step => {
-            this.taskMap[step.task_id].steps.push(step);
+            const task = this.taskMap[step.task_id];
+
+            if( task ) {
+                task.steps.push(step);
+            }
+
             this.checkPlanForFilter( step );
         });
 

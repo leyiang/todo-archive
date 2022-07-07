@@ -18,13 +18,32 @@ const steps = computed(() => {
 </script>
 
 <template>
-    <aside class="task-detail">
-        <StepItem
-            v-for="step in steps"
-            :key="step.id"
-            :step="step"
-        />
+    <aside
+        class="task-detail flex flex-col p-1rem"
+    >
+        <div class="flex flex-col">
+            <input
+                :value="task.name"
+                class="mb-1rem text-xl"
+            />
 
-        <TaskDetailAddStep />
+            <div class="flex flex-col">
+                <StepItem
+                    v-for="step in steps"
+                    :key="step.id"
+                    :step="step"
+                />
+            </div>
+
+            <TaskDetailAddStep />
+        </div>
+
+
+        <input
+            type="textarea"
+            class="rounded box-shadow-none"
+            :autosize="{ minRows: 4 }"
+            placeholder="Task Description"
+        />
     </aside>
 </template>

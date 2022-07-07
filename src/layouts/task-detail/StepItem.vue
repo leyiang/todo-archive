@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Step from "@/core/model/Step";
+import GhostInput from "@/components/common/GhostInput.vue";
 
 const props = defineProps({
     step: {
@@ -10,5 +11,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <span>{{ step.name }}</span>
+    <div class="step-item">
+        <button>
+            <Icon></Icon>
+        </button>
+        <GhostInput
+            :value="step.name"
+        />
+    </div>
 </template>

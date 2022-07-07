@@ -7,11 +7,15 @@ const todoStore = useTodoStore();
 </script>
 
 <template>
-    <aside>
-        <FolderItem
-            v-for="folder in todoStore.folders"
-            :folder="folder"
-        />
+    <aside
+        class="flex flex-col p-1rem"
+    >
+        <div class="list flex-1 flex flex-col">
+            <FolderItem
+                v-for="folder in todoStore.folders"
+                :folder="folder"
+            />
+        </div>
 
         <FolderListAddNew />
     </aside>

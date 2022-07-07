@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {useTodoStore} from "@/stores/TodoStore";
+import GhostInput from "@/components/common/GhostInput.vue";
 import TaskListAddNew from "./TaskListAddNew.vue";
 import TaskItem from "./TaskItem.vue";
 import { computed } from "vue";
 import Task from "@/core/model/Task";
-import Step from "@/core/model/Step";
+import type Step from "@/core/model/Step";
 
 const todoStore = useTodoStore();
 const plans = computed(() => {
@@ -23,17 +24,29 @@ function isTask( plan: Task | Step ) : plan is Task {
 </script>
 
 <template>
-    <main>
-        <div v-if="todoStore.activeFolder">
-            <template v-for="plan in plans">
-                <TaskItem
-                    v-if="isTask( plan )"
-                    :key="plan.id"
-                    :task="plan"
+    <main class="task-list flex flex-col px-1rem py-2rem gap-1rem">
+        <div class="flex-1">
+            <template v-if="todoStore.activeFolder">
+                <GhostInput
+                    :value="todoStore?.activeFolder?.name"
+                    class="mb-1.5rem font-bold text-2xl text-white"
                 />
-            </template>
 
-            <TaskListAddNew />
+                <div class="flex flex-col gap-5px">
+                    <template v-for="plan in plans">
+                        <TaskItem
+                            v-if="isTask( plan )"
+                            :key="plan.id"
+                            :task="plan"
+                        />
+
+                        <span v-else>{{ plan.name }}</span>
+                    </template>
+                </div>
+
+            </template>
         </div>
+
+        <TaskListAddNew />
     </main>
 </template>

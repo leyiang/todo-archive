@@ -6,15 +6,22 @@ import {useTodoStore} from "@/stores/TodoStore";
 
 const todoStore = useTodoStore();
 todoStore.init();
-
 </script>
 
 <template>
-    <FolderList />
-    <TaskList />
+    <div class="todo-app flex h-full">
+        <FolderList
+            class="min-w-300px"
+        />
 
-    <TaskDetail
-        v-if="todoStore.activeTask"
-        :task="todoStore.activeTask"
-    />
+        <TaskList
+            class="flex-1 bg-green-400"
+        />
+
+        <TaskDetail
+            v-if="todoStore.activeTask"
+            :task="todoStore.activeTask"
+            class="w-300px"
+        />
+    </div>
 </template>

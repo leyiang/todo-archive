@@ -2,6 +2,7 @@
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import type {rawFolder} from "@/core/model/rawTypes";
 import Folder from "@/core/model/folder/Folder";
+import { Icon } from "@iconify/vue";
 
 const todoStore = useTodoStore();
 function addNewFolder( e: KeyboardEvent ) {
@@ -18,8 +19,16 @@ function addNewFolder( e: KeyboardEvent ) {
 </script>
 
 <template>
-    <input
-        type="text"
-        @keydown.enter="addNewFolder"
-    >
+    <label class="folder-add-new-warp flex items-center">
+        <Icon icon="ic:outline-plus" class="text-6" />
+
+        <input
+            type="text"
+            class="border-none p-1rem rounded text-4 folder-add-new-input
+                   w-full border-box outline-none pl-.5rem
+            "
+            @keydown.enter="addNewFolder"
+            placeholder="Add new folder"
+        >
+    </label>
 </template>

@@ -26,5 +26,6 @@ function addNewStep(e: KeyboardEvent) {
     <input
         type="text"
         @keydown.enter="addNewStep"
+        placeholder="Add New Step"
     >
 </template>

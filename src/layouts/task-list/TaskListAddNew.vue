@@ -24,6 +24,11 @@ function addNewTask(e: KeyboardEvent) {
 <template>
     <input
         type="text"
+        class="
+             p-1rem rounded border-transparent placeholder-gray-100
+             text-white text-4 outline-none bg-gray-900/30 font-semibold
+        "
         @keydown.enter="addNewTask"
+        placeholder="Add new Task :)"
     >
 </template>

@@ -17,6 +17,14 @@ export const useTodoStore = defineStore({
         init() {
             adapter.loadData().then( folders => {
                 this.folders = folders.map( folder => Folder.Load(folder) );
+
+                if( this.folders[0] !== undefined ) {
+                    this.setActiveFolder( this.folders[0] );
+
+                    if( this.folders[0].plans[0] ) {
+                        this.setActiveTask( this.folders[0].plans[0] );
+                    }
+                }
             });
         },
 
