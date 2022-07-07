@@ -1,6 +1,7 @@
 import IndexDBAccessor from "./IndexDBAccessor";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
+import {loadRouteLocation} from "vue-router";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -44,9 +45,9 @@ export default class IndexDBAdapter {
         return new Promise(resolve => {
             this.accessor.onReady(() => {
                 Promise.all([
-                    this.accessor.get("folder"),
-                    this.accessor.get("task"),
-                    this.accessor.get("step"),
+                    this.accessor.getAll("folder"),
+                    this.accessor.getAll("task"),
+                    this.accessor.getAll("step"),
                 ]).then(([ folders, tasks, steps ]) => {
                     const data = this.organizer.organize( folders, tasks, steps );
                     resolve( data );
@@ -58,7 +59,7 @@ export default class IndexDBAdapter {
     getTasksForTest(): Promise<rawTask[]> {
         return new Promise(resolve => {
             this.accessor.onReady(() => {
-                this.accessor.get("task").then( tasks => {
+                this.accessor.getAll("task").then( tasks => {
                     resolve( tasks );
                 });
             })
@@ -67,7 +68,7 @@ export default class IndexDBAdapter {
     getStepsForTest(): Promise<rawStep[]> {
         return new Promise(resolve => {
             this.accessor.onReady(() => {
-                this.accessor.get("step").then( steps => {
+                this.accessor.getAll("step").then( steps => {
                     resolve( steps );
                 });
             })
@@ -126,6 +127,31 @@ export default class IndexDBAdapter {
                         task_id,
                         date: "",
                         finished: false
+                    });
+                });
+            });
+        });
+    }
+
+    static TaskPropKeys = ["name", "description", "finished", "important"];
+
+
+    setTaskProp(
+        task_id: number,
+        key: string,
+        val: any
+    ): Promise<number[]> {
+        if( ! IndexDBAdapter.TaskPropKeys.includes(key) ) {
+            throw `Key: ${ key } is not supported in setTaskProp`;
+        }
+
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.get("task", task_id).then( raw => {
+                    raw[ key ] = val;
+
+                    this.accessor.set("task", raw).then( r => {
+                        resolve([]);
                     });
                 });
             });

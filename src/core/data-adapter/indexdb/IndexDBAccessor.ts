@@ -86,12 +86,37 @@ export default class IndexDBAccessor {
         this.onInitCallback.push( callback );
     }
 
-    get( storeName:string ): Promise<any[]> {
+    get( storeName: string, id: number ): Promise<any> {
+        return new Promise((resolve) => {
+            const request = this.#getStore( storeName ).get( id );
+
+            request.onsuccess = () => {
+                resolve( request.result );
+            }
+        })
+    }
+
+    getAll( storeName:string ): Promise<any[]> {
         return new Promise((resolve, reject) => {
             const request = this.#getStore( storeName ).getAll();
 
             request.onsuccess = () => {
                 resolve( request.result );
+            }
+        });
+    }
+
+    set( storeName: string, item: any ): Promise<any[]> {
+        if( typeof item["id"] !== "number" ) {
+            throw "Set `item` ";
+        }
+
+        return new Promise((resolve) => {
+            const request = this.#getStore(storeName, "readwrite")
+                .put( item );
+
+            request.onsuccess = () => {
+                resolve([]);
             }
         });
     }
