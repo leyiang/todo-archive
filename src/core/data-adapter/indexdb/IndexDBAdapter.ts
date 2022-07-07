@@ -114,6 +114,7 @@ export default class IndexDBAdapter {
                         date: "",
                         finished: false,
                         steps: [],
+                        priority: 10,
                     });
                 });
             });
@@ -132,7 +133,8 @@ export default class IndexDBAdapter {
                         name,
                         task_id,
                         date: "",
-                        finished: false
+                        finished: false,
+                        priority: 10
                     });
                 });
             });
@@ -146,7 +148,7 @@ export default class IndexDBAdapter {
     ): Promise<void> {
         const allowed_keys = ["name", "order", "filterOptions"];
         if( ! allowed_keys.includes(key) ) {
-            throw `Key: ${ key } is not supported in setTaskProp`;
+            throw `Key: ${ key } is not supported in setFolderProp`;
         }
 
         return new Promise((resolve) => {
@@ -169,7 +171,7 @@ export default class IndexDBAdapter {
         val: any
     ): Promise<number[]> {
         const normal_keys = [
-            "name", "description", "finished"
+            "name", "description", "finished", "priority"
         ];
 
         const special_keys = [
@@ -224,9 +226,9 @@ export default class IndexDBAdapter {
 
 
     setStepProp( step_id: number, key: string, val: any ): Promise<number[]> {
-        const allowed_keys = ["name", "date", "finished"];
+        const allowed_keys = ["name", "date", "finished", "priority"];
         if( ! allowed_keys.includes(key) ) {
-            throw `Key: ${ key } is not supported in setTaskProp`;
+            throw `Key: ${ key } is not supported in setStepProp`;
         }
 
         return new Promise((resolve) => {

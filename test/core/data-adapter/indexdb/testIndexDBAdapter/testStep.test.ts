@@ -2,7 +2,7 @@ import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
-import {isRawStep, rawStep, rawTask} from "../../../../../src/core/model/rawTypes";
+import {isRawStep, type rawStep } from "@/core/model/rawTypes";
 
 let adapter = new IndexDBAdapter();
 
@@ -30,10 +30,11 @@ describe('IndexDB Adapter - Step', () => {
     it("Able to set step prop", async () => {
         const name = "Step Name";
 
-        const prop = {
+        const props = {
             name: "new SteP Name",
             date: "2022-07-05",
-            finished: true
+            finished: true,
+            priority: 1
         }
 
         const folderMap = {
@@ -58,17 +59,21 @@ describe('IndexDB Adapter - Step', () => {
         });
 
         if( isRawStep(step) ) {
-            await adapter.setStepProp( step.id, "name", prop.name);
-            await adapter.setStepProp( step.id, "date", prop.date);
-            await adapter.setStepProp( step.id, "finished", prop.finished);
+            let key : keyof typeof props;
+
+            for(key in props) {
+                await adapter.setStepProp( step.id, key, props[key]);
+            }
+
+            await adapter.getStepsForTest().then( steps => {
+                step = steps[0];
+
+                for(key in props) {
+                    expect( step[ key ] ).toBe( props[ key ] );
+                }
+            });
+        } else {
+            throw "Something went wrong";
         }
-
-        await adapter.getStepsForTest().then( steps => {
-            step = steps[0];
-
-            expect( step.name ).toBe( prop.name );
-            expect( step.date ).toBe( prop.date );
-            expect( step.finished ).toBe( true );
-        });
     });
 });

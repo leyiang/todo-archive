@@ -27,11 +27,13 @@ describe('IndexDB Adapter - Task', () => {
     });
 
     it("Able to set task props", async () => {
-        const name = "Task Name"; const props = {
+        const name = "Task Name";
+        const props = {
             name: "New Task Name",
-            desc: "This is the description",
+            description: "This is the description",
             finished: true,
-            important: true
+            important: true,
+            priority: 1
         }
 
         const rawFolder = await adapter.addFolder("Folder Name");
@@ -46,6 +48,7 @@ describe('IndexDB Adapter - Task', () => {
             expect( task.description === "" || task.description === undefined  ).toBeTruthy();
             expect( task.finished === false || task.finished === undefined ).toBeTruthy();
             expect( task.important === false || task.important === undefined ).toBeTruthy();
+            expect( task.priority === 10 || task.priority === undefined ).toBeTruthy();
         });
 
         /**
@@ -53,18 +56,19 @@ describe('IndexDB Adapter - Task', () => {
          * Add this if branch is to let typescript to be hapy
          */
         if( isRawTask(task) ) {
-            await adapter.setTaskProp(task.id, "name", props.name);
-            await adapter.setTaskProp(task.id, "description", props.desc);
-            await adapter.setTaskProp(task.id, "finished", props.finished);
-            await adapter.setTaskProp(task.id, "important", props.important);
+            let key: keyof typeof props;
+
+            for(key in props) {
+                await adapter.setTaskProp(task.id, key, props[key]);
+            }
+
 
             await adapter.getTasksForTest().then( tasks => {
                 task = tasks[0];
 
-                expect( task.name ).toBe( props.name );
-                expect( task.description ).toBe( props.desc );
-                expect( task.finished ).toBe( props.finished );
-                expect( task.important ).toBe( props.important );
+                for(key in props) {
+                    expect( task[key] ).toBe( props[key] );
+                }
             });
         }
     });
