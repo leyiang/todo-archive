@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Folder from "@/core/model/folder/Folder";
 import {useTodoStore} from "@/stores/TodoStore";
+import { NButton } from "naive-ui";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -16,8 +17,8 @@ function setActive() {
 </script>
 
 <template>
-    <button
+    <n-button
         class="folder-item"
         @click="setActive"
-    >{{ folder.name }}</button>
+    >{{ folder.name }}</n-button>
 </template>
