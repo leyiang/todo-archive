@@ -133,15 +133,37 @@ export default class IndexDBAdapter {
         });
     }
 
-    static TaskPropKeys = ["name", "description", "finished", "important"];
+    setFolderProp(
+        folder_id: number,
+        key: string,
+        val: any
+    ): Promise<void> {
+        const allowed_keys = ["name", "order", "filterOptions"];
+        if( ! allowed_keys.includes(key) ) {
+            throw `Key: ${ key } is not supported in setTaskProp`;
+        }
 
+        return new Promise((resolve) => {
+            this.accessor.onReady(() => {
+                this.accessor.get("folder", folder_id ).then( raw => {
+                    raw[ key ] = val;
+
+                    this.accessor.set("folder", raw).then( r => {
+                        resolve();
+                    });
+                });
+            });
+
+        });
+    }
 
     setTaskProp(
         task_id: number,
         key: string,
         val: any
     ): Promise<number[]> {
-        if( ! IndexDBAdapter.TaskPropKeys.includes(key) ) {
+        const allowed_keys = ["name", "description", "finished", "important"];
+        if( ! allowed_keys.includes(key) ) {
             throw `Key: ${ key } is not supported in setTaskProp`;
         }
 

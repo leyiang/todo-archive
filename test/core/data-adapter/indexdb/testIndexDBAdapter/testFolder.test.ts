@@ -2,6 +2,8 @@ import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
+import {isRawFolder, rawFolder} from "../../../../../src/core/model/rawTypes";
+import {filterOptionsType} from "../../../../../src/core/model/folder/FilterOptions";
 
 let adapter = new IndexDBAdapter();
 
@@ -28,6 +30,41 @@ describe('IndexDB Adapter - Folder', () => {
     });
 
     it("Able to set folder prop", async () => {
+        const name = "new Folder";
+        const prop = {
+            name: "New Folder Name",
+            order: 9,
+            filterOptions: {
+                today: true
+            } as filterOptionsType
+        } as const;
 
+        await adapter.addFolder(name);
+
+        let folder = null as null | rawFolder;
+
+        await adapter.loadData().then( folders => {
+            folder = folders[0];
+            expect( folder.name ).toBe( name );
+            expect( folder.order === 10 || folder.order === undefined ).toBeTruthy();
+            expect( folder.filterOptions ).toBeUndefined();
+        });
+
+        if( isRawFolder(folder) ) {
+            let key: keyof typeof prop;
+            for(key in prop) {
+                await adapter.setFolderProp(folder.id, key, prop[key]);
+            }
+
+            await adapter.loadData().then( folders => {
+                folder = folders[0];
+
+                expect( folder.name ).toBe( prop.name );
+                expect( folder.order ).toBe( prop.order );
+                expect( folder.filterOptions ).toMatchObject( prop.filterOptions );
+            });
+        } else {
+            throw "Something went wrong!";
+        }
     });
 });
