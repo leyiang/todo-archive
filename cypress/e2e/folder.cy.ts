@@ -26,4 +26,12 @@ describe('Folder List', () => {
             .getAll()
             .should("have.length", 0);
     });
+
+    it("input content will get emptied after press enter", () => {
+        folderHelpers.create("name");
+        folderHelpers.getAddNewInput().should("have.value", '');
+
+        folderHelpers.create("   ");
+        folderHelpers.getAddNewInput().should("have.value", '');
+    });
 });

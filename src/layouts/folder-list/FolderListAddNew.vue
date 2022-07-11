@@ -11,6 +11,11 @@ function addNewFolder( e: KeyboardEvent ) {
     const value = target.value;
 
     /**
+     * Reset Input
+     */
+    target.value = "";
+
+    /**
      * Empty Folder name will not be added
      */
     if( isNameEmpty(value) ) {
@@ -21,19 +26,17 @@ function addNewFolder( e: KeyboardEvent ) {
         const folder = Folder.Load( raw );
         todoStore.addFolder( folder );
     });
-
-    target.value = "";
 }
 </script>
 
 <template>
     <label
         class="folder-add-new-warp flex items-center"
-        data-test="folder-add-new"
     >
         <Icon icon="ic:outline-plus" class="text-6" />
 
         <input
+            data-test="folder-add-new"
             type="text"
             class="border-none p-1rem rounded text-4 folder-add-new-input
                    w-full border-box outline-none pl-.5rem

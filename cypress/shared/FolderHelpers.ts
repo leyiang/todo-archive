@@ -2,13 +2,19 @@ import {get} from "./utils";
 
 class FolderHelpers {
     create( name: string ) {
-        const chain = get("folder-add-new").click();
+        const chain = this.getAddNewInput().click();
 
         if( ! name ) {
-            return chain.type("{enter}");
+            chain.type("{enter}")
         } else {
-            return chain.type( name ).type("{enter}")
+            chain.type( name ).type("{enter}")
         }
+
+        return chain;
+    }
+
+    getAddNewInput() {
+        return get("folder-add-new");
     }
 
     getAll() {
