@@ -1,8 +1,16 @@
 import {folderHelpers} from "./FolderHelpers";
 import {get} from "./utils";
+import ModelHelper from "./ModelHelper";
 
-class TaskHelpers {
+class TaskHelpers extends ModelHelper {
     private initFolder = false;
+
+    constructor() {
+        super({
+            item: "task-item",
+            input: "task-add-new"
+        });
+    }
 
     create( name: string ) {
         if( ! this.initFolder ) {
@@ -12,7 +20,7 @@ class TaskHelpers {
 
         folderHelpers.getFirst().click();
 
-        const chain = get("task-add-new").click();
+        const chain = this.getAddNewInput().click();
 
         if( ! name ) {
             return chain.type("{enter}");
@@ -21,14 +29,6 @@ class TaskHelpers {
                 .type( name )
                 .type("{enter}")
         }
-    }
-
-    getAll() {
-        return get("task-item");
-    }
-
-    getFirst() {
-        return this.getAll().first();
     }
 
     reset() {

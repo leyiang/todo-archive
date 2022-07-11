@@ -1,6 +1,14 @@
 import {get} from "./utils";
+import ModelHelper from "./ModelHelper";
 
-class FolderHelpers {
+class FolderHelpers extends ModelHelper {
+    constructor() {
+        super({
+            item: "folder-item",
+            input: "folder-add-new"
+        });
+    }
+
     create( name: string ) {
         const chain = this.getAddNewInput().click();
 
@@ -11,18 +19,6 @@ class FolderHelpers {
         }
 
         return chain;
-    }
-
-    getAddNewInput() {
-        return get("folder-add-new");
-    }
-
-    getAll() {
-        return get("folder-item");
-    }
-
-    getFirst() {
-        return this.getAll().first();
     }
 }
 
