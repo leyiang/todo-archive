@@ -28,6 +28,16 @@ describe('IndexDB Adapter - Step', () => {
         });
     });
 
+    it('Empty step not will not added', async () => {
+        const rawFolder = await adapter.addFolder("Folder Name");
+        const rawTask = await adapter.addTask("Task Name", rawFolder.id );
+        await expect( adapter.addStep(" ", rawTask.id) ).rejects.toThrow();
+
+        await adapter.getStepsForTest().then( steps => {
+            expect( steps.length ).toBe( 0 );
+        });
+    });
+
     it("Able to set step prop", async () => {
         const name = "Step Name";
 

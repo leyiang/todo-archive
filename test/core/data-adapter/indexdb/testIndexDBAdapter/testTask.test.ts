@@ -27,6 +27,15 @@ describe('IndexDB Adapter - Task', () => {
         });
     });
 
+    it("Empty task name will not be added", async () => {
+        const rawFolder = await adapter.addFolder("Folder Name");
+        await expect( adapter.addTask("  ", rawFolder.id ) ).rejects.toThrow();
+
+        await adapter.getTasksForTest().then( tasks => {
+            expect( tasks.length ).toBe( 0 );
+        });
+    });
+
     it("Able to set task props", async () => {
         const name = "Task Name";
         const props = {

@@ -105,6 +105,10 @@ export default class IndexDBAdapter {
 
     addTask( name: string, folder_id: number ): Promise<rawTask> {
         return new Promise((resolve, reject) => {
+            if( isNameEmpty(name) ) {
+                return reject("Task name should not be empty");
+            }
+
             this.accessor.onReady(() => {
                 this.accessor.add("task", {
                     name,
@@ -127,7 +131,11 @@ export default class IndexDBAdapter {
     }
 
     addStep( name: string, task_id: number ): Promise<rawStep> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            if( isNameEmpty(name) ) {
+                return reject("Step name should not be empty");
+            }
+
             this.accessor.onReady(() => {
                 this.accessor.add("step", {
                     name,
