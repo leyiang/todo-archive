@@ -30,6 +30,18 @@ describe('IndexDB Adapter - Folder', () => {
         })
     });
 
+    it('Empty folder name will not be added', async () => {
+        await adapter.loadData().then( folders => {
+            expect( folders.length ).toBe( 0 );
+        });
+
+        await expect( adapter.addFolder('') ).rejects.toThrow("empty");
+
+        await adapter.loadData().then( folders => {
+            expect( folders.length ).toBe( 0 );
+        })
+    });
+
     it("Able to set folder prop", async () => {
         const name = "new Folder";
         const prop = {

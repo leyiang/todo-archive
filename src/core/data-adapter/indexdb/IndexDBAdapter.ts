@@ -1,6 +1,7 @@
 import IndexDBAccessor from "./IndexDBAccessor";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
+import {isNameEmpty} from "@/shared/utils";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -82,7 +83,11 @@ export default class IndexDBAdapter {
     }
 
     addFolder( name: string ): Promise<rawFolder> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            if( isNameEmpty(name) ) {
+                return reject("folder name should not be empty");
+            }
+
             this.accessor.onReady(() => {
                 this.accessor.add("folder", {
                     name
