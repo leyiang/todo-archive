@@ -1,6 +1,5 @@
 import {resetEnv} from "../shared/utils";
 import {folderHelpers} from "../shared/FolderHelpers";
-import {emptyInputAfterEnter} from "../shared/tests";
 
 describe('Folder List', () => {
     beforeEach(() => {
@@ -26,12 +25,5 @@ describe('Folder List', () => {
         folderHelpers
             .getAll()
             .should("have.length", 0);
-    });
-
-    it("input content will get emptied after press enter", () => {
-        emptyInputAfterEnter(
-            folderHelpers.getAddNewInput(),
-            name => folderHelpers.create( name )
-        );
     });
 });

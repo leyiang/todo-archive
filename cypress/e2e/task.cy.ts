@@ -1,7 +1,5 @@
 import {resetEnv} from "../shared/utils";
 import {taskHelpers} from "../shared/TaskHelpers";
-import {emptyInputAfterEnter} from "../shared/tests";
-import {folderHelpers} from "../shared/FolderHelpers";
 
 describe('Task List', () => {
     beforeEach(() => {
@@ -28,12 +26,5 @@ describe('Task List', () => {
         taskHelpers
             .getAll()
             .should("have.length", 0)
-    });
-
-    it("input content will get emptied after press enter", () => {
-        emptyInputAfterEnter(
-            taskHelpers.getAddNewInput(),
-            name => taskHelpers.create( name )
-        );
     });
 });
