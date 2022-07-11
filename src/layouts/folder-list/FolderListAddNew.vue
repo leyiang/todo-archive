@@ -19,7 +19,10 @@ function addNewFolder( e: KeyboardEvent ) {
 </script>
 
 <template>
-    <label class="folder-add-new-warp flex items-center">
+    <label
+        class="folder-add-new-warp flex items-center"
+        data-test="folder-add-new"
+    >
         <Icon icon="ic:outline-plus" class="text-6" />
 
         <input

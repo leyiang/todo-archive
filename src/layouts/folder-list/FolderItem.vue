@@ -22,6 +22,7 @@ function setActive() {
 
 <template>
     <button
+        data-test="folder-item"
         class="folder-item text-4 p-1rem bg-transparent border-none
                hover:(bg-gray-200) rounded flex justify-between
         "

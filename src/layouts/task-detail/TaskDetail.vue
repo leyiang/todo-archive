@@ -19,12 +19,12 @@ const steps = computed(() => {
 
 <template>
     <aside
-        class="task-detail flex flex-col p-1rem"
+        class="task-detail flex flex-col py-1rem bg-gray-50"
     >
-        <div class="flex flex-col">
+        <div class="flex flex-col bg-white p-1rem">
             <input
                 :value="task.name"
-                class="mb-1rem text-xl"
+                class="mb-1rem text-2xl"
             />
 
             <div class="flex flex-col">
@@ -35,13 +35,15 @@ const steps = computed(() => {
                 />
             </div>
 
-            <TaskDetailAddStep />
+            <TaskDetailAddStep
+                class="mt-1rem"
+            />
         </div>
 
 
         <input
             type="textarea"
-            class="rounded box-shadow-none"
+            class="rounded box-shadow-none mt-2rem p-1rem"
             :autosize="{ minRows: 4 }"
             placeholder="Task Description"
         />

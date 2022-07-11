@@ -9,8 +9,9 @@ const todoStore = useTodoStore();
 <template>
     <aside
         class="flex flex-col p-1rem"
+        data-test="folder-list"
     >
-        <div class="list flex-1 flex flex-col">
+        <div class="list flex-1 flex flex-col gap-2px">
             <FolderItem
                 v-for="folder in todoStore.folders"
                 :folder="folder"

@@ -3,6 +3,7 @@ import Task from "@/core/model/Task";
 import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import {computed} from "vue";
+import useFinishIcon from "@/composables/useFinishIcon";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -12,11 +13,7 @@ const props = defineProps({
     }
 });
 
-const finishIcon = computed(() => {
-    return props.task.finished
-        ? "ic:outline-check-circle-outline"
-        : "ic:outline-circle";
-});
+const finishIcon = useFinishIcon( props.task );
 
 function setActive() {
     todoStore.setActiveTask( props.task );
