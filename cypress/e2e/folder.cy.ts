@@ -1,8 +1,5 @@
 import {options} from "../shared/globals";
-
-function get( name: string ) {
-    return cy.get(`[data-test='${ name }']`);
-}
+import FolderHelpers from "../shared/FolderHelpers";
 
 describe('Folder List', () => {
     beforeEach(() => {
@@ -15,13 +12,18 @@ describe('Folder List', () => {
             name: "folder name",
         }
 
-        get("folder-add-new")
-            .click()
-            .type( options.name )
-            .type("{enter}")
+        FolderHelpers.CreateFolder( options.name );
 
-        get("folder-item")
+        FolderHelpers
+            .GetAll()
             .should("have.length", 1)
             .should("contain.text", options.name );
+    });
+
+    it("empty name will not be added", () => {
+        FolderHelpers.CreateFolder( '' );
+        FolderHelpers
+            .GetAll()
+            .should("have.length", 0);
     });
 });

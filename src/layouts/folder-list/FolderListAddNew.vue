@@ -9,6 +9,8 @@ function addNewFolder( e: KeyboardEvent ) {
     const target = e.target as HTMLInputElement;
     const value = target.value;
 
+    if( ! value.length ) return;
+
     adapter.addFolder(value).then( (raw: rawFolder) => {
         const folder = Folder.Load( raw );
         todoStore.addFolder( folder );
