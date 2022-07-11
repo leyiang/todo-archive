@@ -1,10 +1,9 @@
-import {options} from "../shared/globals";
-import FolderHelpers from "../shared/FolderHelpers";
+import {flushEnv} from "../shared/utils";
+import {folderHelpers} from "../shared/FolderHelpers";
 
 describe('Folder List', () => {
     beforeEach(() => {
-        indexedDB.deleteDatabase( options.db.name );
-        cy.visit('/')
+        flushEnv();
     });
 
     it('able to add a new folder', () => {
@@ -12,18 +11,19 @@ describe('Folder List', () => {
             name: "folder name",
         }
 
-        FolderHelpers.CreateFolder( options.name );
+        folderHelpers.create( options.name );
 
-        FolderHelpers
-            .GetAll()
+        folderHelpers
+            .getAll()
             .should("have.length", 1)
             .should("contain.text", options.name );
     });
 
     it("empty name will not be added", () => {
-        FolderHelpers.CreateFolder( '' );
-        FolderHelpers
-            .GetAll()
+        folderHelpers.create( '' );
+
+        folderHelpers
+            .getAll()
             .should("have.length", 0);
     });
 });

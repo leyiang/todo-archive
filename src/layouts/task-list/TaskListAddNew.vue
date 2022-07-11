@@ -23,6 +23,7 @@ function addNewTask(e: KeyboardEvent) {
 
 <template>
     <input
+        data-test="task-add-new"
         type="text"
         class="
              p-1rem rounded border-transparent placeholder-gray-100
