@@ -1,8 +1,10 @@
 import {options} from "./globals";
+import {taskHelpers} from "./TaskHelpers";
 
-export function flushEnv() {
+export function resetEnv() {
     indexedDB.deleteDatabase( options.db.name );
     cy.visit('/')
+    taskHelpers.reset();
 }
 
 export function get( name: string ) {

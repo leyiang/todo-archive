@@ -10,6 +10,13 @@ function addNewTask(e: KeyboardEvent) {
     const target = e.target as HTMLInputElement;
     const value = target.value;
 
+    /**
+     * Empty name, will not be added
+     */
+    if( value.trim().length === 0 ) {
+        return;
+    }
+
     if( todoStore.activeFolder instanceof Folder ) {
         adapter.addTask(value, todoStore.activeFolder.id).then((raw: rawTask) => {
             const task = Task.Load( raw );

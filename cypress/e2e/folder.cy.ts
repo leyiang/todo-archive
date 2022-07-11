@@ -1,9 +1,9 @@
-import {flushEnv} from "../shared/utils";
+import {resetEnv} from "../shared/utils";
 import {folderHelpers} from "../shared/FolderHelpers";
 
 describe('Folder List', () => {
     beforeEach(() => {
-        flushEnv();
+        resetEnv();
     });
 
     it('able to add a new folder', () => {

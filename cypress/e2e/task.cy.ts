@@ -1,10 +1,9 @@
-import FolderHelpers from "../shared/FolderHelpers";
-import {flushEnv} from "../shared/utils";
-import TaskHelpers, {taskHelpers} from "../shared/TaskHelpers";
+import {resetEnv} from "../shared/utils";
+import {taskHelpers} from "../shared/TaskHelpers";
 
 describe('Task List', () => {
     beforeEach(() => {
-        flushEnv();
+        resetEnv();
     });
 
     it('able to add a new task', () => {
@@ -21,9 +20,11 @@ describe('Task List', () => {
     });
 
     it("empty name will not be added", () => {
-        FolderHelpers.CreateFolder( '' );
-        FolderHelpers
-            .GetAll()
-            .should("have.length", 0);
+        taskHelpers.create('');
+        taskHelpers.create('    ');
+
+        taskHelpers
+            .getAll()
+            .should("have.length", 0)
     });
 });
