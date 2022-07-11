@@ -13,7 +13,6 @@ function addNewFolder( e: KeyboardEvent ) {
     /**
      * Reset Input
      */
-    target.value = "";
 
     /**
      * Empty Folder name will not be added
@@ -26,6 +25,7 @@ function addNewFolder( e: KeyboardEvent ) {
         const folder = Folder.Load( raw );
         todoStore.addFolder( folder );
     });
+    target.value = "";
 }
 </script>
 
