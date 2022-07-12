@@ -34,7 +34,10 @@ function isTask( plan: Task | Step ) : plan is Task {
 
                 <div class="flex flex-col gap-5px flex-1">
 
-                    <div class="h-full flex flex-col items-center justify-center">
+                    <div
+                        v-if="plans.length === 0"
+                        class="h-full flex flex-col items-center justify-center"
+                    >
                         <span class="text-8xl mb-2rem">😃</span>
                         <h2 class="font-bold text-white text-4xl text-shadow-md">Let's add a task :)</h2>
                     </div>
