@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Folder from "@/core/model/folder/Folder";
-import {useTodoStore} from "@/stores/TodoStore";
+import {adapter, useTodoStore} from "@/stores/TodoStore";
 import {computed, onMounted, Ref, ref} from "vue";
 import { addNewMenu } from "@/components/common/context-menu/ContextMenuData";
 
@@ -27,7 +27,9 @@ onMounted(() => {
             {
                 name: "Remove Folder",
                 action: () => {
-                    console.log( 1 );
+                    adapter.removeFolder( props.folder.id ).then( r => {
+                        todoStore.removeFolder( props.folder );
+                    });
                 }
             }
         ]);

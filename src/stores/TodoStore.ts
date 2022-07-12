@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import Folder from "@/core/model/folder/Folder";
 import type Task from "@/core/model/Task";
+import {splice} from "@/shared/utils";
 
 export const adapter = new IndexDBAdapter();
 export const useTodoStore = defineStore({
@@ -38,6 +39,10 @@ export const useTodoStore = defineStore({
 
         addFolder( folder: Folder ) {
             this.folders.push( folder );
+        },
+
+        removeFolder( folder: Folder ) {
+            splice( this.folders, folder );
         }
     }
 });

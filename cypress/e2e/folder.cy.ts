@@ -1,4 +1,4 @@
-import {resetEnv} from "../shared/utils";
+import {get, resetEnv} from "../shared/utils";
 import {folderHelpers} from "../shared/helpers/FolderHelper";
 
 describe('Folder List', () => {
@@ -26,4 +26,20 @@ describe('Folder List', () => {
             .getAll()
             .should("have.length", 0);
     });
+
+    it("able to remove folder", () => {
+        folderHelpers.create("folder");
+
+        folderHelpers
+            .getFirst()
+            .rightclick();
+
+        get("context-menu")
+            .contains("Remove Folder")
+            .click();
+
+        folderHelpers
+            .getAll()
+            .should("have.length", 0);
+    })
 });

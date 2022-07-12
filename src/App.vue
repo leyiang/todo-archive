@@ -25,6 +25,8 @@ todoStore.init();
             class="w-300px"
         />
 
-        <ContextMenu />
+        <ContextMenu
+            data-test="context-menu"
+        />
     </div>
 </template>
