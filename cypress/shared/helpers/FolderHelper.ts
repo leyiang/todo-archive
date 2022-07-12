@@ -1,4 +1,3 @@
-import {get} from "../utils";
 import ModelHelper from "./ModelHelper";
 
 class FolderHelper extends ModelHelper {

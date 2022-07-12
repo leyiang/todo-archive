@@ -15,7 +15,10 @@ const finishIcon = useFinishIcon(props.step);
 </script>
 
 <template>
-    <div class="step-item flex items-center text-1rem py-3">
+    <div
+        data-test="step-item"
+        class="step-item flex items-center text-1rem py-3"
+    >
         <button
             class="flex justify-between items-between text-xl mr-2"
         >

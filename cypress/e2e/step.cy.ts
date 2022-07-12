@@ -1,5 +1,5 @@
 import {resetEnv} from "../shared/utils";
-import {taskHelpers} from "../shared/helpers/TaskHelper";
+import {stepHelpers} from "../shared/helpers/StepHelper";
 
 describe('Step List', () => {
     beforeEach(() => {
@@ -11,19 +11,20 @@ describe('Step List', () => {
             name: "step name",
         }
 
-        taskHelpers.create( options.name );
+        stepHelpers.create( options.name );
 
-        taskHelpers
+        stepHelpers
             .getAll()
             .should("have.length", 1)
-            .should("contain.text", options.name );
+            .find("input")
+            .should("contain.value", options.name );
     });
 
     it("empty name will not be added", () => {
-        taskHelpers.create('');
-        taskHelpers.create('    ');
+        stepHelpers.create('');
+        stepHelpers.create('    ');
 
-        taskHelpers
+        stepHelpers
             .getAll()
             .should("have.length", 0)
     });

@@ -1,23 +1,25 @@
-import {folderHelpers} from "./FolderHelper";
 import ModelHelper from "./ModelHelper";
+import {taskHelpers} from "./TaskHelper";
+import {folderHelpers} from "./FolderHelper";
 
 class StepHelper extends ModelHelper {
     private init = false;
 
     constructor() {
         super({
-            item: "task-item",
-            input: "task-add-new"
+            item: "step-item",
+            input: "step-add-new"
         });
     }
 
     create( name: string ) {
         if( ! this.init ) {
-            folderHelpers.create("folder");
+            taskHelpers.create("task");
             this.init = true;
         }
 
         folderHelpers.getFirst().click();
+        taskHelpers.getFirst().click();
 
         const chain = this.getAddNewInput().click();
 
