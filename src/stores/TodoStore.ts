@@ -3,6 +3,7 @@ import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import Folder from "@/core/model/folder/Folder";
 import type Task from "@/core/model/Task";
 import {splice} from "@/shared/utils";
+import type Step from "@/core/model/Step";
 
 export const adapter = new IndexDBAdapter();
 export const useTodoStore = defineStore({
@@ -70,6 +71,17 @@ export const useTodoStore = defineStore({
             if( this.activeTask === task ) {
                 this.activeTask = null;
             }
+        },
+
+        removeStep( step: Step ) {
+            /**
+             * Step should be inside the active task
+             */
+            if( this.activeTask === null ) {
+                return;
+            }
+
+            splice( this.activeTask.steps, step );
         }
     }
 });

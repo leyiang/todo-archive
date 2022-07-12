@@ -5,7 +5,9 @@ import { Icon } from "@iconify/vue"
 import useFinishIcon from "@/composables/useFinishIcon";
 import {onMounted, ref, type Ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
+import {adapter, useTodoStore} from "@/stores/TodoStore";
 
+const todoStore = useTodoStore();
 const props = defineProps({
     step: {
         type: Step,
@@ -20,7 +22,9 @@ onMounted(() => {
             {
                 name: "Remove Step",
                 action: () => {
-                    console.log( 1 );
+                    adapter.removeStep( props.step.id ).then( () => {
+                        todoStore.removeStep( props.step );
+                    });
                 }
             }
         ]);
@@ -32,6 +36,7 @@ const finishIcon = useFinishIcon(props.step);
 <template>
     <div
         data-test="step-item"
+        data-context-trigger
         class="step-item flex items-center text-1rem py-3"
         ref="el"
     >

@@ -1,4 +1,4 @@
-import {resetEnv} from "../shared/utils";
+import {clickMenu, resetEnv} from "../shared/utils";
 import {stepHelpers} from "../shared/helpers/StepHelper";
 
 describe('Step List', () => {
@@ -27,5 +27,19 @@ describe('Step List', () => {
         stepHelpers
             .getAll()
             .should("have.length", 0)
+    });
+
+    it('step can be removed', () => {
+        stepHelpers.create("step");
+
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Remove Step");
+
+        stepHelpers
+            .getAll()
+            .should("have.length", 0);
     });
 });

@@ -3,6 +3,7 @@ import ContextMenuItem from "./ContextMenuItem.vue";
 import {computed, onMounted, type Ref, ref} from "vue";
 import {useRightClick} from "@/composables/useRightClick";
 import {type menuSpecItem, menuSpecMap} from "@/components/common/context-menu/ContextMenuData";
+import {useEventListener} from "@/composables/useEventListener";
 
 const menus: Ref<menuSpecItem[]> = ref([]);
 const show = ref(false);
@@ -19,14 +20,29 @@ function triggerAction( item: menuSpecItem ) {
     show.value = false;
 }
 
-onMounted(() => {
-    window.addEventListener("contextmenu", (e) => {
-        if( menuSpecMap.has( e.target ) ) {
-            e.preventDefault();
-            menus.value = menuSpecMap.get( e.target );
-            show.value = true;
-        }
-    });
+function getRealTarget( el: HTMLElement | null ): null | HTMLElement {
+    if( el === null ) return null;
+
+    if( el.dataset.contextTrigger !== undefined ) {
+        return el;
+    }
+
+    if( el.parentElement ) {
+        return getRealTarget( el.parentElement );
+    }
+
+    return null;
+}
+
+useEventListener("contextmenu", e => {
+    console.log( e.target );
+    const target = getRealTarget( e.target as HTMLElement );
+
+    if( menuSpecMap.has( target ) ) {
+        e.preventDefault();
+        menus.value = menuSpecMap.get( target );
+        show.value = true;
+    }
 });
 </script>
 
