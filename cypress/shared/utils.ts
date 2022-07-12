@@ -13,3 +13,9 @@ export function get( name: string ) {
     //@ts-ignore, cy will be injected
     return cy.get(`[data-test='${ name }']`);
 }
+
+export function clickMenu( label: string ) {
+    get("context-menu")
+        .contains(label )
+        .click();
+}

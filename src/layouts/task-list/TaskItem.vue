@@ -3,7 +3,7 @@ import Task from "@/core/model/Task";
 import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import useFinishIcon from "@/composables/useFinishIcon";
-import {onMounted, Ref, ref} from "vue";
+import {onMounted, type Ref, ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 
 const todoStore = useTodoStore();
@@ -36,7 +36,9 @@ onMounted(() => {
             {
                 name: "Remove Task",
                 action: () => {
-                    console.log( 1 );
+                    adapter.removeTask( props.task.id ).then(() => {
+                        todoStore.removeTask( props.task );
+                    });
                 }
             }
         ]);

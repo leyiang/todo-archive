@@ -50,6 +50,17 @@ export const useTodoStore = defineStore({
             if( this.activeFolder === folder ) {
                 this.activeFolder = null;
             }
+        },
+
+        removeTask( task: Task ) {
+            /**
+             * The removing task should be inside activeFolder
+             */
+            if( this.activeFolder === null ) {
+                return;
+            }
+
+            splice( this.activeFolder.plans, task );
         }
     }
 });

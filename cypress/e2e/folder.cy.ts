@@ -1,4 +1,4 @@
-import {get, resetEnv} from "../shared/utils";
+import {clickMenu, get, resetEnv} from "../shared/utils";
 import {folderHelpers} from "../shared/helpers/FolderHelper";
 
 describe('Folder List', () => {
@@ -52,9 +52,7 @@ describe('Folder List', () => {
             .click()
             .rightclick();
 
-        get("context-menu")
-            .contains("Remove Folder")
-            .click();
+        clickMenu("Remove Folder");
 
         folderHelpers
             .getAll()
