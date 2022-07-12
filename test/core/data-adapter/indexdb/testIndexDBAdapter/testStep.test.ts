@@ -87,4 +87,18 @@ describe('IndexDB Adapter - Step', () => {
             throw "Something went wrong";
         }
     });
+
+    it("Able to remove step", async () => {
+        const name = "Step Name";
+
+        const rawFolder = await adapter.addFolder("Folder Name");
+        const rawTask = await adapter.addTask("Task Name", rawFolder.id );
+        const rawStep = await adapter.addStep(name, rawTask.id);
+
+        await adapter.removeStep( rawStep.id );
+
+        await adapter.getStepsForTest().then( steps => {
+            expect( steps.length ).toBe( 0 );
+        });
+    });
 });
