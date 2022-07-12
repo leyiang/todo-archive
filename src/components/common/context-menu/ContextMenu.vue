@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContextMenuItem from "./ContextMenuItem.vue";
-import {computed, onMounted, type Ref, ref} from "vue";
+import {computed, nextTick, onMounted, type Ref, ref} from "vue";
 import {useRightClick} from "@/composables/useRightClick";
 import {type menuSpecItem, menuSpecMap} from "@/components/common/context-menu/ContextMenuData";
 import {useEventListener} from "@/composables/useEventListener";
@@ -9,11 +9,18 @@ import {useClickOutside} from "@/composables/useClickOutside";
 const menus: Ref<menuSpecItem[]> = ref([]);
 const show = ref(false);
 const pos = useRightClick();
-const el = ref(null);
+const el: Ref<null | HTMLDivElement> = ref(null);
+const width = 300;
 
 const menuPosStyle = computed(() => {
+    let { x, y } = pos.value;
+
+    if( x + width > window.innerWidth ) {
+        x = window.innerWidth - width;
+    }
+
     return {
-        transform: `translate(${ pos.value.x }px, ${ pos.value.y }px)`
+        transform: `translate(${ x }px, ${ y }px)`
     }
 });
 
@@ -47,7 +54,6 @@ onMounted(() => {
 });
 
 useEventListener("contextmenu", e => {
-    console.log( e.target );
     const target = getRealTarget( e.target as HTMLElement );
 
     if( menuSpecMap.has( target ) ) {
@@ -61,7 +67,8 @@ useEventListener("contextmenu", e => {
 <template>
     <div
         v-show="show"
-        class="context-menu flex flex-col bg-white absolute py-8px rounded shadow border border-gray-300 w-300px"
+        class="context-menu flex flex-col bg-white absolute py-8px rounded shadow border border-gray-300"
+        :class="[`w-${ width }px`]"
         :style="menuPosStyle"
         ref="el"
     >
