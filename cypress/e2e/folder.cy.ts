@@ -1,5 +1,5 @@
 import {resetEnv} from "../shared/utils";
-import {folderHelpers} from "../shared/FolderHelpers";
+import {folderHelpers} from "../shared/helpers/FolderHelper";
 
 describe('Folder List', () => {
     beforeEach(() => {

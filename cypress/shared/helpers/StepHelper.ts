@@ -1,9 +1,8 @@
-import {folderHelpers} from "./FolderHelpers";
-import {get} from "./utils";
+import {folderHelpers} from "./FolderHelper";
 import ModelHelper from "./ModelHelper";
 
-class TaskHelpers extends ModelHelper {
-    private initFolder = false;
+class StepHelper extends ModelHelper {
+    private init = false;
 
     constructor() {
         super({
@@ -13,9 +12,9 @@ class TaskHelpers extends ModelHelper {
     }
 
     create( name: string ) {
-        if( ! this.initFolder ) {
+        if( ! this.init ) {
             folderHelpers.create("folder");
-            this.initFolder = true;
+            this.init = true;
         }
 
         folderHelpers.getFirst().click();
@@ -32,8 +31,8 @@ class TaskHelpers extends ModelHelper {
     }
 
     reset() {
-        this.initFolder = false;
+        this.init = false;
     }
 }
 
-export const taskHelpers = new TaskHelpers();
+export const stepHelpers = new StepHelper();

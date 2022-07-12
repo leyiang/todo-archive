@@ -1,14 +1,14 @@
 import {resetEnv} from "../shared/utils";
 import {taskHelpers} from "../shared/helpers/TaskHelper";
 
-describe('Task List', () => {
+describe('Step List', () => {
     beforeEach(() => {
         resetEnv();
     });
 
-    it('able to add a new task', () => {
+    it('able to add a new step', () => {
         const options = {
-            name: "task name",
+            name: "step name",
         }
 
         taskHelpers.create( options.name );

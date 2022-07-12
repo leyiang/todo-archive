@@ -1,7 +1,7 @@
-import {get} from "./utils";
+import {get} from "../utils";
 import ModelHelper from "./ModelHelper";
 
-class FolderHelpers extends ModelHelper {
+class FolderHelper extends ModelHelper {
     constructor() {
         super({
             item: "folder-item",
@@ -22,4 +22,4 @@ class FolderHelpers extends ModelHelper {
     }
 }
 
-export const folderHelpers = new FolderHelpers();
+export const folderHelpers = new FolderHelper();

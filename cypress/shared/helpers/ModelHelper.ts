@@ -1,4 +1,4 @@
-import {get} from "./utils";
+import {get} from "../utils";
 
 type SelectorOptions = {
     item: string;

@@ -1,5 +1,5 @@
 import {options} from "./globals";
-import {taskHelpers} from "./TaskHelpers";
+import {taskHelpers} from "./helpers/TaskHelper";
 
 export function resetEnv() {
     indexedDB.deleteDatabase( options.db.name );
