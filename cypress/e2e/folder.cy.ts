@@ -42,4 +42,25 @@ describe('Folder List', () => {
             .getAll()
             .should("have.length", 0);
     })
+
+    it("remove folder will de-active it", () => {
+
+        folderHelpers.create("folder");
+
+        folderHelpers
+            .getFirst()
+            .click()
+            .rightclick();
+
+        get("context-menu")
+            .contains("Remove Folder")
+            .click();
+
+        folderHelpers
+            .getAll()
+            .should("have.length", 0);
+
+        get("task-list")
+            .should("contain", "Let's select a folder")
+    });
 });

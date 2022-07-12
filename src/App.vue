@@ -16,6 +16,7 @@ todoStore.init();
         />
 
         <TaskList
+            data-test="task-list"
             class="flex-1 bg-green-400"
         />
 
