@@ -27,6 +27,18 @@ describe('IndexDB Adapter - Task', () => {
         });
     });
 
+    it("Able to remove Task", async () => {
+        const name = "Task Naem";
+
+        const rawFolder = await adapter.addFolder("Folder Name");
+        const rawTask = await adapter.addTask(name, rawFolder.id );
+        await adapter.removeTask( rawTask.id );
+
+        await adapter.getTasksForTest().then( tasks => {
+            expect( tasks.length ).toBe( 0 );
+        });
+    });
+
     it("Empty task name will not be added", async () => {
         const rawFolder = await adapter.addFolder("Folder Name");
         await expect( adapter.addTask("  ", rawFolder.id ) ).rejects.toThrow();

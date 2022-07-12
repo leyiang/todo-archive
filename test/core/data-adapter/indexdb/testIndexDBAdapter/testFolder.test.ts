@@ -88,9 +88,8 @@ describe('IndexDB Adapter - Folder', () => {
             expect( folders.length ).toBe( 0 );
         });
 
-        await adapter.addFolder(name).then(async rawFolder => {
-            await adapter.removeFolder( rawFolder.id );
-        });
+        const rawFolder = await adapter.addFolder(name);
+        await adapter.removeFolder( rawFolder.id );
 
         await adapter.loadData().then( folders => {
             expect( folders.length ).toBe( 0 );

@@ -103,16 +103,6 @@ export default class IndexDBAdapter {
         });
     }
 
-    removeFolder( id: number ): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.accessor.onReady(() => {
-                this.accessor.remove("folder", id).then(() => {
-                    resolve();
-                });
-            })
-        });
-    }
-
     addTask( name: string, folder_id: number ): Promise<rawTask> {
         return new Promise((resolve, reject) => {
             if( isNameEmpty(name) ) {
@@ -264,6 +254,36 @@ export default class IndexDBAdapter {
                     });
                 });
             });
+        });
+    }
+
+    removeFolder( id: number ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.onReady(() => {
+                this.accessor.remove("folder", id).then(() => {
+                    resolve();
+                });
+            })
+        });
+    }
+
+    removeTask( id: number ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.onReady(() => {
+                this.accessor.remove("task", id).then(() => {
+                    resolve();
+                });
+            })
+        });
+    }
+
+    removeStep( id: number ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.onReady(() => {
+                this.accessor.remove("step", id).then(() => {
+                    resolve();
+                });
+            })
         });
     }
 }
