@@ -80,4 +80,20 @@ describe('IndexDB Adapter - Folder', () => {
             throw "Something went wrong!";
         }
     });
+
+    it("Able to remove Folder", async () => {
+        const name = "new Folder";
+
+        await adapter.loadData().then( folders => {
+            expect( folders.length ).toBe( 0 );
+        });
+
+        await adapter.addFolder(name).then(async rawFolder => {
+            await adapter.removeFolder( rawFolder.id );
+        });
+
+        await adapter.loadData().then( folders => {
+            expect( folders.length ).toBe( 0 );
+        })
+    });
 });

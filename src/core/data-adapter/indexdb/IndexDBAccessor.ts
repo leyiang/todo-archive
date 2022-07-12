@@ -133,6 +133,17 @@ export default class IndexDBAccessor {
         });
     }
 
+    remove( storeName: string, key: number ): Promise<void> {
+        return new Promise(resolve => {
+            const request = this.#getStore(storeName, "readwrite")
+                .delete( key );
+
+            request.onsuccess = () => {
+                resolve();
+            }
+        })
+    }
+
     clear( storeName: string ): Promise<void> {
         return new Promise((resolve) => {
             const request = this.#getStore(storeName, "readwrite")
