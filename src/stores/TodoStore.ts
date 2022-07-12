@@ -53,6 +53,8 @@ export const useTodoStore = defineStore({
         },
 
         removeTask( task: Task ) {
+            // TODO: What about special folder?
+
             /**
              * The removing task should be inside activeFolder
              */
@@ -61,6 +63,13 @@ export const useTodoStore = defineStore({
             }
 
             splice( this.activeFolder.plans, task );
+
+            /**
+             * De-active the removed task
+             */
+            if( this.activeTask === task ) {
+                this.activeTask = null;
+            }
         }
     }
 });

@@ -26,13 +26,19 @@ function isTask( plan: Task | Step ) : plan is Task {
 <template>
     <main class="task-list flex flex-col px-1rem py-2rem gap-1rem">
         <template v-if="todoStore.activeFolder">
-            <div class="flex-1">
+            <div class="flex-1 flex flex-col">
                 <GhostInput
                     :value="todoStore?.activeFolder?.name"
                     class="mb-1.5rem font-bold text-2xl text-white"
                 />
 
-                <div class="flex flex-col gap-5px">
+                <div class="flex flex-col gap-5px flex-1">
+
+                    <div class="h-full flex flex-col items-center justify-center">
+                        <span class="text-8xl mb-2rem">😃</span>
+                        <h2 class="font-bold text-white text-4xl text-shadow-md">Let's select a folder :)</h2>
+                    </div>
+
                     <template v-for="plan in plans">
                         <TaskItem
                             v-if="isTask( plan )"

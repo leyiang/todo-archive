@@ -1,4 +1,4 @@
-import {clickMenu, resetEnv} from "../shared/utils";
+import {clickMenu, get, resetEnv} from "../shared/utils";
 import {taskHelpers} from "../shared/helpers/TaskHelper";
 
 describe('Task List', () => {
@@ -40,5 +40,18 @@ describe('Task List', () => {
         taskHelpers
             .getAll()
             .should("have.length", 0);
+    });
+
+    it('remove task will de-focus it', () => {
+        taskHelpers.create("task");
+
+        taskHelpers
+            .getFirst()
+            .click()
+            .rightclick();
+
+        clickMenu("Remove Task");
+
+        get("task-detail").should("not.be.undefined");
     });
 });
