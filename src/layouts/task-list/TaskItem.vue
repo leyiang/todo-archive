@@ -2,8 +2,9 @@
 import Task from "@/core/model/Task";
 import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
-import {computed} from "vue";
 import useFinishIcon from "@/composables/useFinishIcon";
+import {onMounted, Ref, ref} from "vue";
+import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -27,6 +28,20 @@ function toggleTaskFinishStatus() {
         props.task.finished = !finished;
     });
 }
+
+const el: Ref<HTMLElement | null> = ref(null);
+onMounted(() => {
+    if( el.value !== null ) {
+        addNewMenu( el.value, [
+            {
+                name: "Remove Task",
+                action: () => {
+                    console.log( 1 );
+                }
+            }
+        ]);
+    }
+});
 </script>
 
 <template>
@@ -35,6 +50,7 @@ function toggleTaskFinishStatus() {
         class="task-item bg-white border-none p-1rem rounded text-lg flex items-center"
         :class="{ 'text-gray-500 line-through': task.finished }"
         @click="setActive"
+        ref="el"
     >
         <button
             class="flex items-center justify-center mr-1rem text-2xl"

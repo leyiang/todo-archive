@@ -3,6 +3,7 @@ import FolderList from "@/layouts/folder-list/FolderList.vue"
 import TaskList from "@/layouts/task-list/TaskList.vue"
 import TaskDetail from "@/layouts/task-detail/TaskDetail.vue";
 import {useTodoStore} from "@/stores/TodoStore";
+import ContextMenu from "@/components/common/context-menu/ContextMenu.vue";
 
 const todoStore = useTodoStore();
 todoStore.init();
@@ -23,5 +24,7 @@ todoStore.init();
             :task="todoStore.activeTask"
             class="w-300px"
         />
+
+        <ContextMenu />
     </div>
 </template>
