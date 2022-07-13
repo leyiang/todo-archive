@@ -1,6 +1,7 @@
 import ModelHelper from "./ModelHelper";
 import {taskHelpers} from "./TaskHelper";
 import {folderHelpers} from "./FolderHelper";
+import {get} from "../utils";
 
 class StepHelper extends ModelHelper {
     private init = false;
@@ -15,11 +16,11 @@ class StepHelper extends ModelHelper {
     create( name: string ) {
         if( ! this.init ) {
             taskHelpers.create("task");
+            folderHelpers.getFirst().click();
+            taskHelpers.getFirst().click();
+
             this.init = true;
         }
-
-        folderHelpers.getFirst().click();
-        taskHelpers.getFirst().click();
 
         const chain = this.getAddNewInput().click();
 

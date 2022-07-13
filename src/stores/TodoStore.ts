@@ -38,6 +38,14 @@ export const useTodoStore = defineStore({
             this.activeTask = task;
         },
 
+        toggleTaskActive( task: Task ) {
+            if( this.activeTask === task ) {
+                this.activeTask = null;
+            } else {
+                this.setActiveTask( task );
+            }
+        },
+
         addFolder( folder: Folder ) {
             this.folders.push( folder );
         },

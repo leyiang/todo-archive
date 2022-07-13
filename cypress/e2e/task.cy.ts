@@ -53,6 +53,15 @@ describe('Task List', () => {
             .should("have.length", 0);
     });
 
+    it("able to toggle detail", () => {
+        taskHelpers.create("task");
+        taskHelpers.getFirst().click();
+        get("task-detail").should("exist");
+
+        taskHelpers.getFirst().click();
+        get("task-detail").should("not.exist");
+    });
+
     it('remove task will de-focus it', () => {
         taskHelpers.create("task");
 

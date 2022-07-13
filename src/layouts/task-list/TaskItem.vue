@@ -16,8 +16,8 @@ const props = defineProps({
 
 const finishIcon = useFinishIcon( props.task );
 
-function setActive() {
-    todoStore.setActiveTask( props.task );
+function toggleTaskActive() {
+    todoStore.toggleTaskActive( props.task );
 }
 
 function toggleTaskFinishStatus() {
@@ -52,7 +52,7 @@ onMounted(() => {
         data-context-trigger
         class="task-item bg-white border-none p-1rem rounded text-lg flex items-center"
         :class="{ 'text-gray-500 line-through': task.finished }"
-        @click.self="setActive"
+        @click="toggleTaskActive"
         ref="el"
     >
         <button

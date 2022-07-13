@@ -15,6 +15,7 @@ const props = defineProps({
     }
 });
 
+const finishIcon = useFinishIcon(props.step);
 const el: Ref<HTMLElement | null> = ref(null);
 onMounted(() => {
     if( el.value !== null ) {
@@ -30,7 +31,15 @@ onMounted(() => {
         ]);
     }
 });
-const finishIcon = useFinishIcon(props.step);
+
+function finishStep() {
+    const currentFinishStatus = props.step.finished;
+    const status = ! currentFinishStatus;
+
+    adapter.setStepProp( props.step.id, "finished", status ).then( () => {
+        props.step.finished = status;
+    });
+}
 </script>
 
 <template>
@@ -38,10 +47,13 @@ const finishIcon = useFinishIcon(props.step);
         data-test="step-item"
         data-context-trigger
         class="step-item flex items-center text-1rem py-3"
+        :class="{ 'line-through': step.finished }"
         ref="el"
     >
         <button
+            data-test="step-finish-button"
             class="flex justify-between items-between text-xl mr-2"
+            @click="finishStep"
         >
             <Icon :icon="finishIcon"></Icon>
         </button>

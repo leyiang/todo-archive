@@ -63,6 +63,21 @@ describe('Folder List', () => {
             .should("contain", "Let's select a folder")
     });
 
+    it("remove folder will de-active its task", () => {
+        taskHelpers.create("task");
+        taskHelpers.getFirst().click();
+
+        folderHelpers
+            .getFirst()
+            .click()
+            .rightclick();
+
+        clickMenu("Remove Folder");
+
+        get("task-detail")
+            .should("not.exist");
+    });
+
     it('unfinished plan number show correctly', () => {
         folderHelpers.create("folder");
 

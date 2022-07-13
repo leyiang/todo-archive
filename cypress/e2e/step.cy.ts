@@ -1,4 +1,4 @@
-import {clickMenu, resetEnv} from "../shared/utils";
+import {clickMenu, get, resetEnv} from "../shared/utils";
 import {stepHelpers} from "../shared/helpers/StepHelper";
 
 describe('Step List', () => {
@@ -41,5 +41,17 @@ describe('Step List', () => {
         stepHelpers
             .getAll()
             .should("have.length", 0);
+    });
+
+    it("able to finish a step", () => {
+        stepHelpers.create("step");
+
+        get("step-finish-button")
+            .first()
+            .click();
+
+        stepHelpers
+            .getFirst()
+            .should("have.class", "line-through");
     });
 });
