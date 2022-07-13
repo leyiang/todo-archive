@@ -47,7 +47,7 @@ function finishStep() {
         data-test="step-item"
         data-context-trigger
         class="step-item flex items-center text-1rem py-3"
-        :class="{ 'line-through': step.finished }"
+        :class="{ 'line-through text-gray-500': step.finished }"
         ref="el"
     >
         <button

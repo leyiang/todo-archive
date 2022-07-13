@@ -52,6 +52,7 @@ describe('Step List', () => {
 
         stepHelpers
             .getFirst()
-            .should("have.class", "line-through");
+            .should("have.class", "line-through")
+            .should("have.class", "text-gray-500");
     });
 });
