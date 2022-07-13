@@ -82,4 +82,10 @@ describe('Task List', () => {
 
         get("task-detail").should("not.exist");
     });
+
+    it('able to use keyboard to toggle detail', function () {
+        taskHelpers.create("task");
+        taskHelpers.getFirst().focus().type("{enter}");
+        get("task-detail").should("exist");
+    });
 });

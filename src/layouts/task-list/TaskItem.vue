@@ -48,11 +48,13 @@ onMounted(() => {
 
 <template>
     <div
+        tabindex="0"
         data-test="task-item"
         data-context-trigger
         class="task-item bg-white border-none p-1rem rounded text-lg flex items-center"
         :class="{ 'text-gray-500 line-through': task.finished }"
         @click="toggleTaskActive"
+        @keydown.enter="toggleTaskActive"
         ref="el"
     >
         <button
