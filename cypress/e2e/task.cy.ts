@@ -28,6 +28,17 @@ describe('Task List', () => {
             .should("have.length", 0)
     });
 
+    it("able to finish a task", () => {
+        taskHelpers.create("123");
+
+        taskHelpers
+            .finishFirst();
+
+        taskHelpers
+            .getFirst()
+            .should("have.class", "line-through");
+    });
+
     it('able to add a remove task', () => {
         taskHelpers.create("task");
 
@@ -51,6 +62,13 @@ describe('Task List', () => {
             .rightclick();
 
         clickMenu("Remove Task");
+
+        get("task-detail").should("not.exist");
+    });
+
+    it("finish task will not expand detail", () => {
+        taskHelpers.create("task");
+        taskHelpers.finishFirst();
 
         get("task-detail").should("not.exist");
     });

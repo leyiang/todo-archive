@@ -34,6 +34,12 @@ class TaskHelper extends ModelHelper {
     reset() {
         this.initFolder = false;
     }
+
+    finishFirst() {
+        get("task-finish-button")
+            .first()
+            .click();
+    }
 }
 
 export const taskHelpers = new TaskHelper();

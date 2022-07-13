@@ -78,5 +78,27 @@ describe('Folder List', () => {
 
         get("unfinished-task-number")
             .should("have.text", "2");
+
+        taskHelpers.finishFirst();
+
+        get("unfinished-task-number")
+            .should("have.text", "1");
+    });
+
+    it("able to rename folder", () => {
+        const newName = "new Folder Name";
+
+        folderHelpers.create("folder");
+        folderHelpers.getFirst().click();
+
+        get("folder-rename-input")
+            .first()
+            .clear()
+            .type( newName )
+            .type("{enter}");
+
+        folderHelpers
+            .getFirst()
+            .should("contain.text", newName);
     });
 });

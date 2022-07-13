@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {useTodoStore} from "@/stores/TodoStore";
+import {adapter, useTodoStore} from "@/stores/TodoStore";
 import GhostInput from "@/components/common/GhostInput.vue";
 import TaskListAddNew from "./TaskListAddNew.vue";
 import TaskItem from "./TaskItem.vue";
 import { computed } from "vue";
 import Task from "@/core/model/Task";
 import type Step from "@/core/model/Step";
+import type Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
 const plans = computed(() => {
@@ -21,6 +22,18 @@ const plans = computed(() => {
 function isTask( plan: Task | Step ) : plan is Task {
     return plan instanceof Task;
 }
+
+function renameFolder( e: any ) {
+    const value = e.target.value;
+
+    if( todoStore.activeFolder !== null ) {
+        const folder = todoStore.activeFolder as Folder;
+
+        adapter.setFolderProp( todoStore.activeFolder.id, "name", value).then(() => {
+            folder.name = value;
+        });
+    }
+}
 </script>
 
 <template>
@@ -28,8 +41,10 @@ function isTask( plan: Task | Step ) : plan is Task {
         <template v-if="todoStore.activeFolder">
             <div class="flex-1 flex flex-col">
                 <GhostInput
+                    data-test="folder-rename-input"
                     :value="todoStore?.activeFolder?.name"
                     class="mb-1.5rem font-bold text-2xl text-white"
+                    @change="renameFolder"
                 />
 
                 <div class="flex flex-col gap-5px flex-1">
