@@ -2,9 +2,11 @@ import { defineConfig } from "windicss/helpers";
 
 export default defineConfig({
     theme: {
-        textColor: {
-            white: "#FFF",
-            black: "#000"
+        extend: {
+            colors: {
+                white: "#FFF",
+                black: "#000"
+            }
         }
     }
 });

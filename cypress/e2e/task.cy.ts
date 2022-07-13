@@ -36,7 +36,8 @@ describe('Task List', () => {
 
         taskHelpers
             .getFirst()
-            .should("have.class", "line-through");
+            .should("have.class", "line-through")
+            .should("have.class", "text-gray-500");
     });
 
     it('able to add a remove task', () => {
