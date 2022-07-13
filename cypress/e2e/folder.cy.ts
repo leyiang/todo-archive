@@ -1,5 +1,6 @@
 import {clickMenu, get, resetEnv} from "../shared/utils";
 import {folderHelpers} from "../shared/helpers/FolderHelper";
+import {taskHelpers} from "../shared/helpers/TaskHelper";
 
 describe('Folder List', () => {
     beforeEach(() => {
@@ -60,5 +61,22 @@ describe('Folder List', () => {
 
         get("task-list")
             .should("contain", "Let's select a folder")
+    });
+
+    it('unfinished plan number show correctly', () => {
+        folderHelpers.create("folder");
+
+        get("unfinished-task-number")
+            .should("not.exist");
+
+        taskHelpers.create("task", false );
+
+        get("unfinished-task-number")
+            .should("have.text", "1");
+
+        taskHelpers.create("task", false );
+
+        get("unfinished-task-number")
+            .should("have.text", "2");
     });
 });

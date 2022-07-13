@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Folder from "@/core/model/folder/Folder";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
-import {computed, onMounted, Ref, ref} from "vue";
+import {computed, onMounted, type Ref, ref} from "vue";
 import { addNewMenu } from "@/components/common/context-menu/ContextMenuData";
 
 const todoStore = useTodoStore();
@@ -14,6 +14,12 @@ const props = defineProps({
 
 const currentFolderActive = computed(() => {
     return todoStore.activeFolder === props.folder;
+});
+
+const unfinishedTaskNumber = computed(() => {
+    return props.folder.plans.reduce( (total, plan) => {
+        return plan.finished ? total : total + 1;
+    }, 0);
 });
 
 function setActive() {
@@ -49,6 +55,10 @@ onMounted(() => {
         ref="el"
     >
         <span>{{ folder.name }}</span>
-        <span class="text-gray-400">1</span>
+        <span
+            data-test="unfinished-task-number"
+            v-if="unfinishedTaskNumber > 0"
+            class="text-gray-400"
+        >{{ unfinishedTaskNumber }}</span>
     </button>
 </template>

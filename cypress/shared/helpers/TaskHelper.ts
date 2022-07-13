@@ -12,8 +12,8 @@ class TaskHelper extends ModelHelper {
         });
     }
 
-    create( name: string ) {
-        if( ! this.initFolder ) {
+    create( name: string, createFolder = true ) {
+        if( ! this.initFolder && createFolder ) {
             folderHelpers.create("folder");
             this.initFolder = true;
         }

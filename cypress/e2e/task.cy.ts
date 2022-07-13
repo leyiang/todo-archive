@@ -6,27 +6,27 @@ describe('Task List', () => {
         resetEnv();
     });
 
-    // it('able to add a new task', () => {
-    //     const options = {
-    //         name: "task name",
-    //     }
-    //
-    //     taskHelpers.create( options.name );
-    //
-    //     taskHelpers
-    //         .getAll()
-    //         .should("have.length", 1)
-    //         .should("contain.text", options.name );
-    // });
-    //
-    // it("empty name will not be added", () => {
-    //     taskHelpers.create('');
-    //     taskHelpers.create('    ');
-    //
-    //     taskHelpers
-    //         .getAll()
-    //         .should("have.length", 0)
-    // });
+    it('able to add a new task', () => {
+        const options = {
+            name: "task name",
+        }
+
+        taskHelpers.create( options.name );
+
+        taskHelpers
+            .getAll()
+            .should("have.length", 1)
+            .should("contain.text", options.name );
+    });
+
+    it("empty name will not be added", () => {
+        taskHelpers.create('');
+        taskHelpers.create('    ');
+
+        taskHelpers
+            .getAll()
+            .should("have.length", 0)
+    });
 
     it('able to add a remove task', () => {
         taskHelpers.create("task");
@@ -52,6 +52,6 @@ describe('Task List', () => {
 
         clickMenu("Remove Task");
 
-        get("task-detail").should("not.be.undefined");
+        get("task-detail").should("not.exist");
     });
 });
