@@ -58,6 +58,11 @@ export const useTodoStore = defineStore({
              */
             if( this.activeFolder === folder ) {
                 this.activeFolder = null;
+
+                /**
+                 * Should also de-active the task
+                 */
+                this.activeTask = null;
             }
         },
 
