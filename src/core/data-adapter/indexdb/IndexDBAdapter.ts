@@ -45,6 +45,15 @@ export default class IndexDBAdapter {
     }
 
     loadData(): Promise<rawFolder[]> {
+        const defaultFolders: rawFolder[] = [
+            {
+                id: 0,
+                name: "Today",
+                order: 10,
+                plans: [],
+            }
+        ];
+
         return new Promise(resolve => {
             this.accessor.onReady(() => {
                 Promise.all([
@@ -52,11 +61,11 @@ export default class IndexDBAdapter {
                     this.accessor.getAll("task"),
                     this.accessor.getAll("step"),
                 ]).then(([ folders, tasks, steps ]) => {
-                    this.folders = folders;
+                    this.folders = [...defaultFolders, ...folders];
                     this.tasks = tasks;
                     this.steps = steps;
 
-                    const data = this.organizer.organize( folders, tasks, steps );
+                    const data = this.organizer.organize( this.folders, tasks, steps );
                     resolve( data );
                 });
             })
