@@ -12,13 +12,8 @@ class TaskHelper extends ModelHelper {
         });
     }
 
-    create( name: string, createFolder = true ) {
-        if( ! this.initFolder && createFolder ) {
-            folderHelpers.create("folder");
-            this.initFolder = true;
-        }
-
-        folderHelpers.getFirst().click();
+    realCreate( name: string, folder: Cypress.Chainable<JQuery>) {
+        folder.click();
 
         const chain = this.getAddNewInput().click();
 
@@ -28,6 +23,19 @@ class TaskHelper extends ModelHelper {
             return chain
                 .type( name )
                 .type("{enter}")
+        }
+    }
+
+    create( name: string, folder: null | Cypress.Chainable = null ) {
+        if( folder !== null ) {
+            this.realCreate( name, folder );
+        } else {
+            if( ! this.initFolder ) {
+                folderHelpers.create("folder");
+                this.initFolder = true;
+            }
+
+            this.realCreate( name, folderHelpers.getFirst() );
         }
     }
 

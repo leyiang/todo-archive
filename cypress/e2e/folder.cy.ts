@@ -83,12 +83,12 @@ describe('Folder List', () => {
         get("unfinished-task-number")
             .should("not.exist");
 
-        taskHelpers.create("task", false );
+        taskHelpers.create("task", folderHelpers.getFirst() );
 
         get("unfinished-task-number")
             .should("have.text", "1");
 
-        taskHelpers.create("task", false );
+        taskHelpers.create("task", folderHelpers.getFirst() );
 
         get("unfinished-task-number")
             .should("have.text", "2");
