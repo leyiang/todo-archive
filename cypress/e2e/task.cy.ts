@@ -1,5 +1,6 @@
 import {clickMenu, get, resetEnv} from "../shared/utils";
 import {taskHelpers} from "../shared/helpers/TaskHelper";
+import {folderHelpers} from "../shared/helpers/FolderHelper";
 
 describe('Task List', () => {
     beforeEach(() => {
@@ -87,5 +88,12 @@ describe('Task List', () => {
         taskHelpers.create("task");
         taskHelpers.getFirst().focus().type("{enter}");
         get("task-detail").should("exist");
+    });
+
+    it("able to set task today", function() {
+        folderHelpers.create("normal");
+        folderHelpers.create("Today");
+
+        taskHelpers.create("today task");
     });
 });

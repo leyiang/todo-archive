@@ -11,7 +11,7 @@ let adapter = new IndexDBAdapter();
 describe('IndexDB Adapter - Folder', () => {
     beforeEach(() => {
         // @ts-ignore, Global Variable
-        indexedDB = new IDBFactory();
+        indexedDB = new IDBFactory( true );
         adapter = new IndexDBAdapter();
     })
 

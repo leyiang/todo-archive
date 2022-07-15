@@ -2,6 +2,7 @@ import IndexDBAccessor from "./IndexDBAccessor";
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 import {isNameEmpty} from "@/shared/utils";
+import type {filterOptionsType} from "@/core/model/folder/FilterOptions";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -10,7 +11,7 @@ export default class IndexDBAdapter {
     private tasks: rawTask[] = [];
     private steps: rawStep[] = [];
 
-    constructor() {
+    constructor( public test = false ) {
         this.accessor = new IndexDBAccessor("TodoApp", 1);
         this.initDatabase();
         // this.factory();
@@ -45,15 +46,6 @@ export default class IndexDBAdapter {
     }
 
     loadData(): Promise<rawFolder[]> {
-        const defaultFolders: rawFolder[] = [
-            {
-                id: 0,
-                name: "Today",
-                order: 10,
-                plans: [],
-            }
-        ];
-
         return new Promise(resolve => {
             this.accessor.onReady(() => {
                 Promise.all([
@@ -61,7 +53,7 @@ export default class IndexDBAdapter {
                     this.accessor.getAll("task"),
                     this.accessor.getAll("step"),
                 ]).then(([ folders, tasks, steps ]) => {
-                    this.folders = [...defaultFolders, ...folders];
+                    this.folders = folders;
                     this.tasks = tasks;
                     this.steps = steps;
 
@@ -97,15 +89,24 @@ export default class IndexDBAdapter {
                 return reject("folder name should not be empty");
             }
 
+            const filterOptions: filterOptionsType = {};
+
+            // TODO: Just for test, soon remove
+            if( name === "Today" ) {
+                filterOptions.today = true;
+            }
+
             this.accessor.onReady(() => {
                 this.accessor.add("folder", {
-                    name
+                    name,
+                    filterOptions,
                 }).then( id => {
                     resolve({
                         id,
                         name,
                         order: 10,
-                        plans: []
+                        plans: [],
+                        filterOptions,
                     })
                 });
             });

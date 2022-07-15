@@ -45,7 +45,6 @@ describe('Folder List', () => {
     })
 
     it("remove folder will de-active it", () => {
-
         folderHelpers.create("folder");
 
         folderHelpers
