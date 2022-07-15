@@ -3,6 +3,7 @@ import {computed} from "vue";
 import TaskDetailAddStep from "./TaskDetailAddStep.vue";
 import Task from "@/core/model/Task";
 import StepItem from "./StepItem.vue";
+import ResizableTextarea from "@/components/common/ResizableTextarea.vue";
 
 const props = defineProps({
     task: {
@@ -41,10 +42,8 @@ const steps = computed(() => {
         </div>
 
 
-        <input
-            type="textarea"
+        <ResizableTextarea
             class="rounded box-shadow-none mt-2rem p-1rem"
-            :autosize="{ minRows: 4 }"
             placeholder="Task Description"
         />
     </aside>
