@@ -34,13 +34,28 @@ onMounted(() => {
     if( el.value !== null ) {
         addNewMenu( el.value, [
             {
+                name: "Set as Today",
+                action: () => {
+                    adapter.setTaskProp( props.task.id, "date", "2022-07-05").then( affecting => {
+                        affecting
+                            .map( id => todoStore.folders.find(folder => folder.id === id) )
+                            .forEach( folder => {
+                                if( folder !== undefined ) {
+                                    folder.plans.push( props.task );
+                                }
+                            });
+                    });
+                }
+            },
+
+            {
                 name: "Remove Task",
                 action: () => {
                     adapter.removeTask( props.task.id ).then(() => {
                         todoStore.removeTask( props.task );
                     });
                 }
-            }
+            },
         ]);
     }
 });

@@ -9,9 +9,13 @@ export function resetEnv() {
     stepHelpers.reset();
 }
 
+export function testID( name: string ) {
+    return `[data-test='${ name }']`
+}
+
 export function get( name: string ) {
     //@ts-ignore, cy will be injected
-    return cy.get(`[data-test='${ name }']`);
+    return cy.get( testID(name) );
 }
 
 export function clickMenu( label: string ) {
