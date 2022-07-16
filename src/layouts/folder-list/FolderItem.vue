@@ -47,9 +47,10 @@ onMounted(() => {
     <button
         data-test="folder-item"
         data-context-trigger
-        class="folder-item text-4 p-1rem bg-transparent border-none
-               hover:(bg-gray-200) rounded flex justify-between
+        class="folder-item text-4 p-1rem border-none
+               rounded flex justify-between
         "
+        btn-reset hover:bg-gray-200 cursor-pointer
         :class="{ 'bg-gray-200' : currentFolderActive }"
         @click="setActive"
         ref="el"

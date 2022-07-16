@@ -66,7 +66,8 @@ onMounted(() => {
         tabindex="0"
         data-test="task-item"
         data-context-trigger
-        class="task-item bg-white border-none p-1rem rounded text-lg flex items-center"
+        class="task-item"
+        bg-white border-none p-1rem rounded text-lg flex items-center
         :class="{ 'text-gray-500 line-through': task.finished }"
         @click="toggleTaskActive"
         @keydown.enter="toggleTaskActive"
@@ -74,7 +75,8 @@ onMounted(() => {
     >
         <button
             data-test="task-finish-button"
-            class="flex items-center justify-center mr-1rem text-2xl"
+            flex items-center justify-center mr-1rem text-2xl
+            btn-reset
             @click.stop="toggleTaskFinishStatus"
         >
            <Icon :icon="finishIcon" />

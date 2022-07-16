@@ -15,5 +15,5 @@ html, body {
 }
 
 body {
-  font-family: Emoji, system-ui, —apple-system, Segoe UI, Rototo, Helvetica, Arial, sans-serif;
+  font-family: Emoji, system-ui, —apple-system, Segoe UI, Rototo, Helvetica, Arial, sans-serif !important;
 }

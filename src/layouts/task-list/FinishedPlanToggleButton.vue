@@ -12,6 +12,7 @@ const props = defineProps<{
          bg-gray-700 text-white py-10px px-1rem rounded flex items-center
          mr-auto mt-11px
         "
+        btn-reset
     >
         <span class="mr-9px">Completed</span>
 

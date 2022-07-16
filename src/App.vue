@@ -4,6 +4,7 @@ import TaskListWarp from "@/layouts/task-list/TaskListWrap.vue"
 import TaskDetail from "@/layouts/task-detail/TaskDetail.vue";
 import {useTodoStore} from "@/stores/TodoStore";
 import ContextMenu from "@/components/common/context-menu/ContextMenu.vue";
+import Modal from "@/components/common/Modal.vue";
 
 const todoStore = useTodoStore();
 todoStore.init();
@@ -17,7 +18,9 @@ todoStore.init();
 
         <TaskListWarp
             data-test="task-list"
-            class="flex-1 bg-green-400"
+
+            class="flex-1"
+            style="background-color: #73d197"
         />
 
         <TaskDetail
@@ -31,4 +34,6 @@ todoStore.init();
             data-test="context-menu"
         />
     </div>
+
+    <Modal />
 </template>

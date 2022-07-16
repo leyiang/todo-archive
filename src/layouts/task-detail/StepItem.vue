@@ -66,7 +66,7 @@ function finishStep() {
     >
         <button
             data-test="step-finish-button"
-            class="flex justify-between items-between text-xl mr-2"
+            class="flex justify-between items-between text-xl mr-2" btn-reset
             @click="finishStep"
         >
             <Icon :icon="finishIcon"></Icon>
