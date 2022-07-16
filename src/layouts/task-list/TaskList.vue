@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import StepPlanItem from "./plan/StepPlanItem.vue";
 import TaskPlanItem from "./plan/TaskPlanItem.vue";
 import GhostInput from "@/components/common/GhostInput.vue";
 import TaskListAddNew from "./TaskListAddNew.vue";
-import { computed } from "vue";
+import {computed, ref} from "vue";
 import Task from "@/core/model/Task";
 import Step from "@/core/model/Step";
 import type Folder from "@/core/model/folder/Folder";
@@ -14,11 +15,22 @@ const plans = computed(() => {
     if( todoStore.activeFolder ) {
         const plans = todoStore.activeFolder.plans.slice();
         // TODO: Sort plans based on priority
-        return plans;
+        return plans.filter(plan => ! plan.finished);
     } else {
         return [];
     }
 });
+
+const finishedPlans = computed(() => {
+    if( todoStore.activeFolder ) {
+        const plans = todoStore.activeFolder.plans.slice();
+        return plans.filter(plan => plan.finished);
+    } else {
+        return [];
+    }
+});
+
+const showFinished = ref<boolean>( false );
 
 function isTask( plan: Task | Step ) : plan is Task {
     return plan instanceof Task;
@@ -74,6 +86,38 @@ function renameFolder( e: any ) {
                             :key="plan.id"
                             :step="plan"
                         />
+                    </template>
+
+                    <button
+                        v-if="finishedPlans.length !== 0"
+                        class="
+                         bg-gray-700 text-white py-10px px-1rem rounded flex items-center
+                         mr-auto mt-10px
+                        "
+                        @click="showFinished = ! showFinished"
+                    >
+                        <span class="mr-8px">Completed</span>
+
+                        <Icon
+                            class="text-xl"
+                            :icon="showFinished ? 'ic:baseline-keyboard-arrow-up' : 'ic:baseline-keyboard-arrow-down'"
+                        />
+                    </button>
+
+                    <template v-if="showFinished">
+                        <template v-for="plan in finishedPlans">
+                            <TaskPlanItem
+                                v-if="isTask( plan )"
+                                :key="plan.id"
+                                :task="plan"
+                            />
+
+                            <StepPlanItem
+                                v-else-if="isStep( plan )"
+                                :key="plan.id"
+                                :step="plan"
+                            />
+                        </template>
                     </template>
                 </div>
 
