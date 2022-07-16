@@ -44,7 +44,7 @@ function renameFolder( e: any ) {
 <template>
     <main class="task-list flex flex-col px-1rem py-2rem gap-1rem">
         <template v-if="todoStore.activeFolder">
-            <div class="flex-1 flex flex-col">
+            <div class="flex-1 flex flex-col overflow-hidden">
                 <GhostInput
                     data-test="folder-rename-input"
                     :value="todoStore?.activeFolder?.name"
@@ -52,7 +52,7 @@ function renameFolder( e: any ) {
                     @change="renameFolder"
                 />
 
-                <div class="flex flex-col gap-5px flex-1">
+                <div class="flex flex-col gap-5px overflow-auto" style="min-height: min-content">
 
                     <div
                         v-if="plans.length === 0"
