@@ -82,6 +82,6 @@ onMounted(() => {
             <Icon :icon="finishIcon" />
         </button>
 
-        <span>{{ task.name }} => {{ step.name }}</span>
+        <span>{{ task?.name }} => {{ step.name }}</span>
     </div>
 </template>

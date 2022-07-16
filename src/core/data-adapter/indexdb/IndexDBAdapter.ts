@@ -3,6 +3,7 @@ import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 import {isNameEmpty} from "@/shared/utils";
 import type {filterOptionsType} from "@/core/model/folder/FilterOptions";
+import {loadData} from "@/core/data-adapter/indexdb/IndexDBLoadData";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -36,11 +37,15 @@ export default class IndexDBAdapter {
     factory() {
         this.accessor.onReady(() => {
             Promise.all([
-                this.accessor.clear("folder")
+                this.accessor.clear("folder"),
+                this.accessor.clear("task"),
+                this.accessor.clear("step"),
             ]).then(() => {
-                this.accessor.add("folder", {
-                    name: "folder 1",
-                });
+                /**
+                 * Contain personal data,
+                 * You won't find it in the repository
+                 */
+                loadData( this.accessor );
             });
         });
     }
