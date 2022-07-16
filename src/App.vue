@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FolderList from "@/layouts/folder-list/FolderList.vue"
-import TaskList from "@/layouts/task-list/TaskList.vue"
+import TaskListWarp from "@/layouts/task-list/TaskListWrap.vue"
 import TaskDetail from "@/layouts/task-detail/TaskDetail.vue";
 import {useTodoStore} from "@/stores/TodoStore";
 import ContextMenu from "@/components/common/context-menu/ContextMenu.vue";
@@ -15,7 +15,7 @@ todoStore.init();
             class="min-w-300px"
         />
 
-        <TaskList
+        <TaskListWarp
             data-test="task-list"
             class="flex-1 bg-green-400"
         />
