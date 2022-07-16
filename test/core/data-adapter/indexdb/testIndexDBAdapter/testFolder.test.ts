@@ -60,7 +60,7 @@ describe('IndexDB Adapter - Folder', () => {
             folder = folders[0];
             expect( folder.name ).toBe( name );
             expect( folder.order === 10 || folder.order === undefined ).toBeTruthy();
-            expect( folder.filterOptions ).toBeUndefined();
+            expect( folder.filterOptions ).toMatchObject({});
         });
 
         if( isRawFolder(folder) ) {
