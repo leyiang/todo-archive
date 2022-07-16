@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {adapter, useTodoStore} from "@/stores/TodoStore";
+import StepPlanItem from "./plan/StepPlanItem.vue";
+import TaskPlanItem from "./plan/TaskPlanItem.vue";
 import GhostInput from "@/components/common/GhostInput.vue";
 import TaskListAddNew from "./TaskListAddNew.vue";
-import TaskItem from "./TaskItem.vue";
 import { computed } from "vue";
 import Task from "@/core/model/Task";
-import type Step from "@/core/model/Step";
+import Step from "@/core/model/Step";
 import type Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
@@ -21,6 +22,10 @@ const plans = computed(() => {
 
 function isTask( plan: Task | Step ) : plan is Task {
     return plan instanceof Task;
+}
+
+function isStep( plan: Task | Step ) : plan is Step {
+    return plan instanceof Step;
 }
 
 function renameFolder( e: any ) {
@@ -58,13 +63,17 @@ function renameFolder( e: any ) {
                     </div>
 
                     <template v-for="plan in plans">
-                        <TaskItem
+                        <TaskPlanItem
                             v-if="isTask( plan )"
                             :key="plan.id"
                             :task="plan"
                         />
 
-                        <span v-else>{{ plan.name }}</span>
+                        <StepPlanItem
+                            v-else-if="isStep( plan )"
+                            :key="plan.id"
+                            :step="plan"
+                        />
                     </template>
                 </div>
 

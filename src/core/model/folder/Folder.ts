@@ -1,6 +1,7 @@
 import Task from "@/core/model/Task";
 import Step from "@/core/model/Step";
 import {isRawFolder, isRawStep, isRawTask} from "@/core/model/rawTypes";
+import {useTodoStore} from "@/stores/TodoStore";
 
 export default class Folder {
     public plans: (Task | Step)[] = [];
@@ -24,11 +25,22 @@ export default class Folder {
                 raw.order,
             );
 
+            const todoStore = useTodoStore();
+            todoStore.folderMap[ raw.id ] = folder;
+
             raw.plans.forEach( plan => {
                 if( isRawTask(plan) ) {
-                    folder.plans.push( Task.Load(plan) );
+                    if( todoStore.taskMap[plan.id] instanceof Task ) {
+                        folder.plans.push( todoStore.taskMap[plan.id] );
+                    } else {
+                        folder.plans.push( Task.Load(plan) );
+                    }
                 } else if( isRawStep(plan) ) {
-                    folder.plans.push( Step.Load(plan) );
+                    if( todoStore.stepMap[plan.id] instanceof Step ) {
+                        folder.plans.push( todoStore.stepMap[plan.id] );
+                    } else {
+                        folder.plans.push( Step.Load(plan) );
+                    }
                 }
             });
 

@@ -1,8 +1,10 @@
 import {isRawStep} from "@/core/model/rawTypes";
+import {useTodoStore} from "@/stores/TodoStore";
 
 export default class Step {
     constructor(
         public id: number,
+        public task_id: number,
         public name: string,
         public finished: boolean = false,
         public date: string | null = null,
@@ -17,12 +19,17 @@ export default class Step {
         }
 
         if( isRawStep(raw) ) {
-            return new Step(
+            const step = new Step(
                 raw.id,
+                raw.task_id,
                 raw.name,
                 raw.finished,
                 raw.date,
             );
+
+            useTodoStore().stepMap[ raw.id ] = step;
+
+            return step;
         } else {
             throw "Wrong Properties for Folder.Load";
         }

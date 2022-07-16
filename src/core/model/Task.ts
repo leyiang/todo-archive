@@ -1,5 +1,6 @@
 import Step from "@/core/model/Step";
 import {isRawTask} from "@/core/model/rawTypes";
+import {useTodoStore} from "@/stores/TodoStore";
 
 export default class Task {
     public steps: Step[] = [];
@@ -28,8 +29,15 @@ export default class Task {
                 raw.description
             );
 
+            const todoStore = useTodoStore();
+            todoStore.taskMap[ raw.id ] = task;
+
             raw.steps.forEach( step => {
-                task.steps.push( Step.Load(step) );
+                if( todoStore.stepMap[step.id] instanceof Step ) {
+                    task.steps.push( todoStore.stepMap[step.id] );
+                } else {
+                    task.steps.push( Step.Load(step) );
+                }
             });
 
             return task;

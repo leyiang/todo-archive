@@ -10,6 +10,10 @@ export const useTodoStore = defineStore({
     id: "todo",
 
     state: () => ({
+        folderMap: {} as { [id: number]: Folder},
+        taskMap: {} as { [id: number]: Task},
+        stepMap: {} as { [id: number]: Step},
+
         folders: [] as Folder[],
         activeFolder: null as (null | Folder),
         activeTask: null as (null | Task),

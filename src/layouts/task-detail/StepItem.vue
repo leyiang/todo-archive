@@ -21,6 +21,20 @@ onMounted(() => {
     if( el.value !== null ) {
         addNewMenu( el.value, [
             {
+                name: "Set as Today",
+                action: () => {
+                    adapter.setStepProp( props.step.id, "date", "2022-07-05").then( affecting => {
+                        affecting
+                            .map( id => todoStore.folderMap[id] )
+                            .forEach( folder => {
+                                if( folder !== undefined ) {
+                                    folder.plans.push( props.step );
+                                }
+                            });
+                    });
+                }
+            },
+            {
                 name: "Remove Step",
                 action: () => {
                     adapter.removeStep( props.step.id ).then( () => {
