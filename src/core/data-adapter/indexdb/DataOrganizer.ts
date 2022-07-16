@@ -2,14 +2,14 @@ import type Folder from "@/core/model/folder/Folder";
 import type Task from "@/core/model/Task";
 import FilterParser, {availableOptions, type filterOptionsType} from "@/core/model/folder/FilterOptions";
 import type Step from "@/core/model/Step";
-import type {localFolder, localStep, localTask} from "@/core/data-adapter/indexdb/IndexDBAdapter";
+import type { rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 
 interface OrganizerOptionList {
     [key: string]: {
         /**
          * list store all plan(task, step) that satisfies check method
          */
-        list: (localTask | localStep)[];
+        list: (rawTask | rawStep)[];
 
         /**
          * Check Filter Option By Using FilterParser
@@ -19,8 +19,8 @@ interface OrganizerOptionList {
 }
 
 export default class DataOrganizer {
-    private folderMap: { [index: number]: localFolder } = {}
-    private taskMap: { [index: number]: localTask } = {};
+    private folderMap: { [index: number]: rawFolder } = {}
+    private taskMap: { [index: number]: rawTask } = {};
     private options: OrganizerOptionList = {};
 
     constructor() {
@@ -40,14 +40,14 @@ export default class DataOrganizer {
     }
 
     /**
-     * Organize data load from local browser( localStorage, indexDB )
+     * Organize data load from raw browser( rawStorage, indexDB )
      * So that we get the same result as the backend will return
-     * This gives us the ability to transform from local and api smoothly
+     * This gives us the ability to transform from raw and api smoothly
      * @param folders
      * @param tasks
      * @param steps
      */
-    organize(folders: localFolder[], tasks: localTask[], steps: localStep[]): localFolder[] {
+    organize(folders: rawFolder[], tasks: rawTask[], steps: rawStep[]): rawFolder[] {
         folders.forEach(folder => {
             folder.plans = [];
             this.folderMap[folder.id] = folder;
