@@ -3,7 +3,7 @@ import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
-import {isRawStep, type rawStep } from "@/core/model/rawTypes";
+import {isRawStep, type rawStep} from "@/core/model/rawTypes";
 
 let adapter = new IndexDBAdapter();
 
@@ -99,6 +99,24 @@ describe('IndexDB Adapter - Step', () => {
 
         await adapter.getStepsForTest().then( steps => {
             expect( steps.length ).toBe( 0 );
+        });
+    });
+
+    it("Set step prop affected is returning correctly", async () => {
+        const folderMap = {
+            folder: await adapter.addFolder("Folder Name"),
+            today: await adapter.addFolder("Today Name"),
+        }
+
+        const task = await adapter.addTask("Task", folderMap.folder.id);
+        const step = await adapter.addStep("Step", task.id );
+
+        await adapter.setFolderProp(folderMap.today.id, "filterOptions", {
+            today: true
+        });
+
+        await adapter.setStepProp( step.id, "date", "2022-07-05").then( affecting => {
+            expect( affecting ).toMatchObject( [ folderMap.today.id ] );
         });
     });
 });

@@ -259,8 +259,17 @@ export default class IndexDBAdapter {
                 this.accessor.get("step", step_id ).then( raw => {
                     raw[ key ] = val;
 
+                    let affecting: number[] = [];
+
                     this.accessor.set("step", raw).then(() => {
-                        resolve([]);
+                        if( key === "date" ) {
+                            this.accessor.getAll("folder").then( folders => {
+                                affecting = this.getAffecting( folders, key );
+                                resolve(affecting);
+                            });
+                        } else {
+                            resolve(affecting);
+                        }
                     });
                 });
             });
