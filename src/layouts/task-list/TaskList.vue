@@ -45,7 +45,7 @@ function renameFolder( e: any ) {
             @change="renameFolder"
         />
 
-        <div class="flex flex-col gap-5px overflow-auto" style="min-height: min-content">
+        <div class="flex flex-col gap-5px overflow-auto flex-1" style="min-height: min-content">
 
             <div
                 v-if="plans.length === 0"
