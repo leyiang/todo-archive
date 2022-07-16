@@ -13,15 +13,7 @@ class StepHelper extends ModelHelper {
         });
     }
 
-    create( name: string ) {
-        if( ! this.init ) {
-            taskHelpers.create("task");
-            folderHelpers.getFirst().click();
-            taskHelpers.getFirst().click();
-
-            this.init = true;
-        }
-
+    realCreate( name: string ) {
         const chain = this.getAddNewInput().click();
 
         if( ! name ) {
@@ -30,6 +22,22 @@ class StepHelper extends ModelHelper {
             return chain
                 .type( name )
                 .type("{enter}")
+        }
+    }
+
+    create( name: string, currentTask: Cypress.Chainable<JQuery> | null = null ) {
+        if( currentTask !== null ) {
+            currentTask.click();
+            this.realCreate( name );
+        } else {
+            if( ! this.init ) {
+                taskHelpers.create("task");
+                this.init = true;
+                folderHelpers.getFirst().click();
+                taskHelpers.getFirst().click();
+            }
+
+            this.realCreate( name );
         }
     }
 

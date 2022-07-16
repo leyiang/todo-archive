@@ -1,5 +1,8 @@
-import {clickMenu, get, resetEnv} from "../shared/utils";
+import {clickMenu, get, resetEnv, testID} from "../shared/utils";
 import {stepHelpers} from "../shared/helpers/StepHelper";
+import {setupHooks} from "cypress/mount-utils";
+import {folderHelpers} from "../shared/helpers/FolderHelper";
+import {taskHelpers} from "../shared/helpers/TaskHelper";
 
 describe('Step List', () => {
     beforeEach(() => {
@@ -55,4 +58,23 @@ describe('Step List', () => {
             .should("have.class", "line-through")
             .should("have.class", "text-gray-500");
     });
+
+    it("able to set step as today", () => {
+        folderHelpers.create("folder");
+        folderHelpers.create("Today");
+
+        taskHelpers.create("task", folderHelpers.getFirst() );
+        stepHelpers.create("step", taskHelpers.getFirst());
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .find( testID("unfinished-task-number") )
+            .should("contain.text", 1);
+    })
 });
