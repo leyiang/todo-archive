@@ -31,6 +31,13 @@ onMounted(() => {
     if( el.value !== null ) {
         addNewMenu( el.value, [
             {
+                name: "Folder Settings",
+                action: () => {
+                    todoStore.settingFolder = props.folder;
+                },
+            },
+
+            {
                 name: "Remove Folder",
                 action: () => {
                     adapter.removeFolder( props.folder.id ).then( r => {
@@ -50,7 +57,7 @@ onMounted(() => {
         class="folder-item text-4 p-1rem border-none
                rounded flex justify-between
         "
-        btn-reset hover:bg-gray-200 cursor-pointer
+        btn-reset hover:bg-gray-200
         :class="{ 'bg-gray-200' : currentFolderActive }"
         @click="setActive"
         ref="el"

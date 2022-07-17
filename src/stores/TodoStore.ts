@@ -16,6 +16,7 @@ export const useTodoStore = defineStore({
 
         folders: [] as Folder[],
         activeFolder: null as (null | Folder),
+        settingFolder: null as (null | Folder),
         activeTask: null as (null | Task),
     }),
 

@@ -21,9 +21,12 @@ const todoStore = useTodoStore();
 
         <FolderListAddNew />
 
-        <Modal>
+        <Modal
+            v-if="todoStore.settingFolder"
+            @close="todoStore.settingFolder = null"
+        >
             <template #header>
-                <h4 my-0>Setting: Todo List</h4>
+                <h4 my-0>Setting: {{ todoStore.settingFolder.name }}</h4>
             </template>
 
             Main Content
