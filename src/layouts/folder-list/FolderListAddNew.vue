@@ -23,11 +23,11 @@ function addNewFolder( value: string ) {
         <AddNewInput
             data-test="folder-add-new"
             class="border-none p-1rem rounded text-4 folder-add-new-input
-                   w-full border-box outline-none pl-.5rem
+                   full border-box outline-none pl-.5rem
             "
             @add="addNewFolder"
-            placeholder="Add new folder"
-            maxlength="32"
+            placeholder="Add New Folder"
+            :max-length="32"
         />
     </label>
 </template>

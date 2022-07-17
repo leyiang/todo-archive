@@ -40,9 +40,7 @@ const steps = computed(() => {
                 />
             </div>
 
-            <TaskDetailAddStep
-                class="mt-1rem"
-            />
+            <TaskDetailAddStep />
         </div>
         
         <div class="divider" my-2rem h-1px bg-gray-200></div>
