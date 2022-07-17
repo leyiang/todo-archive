@@ -2,6 +2,7 @@
 import {useTodoStore} from "@/stores/TodoStore";
 import FolderItem from "@/layouts/folder-list/FolderItem.vue";
 import FolderListAddNew from "./FolderListAddNew.vue";
+import Modal from "@/components/common/Modal.vue";
 
 const todoStore = useTodoStore();
 </script>
@@ -19,5 +20,13 @@ const todoStore = useTodoStore();
         </div>
 
         <FolderListAddNew />
+
+        <Modal>
+            <template #header>
+                <h4 my-0>Setting: Todo List</h4>
+            </template>
+
+            Main Content
+        </Modal>
     </aside>
 </template>

@@ -14,7 +14,9 @@ export default defineConfig({
         presetUno(),
       ],
       shortcuts: {
-        "btn-reset": "bg-transparent border-none p-0 cursor-pointer"
+        "btn-reset": "bg-transparent border-none p-0 cursor-pointer text-1rem",
+        "btn-primary": "bg-green-500 hover:bg-green-600 text-white",
+        "btn-action": "py-10px px-1rem rounded bg-gray-200 text-gray-700 hover:bg-gray-300",
       }
     })
   ],

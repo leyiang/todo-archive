@@ -34,6 +34,4 @@ todoStore.init();
             data-test="context-menu"
         />
     </div>
-
-    <Modal />
 </template>
