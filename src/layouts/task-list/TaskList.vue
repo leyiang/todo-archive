@@ -48,7 +48,8 @@ function renameFolder( e: any ) {
         <div class="flex flex-col gap-5px overflow-auto flex-1" style="min-height: min-content">
 
             <div
-                v-if="plans.length === 0"
+                data-test="empty-task-list-placeholder"
+                v-if="plans.length === 0 && finishedPlans.length === 0"
                 class="h-full flex flex-col items-center justify-center"
             >
                 <span class="text-8xl mb-2rem">😃</span>

@@ -29,7 +29,7 @@ describe('Task List', () => {
             .should("have.length", 0)
     });
 
-    it.only("able to finish a task", () => {
+    it("able to finish a task", () => {
         taskHelpers.create("123");
 
         taskHelpers
@@ -41,6 +41,17 @@ describe('Task List', () => {
             .getFirst()
             .should("have.class", "line-through")
             .should("have.class", "text-gray-500");
+    });
+
+    it("task list placeholder should not show if all tasks are completed", () => {
+        taskHelpers.create("123");
+
+        taskHelpers
+            .finishFirst();
+
+        cy
+            .get( testID("empty-task-list-placeholder") )
+            .should("not.exist");
     });
 
     it('able to add a remove task', () => {
