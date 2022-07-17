@@ -55,14 +55,15 @@ function renameFolder( e: any ) {
                 <h2 class="font-bold text-white text-4xl text-shadow-md">Let's add a task :)</h2>
             </div>
 
+            <PlanList
+                :plans="plans"
+            />
+
             <div
+                data-test="gap-between-expand-btn"
                 v-if="plans.length !== 0"
                 mb-10px
-            >
-                <PlanList
-                    :plans="plans"
-                />
-            </div>
+            />
 
             <FinishedPlanToggleButton
                 v-if="finishedPlans.length !== 0"
