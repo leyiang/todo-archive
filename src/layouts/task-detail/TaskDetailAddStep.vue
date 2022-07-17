@@ -20,6 +20,8 @@ function addNewStep( value: string ) {
 <template>
     <AddNewInput
         data-test="step-add-new"
+        p-1rem rounded
+        border="1 gray-300"
         type="text"
         @add="addNewStep"
         placeholder="Add New Step"

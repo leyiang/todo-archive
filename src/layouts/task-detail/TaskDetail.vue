@@ -20,16 +20,19 @@ const steps = computed(() => {
 
 <template>
     <aside
-        class="task-detail flex flex-col py-1rem bg-gray-50"
+        class="task-detail flex flex-col bg-gray-50"
+        p-1rem
     >
-        <div class="flex flex-col bg-white p-1rem">
+        <div class="flex flex-col flex-1" overflow-hidden>
             <input
                 data-test="task-name-input"
                 :value="task.name"
-                class="mb-1rem text-2xl"
+                mb-1rem text-xl px-10px
+                border="none"
+                bg-transparent
             />
 
-            <div class="flex flex-col">
+            <div class="flex flex-col flex-1 custom-scrollbar" overflow-auto>
                 <StepItem
                     v-for="step in steps"
                     :key="step.id"
@@ -41,11 +44,18 @@ const steps = computed(() => {
                 class="mt-1rem"
             />
         </div>
+        
+        <div class="divider" my-2rem h-1px bg-gray-200></div>
 
-
-        <ResizableTextarea
-            class="rounded box-shadow-none mt-2rem p-1rem"
-            placeholder="Task Description"
-        />
+        <div
+            data-test="task-detail-additional"
+            flex="~ 1 col"
+        >
+            <ResizableTextarea
+                class="rounded box-shadow-none p-1rem"
+                border="1 gray-300"
+                placeholder="Task Description"
+            />
+        </div>
     </aside>
 </template>

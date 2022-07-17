@@ -61,7 +61,9 @@ function finishStep() {
     <div
         data-test="step-item"
         data-context-trigger
-        class="step-item flex items-center text-1rem py-3"
+        class="step-item flex items-center text-1rem"
+        p="y-3 x-10px"
+        hover:bg-gray-200 rounded
         :class="{ 'line-through text-gray-500': step.finished }"
         ref="el"
     >
@@ -75,6 +77,7 @@ function finishStep() {
 
         <GhostInput
             :value="step.name"
+            text-1rem flex-1
         />
     </div>
 </template>
