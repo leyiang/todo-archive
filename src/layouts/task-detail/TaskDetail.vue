@@ -24,6 +24,7 @@ const steps = computed(() => {
     >
         <div class="flex flex-col bg-white p-1rem">
             <input
+                data-test="task-name-input"
                 :value="task.name"
                 class="mb-1rem text-2xl"
             />

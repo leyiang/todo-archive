@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import IndexDBAdapter from "@/core/data-adapter/indexdb/IndexDBAdapter";
 import Folder from "@/core/model/folder/Folder";
-import type Task from "@/core/model/Task";
+import Task from "@/core/model/Task";
 import {splice} from "@/shared/utils";
 import type Step from "@/core/model/Step";
 
@@ -22,41 +22,33 @@ export const useTodoStore = defineStore({
 
     actions: {
         init() {
-            const raw_folder_id = localStorage.getItem("active_folder_id");
-
+            const raw_folder_id = Number( localStorage.getItem("active_folder_id") );
+            const raw_task_id = Number( localStorage.getItem("active_task_id") );
 
             adapter.loadData().then( folders => {
-                let index = 0;
                 this.folders = folders.map( folder => Folder.Load(folder) );
 
-                let active_folder_id = raw_folder_id !== undefined
-                    ? Number( raw_folder_id )
-                    : null;
-
-                if( active_folder_id !== null ) {
-                    index = Math.max(
-                        index,
-                        this.folders.findIndex( folder => folder.id === active_folder_id )
-                    )
-                }
-
-                if( this.folders[index] !== undefined ) {
-                    this.setActiveFolder( this.folders[index] );
-
-                    // if( this.folders[0].plans[0] ) {
-                    //     this.setActiveTask( this.folders[0].plans[0] );
-                    // }
+                if( this.folderMap[ raw_folder_id ] !== undefined ) {
+                    this.setActiveFolder( this.folderMap[ raw_folder_id ] );
+                    this.setActiveTask( this.taskMap[ raw_task_id ] );
+                } else {
+                    this.setActiveFolder( this.folders[0] );
                 }
             });
         },
 
-        setActiveFolder( folder: Folder ) {
-            this.activeFolder = folder;
-            localStorage.setItem("active_folder_id", folder.id.toString() );
+        setActiveFolder( folder?: Folder ) {
+            if( folder !== undefined ) {
+                this.activeFolder = folder;
+                localStorage.setItem("active_folder_id", folder.id.toString() );
+            }
         },
 
-        setActiveTask( task: Task ) {
-            this.activeTask = task;
+        setActiveTask( task?: Task ) {
+            if( task !== undefined ) {
+                this.activeTask = task;
+                localStorage.setItem("active_task_id", task.id.toString() );
+            }
         },
 
         toggleTaskActive( task: Task ) {

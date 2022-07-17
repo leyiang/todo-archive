@@ -132,5 +132,21 @@ describe('Task List', () => {
             expect(scrollBarWidth).to.be.eq(0);
         })
     });
+
+    it.only("hold activeTask state after refresh", function() {
+        const name = "123";
+
+        taskHelpers.create( name );
+        taskHelpers.create("abc");
+
+        taskHelpers.getFirst().click();
+        cy.reload();
+
+        cy
+            .get( testID("task-detail") )
+            .should("exist")
+            .find( testID("task-name-input") )
+            .should("have.value", name);
+    });
 });
 
