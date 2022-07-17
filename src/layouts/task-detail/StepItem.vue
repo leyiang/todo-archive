@@ -6,6 +6,7 @@ import useFinishIcon from "@/composables/useFinishIcon";
 import {onMounted, ref, type Ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
+import { getTodayString } from "@/shared/utils";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -23,7 +24,7 @@ onMounted(() => {
             {
                 name: "Set as Today",
                 action: () => {
-                    adapter.setStepProp( props.step.id, "date", "2022-07-05").then( affecting => {
+                    adapter.setStepProp( props.step.id, "date", getTodayString()).then( affecting => {
                         affecting
                             .map( id => todoStore.folderMap[id] )
                             .forEach( folder => {

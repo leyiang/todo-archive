@@ -39,7 +39,7 @@ onMounted(() => {
             {
                 name: "Set as Today",
                 action: () => {
-                    // adapter.setTaskProp( props.step.id, "date", "2022-07-05").then( affecting => {
+                    // adapter.setTaskProp( props.step.id, "date", getTodayString()).then( affecting => {
                     //     affecting
                     //         .map( id => todoStore.folders.find(folder => folder.id === id) )
                     //         .forEach( folder => {
@@ -76,7 +76,8 @@ onMounted(() => {
     >
         <button
             data-test="task-finish-button"
-            class="flex items-center justify-center mr-1rem text-2xl"
+            flex items-center justify-center mr-1rem text-2xl
+            btn-reset
             @click.stop="toggleStepFinishStatus"
         >
             <Icon :icon="finishIcon" />

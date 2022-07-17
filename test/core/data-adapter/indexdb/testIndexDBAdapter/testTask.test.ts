@@ -4,6 +4,7 @@ import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import {isRawTask, type rawTask} from "@/core/model/rawTypes";
+import { getTodayString } from "@/shared/utils.ts";
 
 let adapter = new IndexDBAdapter();
 
@@ -119,7 +120,7 @@ describe('IndexDB Adapter - Task', () => {
         if( isRawTask( taskMap.today ) ) {
             const task = taskMap.today;
 
-            await adapter.setTaskProp( task.id, "date", "2022-07-05").then(affecting => {
+            await adapter.setTaskProp( task.id, "date", getTodayString()).then(affecting => {
                 expect( affecting.length ).toBe( 1 );
                 expect( affecting[0] ).toBe( folderMap.today.id );
             });

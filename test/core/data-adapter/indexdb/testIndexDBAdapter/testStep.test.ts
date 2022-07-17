@@ -4,6 +4,7 @@ import {describe, it, expect, beforeEach} from 'vitest'
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import {isRawStep, type rawStep} from "@/core/model/rawTypes";
+import { getTodayString } from "@/shared/utils.ts";
 
 let adapter = new IndexDBAdapter();
 
@@ -43,7 +44,7 @@ describe('IndexDB Adapter - Step', () => {
 
         const props = {
             name: "new SteP Name",
-            date: "2022-07-05",
+            date: getTodayString(),
             finished: true,
             priority: 1
         }
@@ -115,7 +116,7 @@ describe('IndexDB Adapter - Step', () => {
             today: true
         });
 
-        await adapter.setStepProp( step.id, "date", "2022-07-05").then( affecting => {
+        await adapter.setStepProp( step.id, "date", getTodayString()).then( affecting => {
             expect( affecting ).toMatchObject( [ folderMap.today.id ] );
         });
     });

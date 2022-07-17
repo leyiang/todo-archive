@@ -1,3 +1,5 @@
+import { getTodayString } from "@/shared/utils";
+
 export const availableOptions = ["today", "important"];
 
 export interface filterOptionsType {
@@ -13,7 +15,7 @@ export default class FilterParser {
     checkValid( option: string, plan: any, ) {
         if( availableOptions.includes( option ) ) {
             if( option === "today" ) {
-                return plan.date === "2022-07-05";
+                return plan.date === getTodayString();
             }
 
             if( option === "important" ) {

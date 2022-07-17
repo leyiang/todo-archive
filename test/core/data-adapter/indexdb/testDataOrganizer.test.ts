@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest'
 import DataOrganizer from "@/core/data-adapter/indexdb/DataOrganizer";
 //@ts-ignore
 import {getRawFolder, getRawTask, getRawStep, isRawTask} from "@/core/model/rawTypes.ts";
+import { getTodayString } from "@/shared/utils.ts";
 
 describe('Data Organizer', () => {
 
@@ -50,7 +51,7 @@ describe('Data Organizer', () => {
         ];
 
         const steps = [
-            getRawStep( 1, "Step 1", 1, "2022-07-05"),
+            getRawStep( 1, "Step 1", 1, getTodayString()),
         ];
 
         const data = organizer.organize( folders, tasks, steps );
@@ -73,7 +74,7 @@ describe('Data Organizer', () => {
         ];
 
         const tasks = [
-            getRawTask( 1, "Task 1", 2, "2022-07-05" )
+            getRawTask( 1, "Task 1", 2, getTodayString() )
         ];
 
         const data = organizer.organize( folders, tasks, [] );
@@ -109,7 +110,7 @@ describe('Data Organizer', () => {
         ];
 
         const steps = [
-            getRawStep( 1, "Step 1", 1, "2022-07-05" )
+            getRawStep( 1, "Step 1", 1, getTodayString() )
         ];
 
         const data = organizer.organize( folders, tasks, steps );
@@ -125,7 +126,7 @@ describe('Data Organizer', () => {
         ];
 
         const tasks = [
-            getRawTask(1, "Task 1", 1, "2022-07-05", true )
+            getRawTask(1, "Task 1", 1, getTodayString(), true )
         ];
 
         const data = organizer.organize( folders, tasks, [] );
