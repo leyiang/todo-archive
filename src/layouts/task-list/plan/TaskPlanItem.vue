@@ -6,6 +6,7 @@ import useFinishIcon from "@/composables/useFinishIcon";
 import {onMounted, type Ref, ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import { getTodayString } from "@/shared/utils";
+import Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -38,13 +39,12 @@ onMounted(() => {
                 name: "Set as Today",
                 action: () => {
                     adapter.setTaskProp( props.task.id, "date", getTodayString()).then( affecting => {
-                        affecting
-                            .map( id => todoStore.folders.find(folder => folder.id === id) )
-                            .forEach( folder => {
-                                if( folder !== undefined ) {
-                                    folder.plans.push( props.task );
-                                }
-                            });
+                        affecting.forEach( id => {
+                            const folder = todoStore.folderMap[ id ];
+                            if( folder instanceof Folder ) {
+                                folder.plans.push(props.task);
+                            }
+                        });
                     });
                 }
             },
