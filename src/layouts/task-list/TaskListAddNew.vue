@@ -18,7 +18,7 @@ function addNewTask( value: string ) {
 
                 adapter.setTaskProp( task.id, "date", getTodayString() ).then( affecting => {
                     affecting.forEach( id => {
-                        const folder = todoStore.taskMap[ id ];
+                        const folder = todoStore.folderMap[ id ];
 
                         if( folder instanceof Folder ) {
                             folder.plans.push( task );
