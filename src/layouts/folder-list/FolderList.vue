@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {useTodoStore} from "@/stores/TodoStore";
+import {adapter, useTodoStore} from "@/stores/TodoStore";
 import FolderItem from "@/layouts/folder-list/FolderItem.vue";
 import FolderListAddNew from "./FolderListAddNew.vue";
 import Modal from "@/components/common/Modal.vue";
 import { computed } from "vue";
+import type Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
 
@@ -15,6 +16,19 @@ const folders = computed(() => {
 
     return copy;
 });
+
+/**
+ * Update folder order through adapter
+ * @param folder
+ */
+function updateFolderOrder( folder: Folder | null ) {
+    if( folder !== null ) {
+        adapter.setFolderProp( folder.id, "order", folder.order ).then(() => {
+            // Nothing todo here.
+        });
+    }
+}
+
 </script>
 
 <template>
@@ -43,7 +57,16 @@ const folders = computed(() => {
                 >Setting: {{ todoStore.settingFolder.name }}</h4>
             </template>
 
-            Main Content
+            <div flex flex-col>
+                <div class="flex justify-between items-center">
+                    <span>Order</span>
+                    <input
+                        type="text"
+                        v-model="todoStore.settingFolder.order"
+                        @change="updateFolderOrder( todoStore.settingFolder )"
+                    >
+                </div>
+            </div>
         </Modal>
     </aside>
 </template>
