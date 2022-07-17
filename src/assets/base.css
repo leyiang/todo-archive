@@ -17,3 +17,22 @@ html, body {
 body {
   font-family: Emoji, system-ui, —apple-system, Segoe UI, Rototo, Helvetica, Arial, sans-serif !important;
 }
+
+.custom-scrollbar {
+  --gap: 6px;
+  --scroll-color: #333;
+}
+
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 10px 10px #FFF;
+  border-left: solid var(--gap) transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 10px 10px var(--scroll-color, #333);
+  border-left: solid var(--gap) transparent;
+}

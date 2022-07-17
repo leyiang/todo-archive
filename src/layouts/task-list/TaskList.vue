@@ -45,7 +45,7 @@ function renameFolder( e: any ) {
             @change="renameFolder"
         />
 
-        <div class="flex flex-col gap-5px overflow-auto flex-1" style="min-height: min-content">
+        <div class="flex flex-col gap-5px overflow-auto flex-1 custom-scrollbar" style="min-height: min-content">
 
             <div
                 data-test="empty-task-list-placeholder"
