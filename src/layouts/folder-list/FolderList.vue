@@ -3,8 +3,18 @@ import {useTodoStore} from "@/stores/TodoStore";
 import FolderItem from "@/layouts/folder-list/FolderItem.vue";
 import FolderListAddNew from "./FolderListAddNew.vue";
 import Modal from "@/components/common/Modal.vue";
+import { computed } from "vue";
 
 const todoStore = useTodoStore();
+
+const folders = computed(() => {
+    const copy = (todoStore.folders || []).slice();
+    copy.sort((folder, folder1) => {
+        return folder.order - folder1.order;
+    });
+
+    return copy;
+});
 </script>
 
 <template>
@@ -14,7 +24,7 @@ const todoStore = useTodoStore();
     >
         <div class="list flex-1 flex flex-col gap-2px">
             <FolderItem
-                v-for="folder in todoStore.folders"
+                v-for="folder in folders"
                 :folder="folder"
             />
         </div>
