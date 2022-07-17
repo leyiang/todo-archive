@@ -63,6 +63,15 @@ export default class IndexDBAdapter {
                     this.steps = steps;
 
                     const data = this.organizer.organize( this.folders, tasks, steps );
+
+                    // Data returned should be sorted
+                    data.sort( (folder, folder1) => {
+                        const folderOrder = Number(folder.order || 10);
+                        const folderOrder1 = Number(folder1.order || 10);
+
+                        return folderOrder - folderOrder1;
+                    });
+
                     resolve( data );
                 });
             })
