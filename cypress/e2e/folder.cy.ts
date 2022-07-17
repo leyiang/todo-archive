@@ -146,4 +146,20 @@ describe('Folder List', () => {
             .find( testID("folder-rename-input") )
             .should("contain.value", name );
     });
+
+    it.only("auto expand finished-tasks if plan is all finished", () => {
+        taskHelpers.create("task");
+        taskHelpers.finishFirst();
+
+        cy.reload();
+
+
+        /*
+            using v-if to control the expand
+            so, if not expanded, getAll() will have a length of 0
+        */
+        taskHelpers
+            .getAll()
+            .should("have.length", 1);
+    })
 });

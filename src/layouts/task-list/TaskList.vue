@@ -24,8 +24,7 @@ const finishedPlans = computed(() => {
     return plans.filter(plan => plan.finished);
 });
 
-const showFinished = ref<boolean>( false );
-
+const showFinished = ref<boolean>( plans.value.length === 0 );
 
 function renameFolder( e: any ) {
     const value = e.target.value;
@@ -56,9 +55,14 @@ function renameFolder( e: any ) {
                 <h2 class="font-bold text-white text-4xl text-shadow-md">Let's add a task :)</h2>
             </div>
 
-            <PlanList
-                :plans="plans"
-            />
+            <div
+                v-if="plans.length !== 0"
+                mb-10px
+            >
+                <PlanList
+                    :plans="plans"
+                />
+            </div>
 
             <FinishedPlanToggleButton
                 v-if="finishedPlans.length !== 0"

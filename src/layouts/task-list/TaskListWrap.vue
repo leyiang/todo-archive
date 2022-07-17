@@ -8,6 +8,7 @@ const todoStore = useTodoStore();
     <main class="task-list flex flex-col px-1rem py-2rem gap-1rem">
         <template v-if="todoStore.activeFolder !== null">
             <TaskList
+                :key="todoStore.activeFolder.id"
                 :folder="todoStore.activeFolder"
             />
         </template>
