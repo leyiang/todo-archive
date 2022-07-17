@@ -129,4 +129,21 @@ describe('Folder List', () => {
             .find( testID("folder-setting-current-folder") )
             .should("contain.text", name );
     });
+
+    it("hode activeFolder state after refresh", () => {
+        const name = "folder";
+
+        folderHelpers.create( name );
+        folderHelpers.create("random");
+
+        folderHelpers.getFirst().click();
+
+        cy.reload()
+
+        cy
+            .get( testID("task-list") )
+            .should("exist")
+            .find( testID("folder-rename-input") )
+            .should("contain.value", name );
+    });
 });

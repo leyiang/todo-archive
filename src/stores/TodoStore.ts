@@ -22,11 +22,26 @@ export const useTodoStore = defineStore({
 
     actions: {
         init() {
+            const raw_folder_id = localStorage.getItem("active_folder_id");
+
+
             adapter.loadData().then( folders => {
+                let index = 0;
                 this.folders = folders.map( folder => Folder.Load(folder) );
 
-                if( this.folders[0] !== undefined ) {
-                    this.setActiveFolder( this.folders[0] );
+                let active_folder_id = raw_folder_id !== undefined
+                    ? Number( raw_folder_id )
+                    : null;
+
+                if( active_folder_id !== null ) {
+                    index = Math.max(
+                        index,
+                        this.folders.findIndex( folder => folder.id === active_folder_id )
+                    )
+                }
+
+                if( this.folders[index] !== undefined ) {
+                    this.setActiveFolder( this.folders[index] );
 
                     // if( this.folders[0].plans[0] ) {
                     //     this.setActiveTask( this.folders[0].plans[0] );
@@ -37,6 +52,7 @@ export const useTodoStore = defineStore({
 
         setActiveFolder( folder: Folder ) {
             this.activeFolder = folder;
+            localStorage.setItem("active_folder_id", folder.id.toString() );
         },
 
         setActiveTask( task: Task ) {
