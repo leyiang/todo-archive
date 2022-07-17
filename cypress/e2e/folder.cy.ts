@@ -1,4 +1,4 @@
-import {clickMenu, get, resetEnv} from "../shared/utils";
+import {clickMenu, get, resetEnv, testID} from "../shared/utils";
 import {folderHelpers} from "../shared/helpers/FolderHelper";
 import {taskHelpers} from "../shared/helpers/TaskHelper";
 
@@ -114,5 +114,19 @@ describe('Folder List', () => {
         folderHelpers
             .getFirst()
             .should("contain.text", newName);
+    });
+
+    it("able to open folder settings", () => {
+        const name = "folder";
+        folderHelpers.create( name  );
+        folderHelpers.getFirst().rightclick();
+
+        clickMenu("Folder Settings");
+
+        cy
+            .get( testID("folder-setting-modal") )
+            .should("exist")
+            .find( testID("folder-setting-current-folder") )
+            .should("contain.text", name );
     });
 });

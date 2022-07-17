@@ -32,11 +32,15 @@ const folders = computed(() => {
         <FolderListAddNew />
 
         <Modal
+            data-test="folder-setting-modal"
             v-if="todoStore.settingFolder"
             @close="todoStore.settingFolder = null"
         >
             <template #header>
-                <h4 my-0>Setting: {{ todoStore.settingFolder.name }}</h4>
+                <h4
+                    data-test="folder-setting-current-folder"
+                    my-0
+                >Setting: {{ todoStore.settingFolder.name }}</h4>
             </template>
 
             Main Content
