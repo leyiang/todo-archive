@@ -25,6 +25,7 @@ todoStore.init();
         <TaskDetail
             data-test="task-detail"
             v-if="todoStore.activeTask"
+            :key="todoStore.activeTask?.id"
             :task="todoStore.activeTask"
             class="w-300px"
         />

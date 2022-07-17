@@ -35,7 +35,9 @@ describe('Task List', () => {
         taskHelpers
             .finishFirst();
 
-        cy.get( testID("finished-plan-toggle-btn") ).click();
+        // No need to expand
+        // Program will auto expand it
+        // cy.get( testID("finished-plan-toggle-btn") ).click();
 
         taskHelpers
             .getFirst()

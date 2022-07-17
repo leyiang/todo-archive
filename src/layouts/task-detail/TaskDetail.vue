@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import TaskDetailAddStep from "./TaskDetailAddStep.vue";
 import Task from "@/core/model/Task";
 import StepItem from "./StepItem.vue";
 import ResizableTextarea from "@/components/common/ResizableTextarea.vue";
+import FinishedPlanToggleButton from "@/layouts/FinishedPlanToggleButton.vue"
 
 const props = defineProps({
     task: {
@@ -14,8 +15,15 @@ const props = defineProps({
 
 const steps = computed(() => {
     const steps = props.task.steps.slice();
-    return steps;
+    return steps.filter( step => ! step.finished );
 });
+
+const finishedSteps = computed(() => {
+    const steps = props.task.steps.slice();
+    return steps.filter( step => step.finished );
+});
+
+const show = ref(false);
 </script>
 
 <template>
@@ -38,6 +46,24 @@ const steps = computed(() => {
                     :key="step.id"
                     :step="step"
                 />
+
+                <div class="flex pl-3" v-if="finishedSteps.length">
+                    <FinishedPlanToggleButton
+                        data-test="finished-step-toggle-btn"
+                        flex-1
+                        bg-gray-400
+                        @click="show = ! show"
+                        :show="show"
+                    />
+                </div>
+
+                <template v-if="show">
+                    <StepItem
+                        v-for="step in finishedSteps"
+                        :key="step.id"
+                        :step="step"
+                    />
+                </template>
             </div>
 
             <TaskDetailAddStep />

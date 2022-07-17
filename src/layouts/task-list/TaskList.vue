@@ -5,7 +5,7 @@ import TaskListAddNew from "./TaskListAddNew.vue";
 import {computed, ref} from "vue";
 import type Folder from "@/core/model/folder/Folder";
 import PlanList from "./PlanList.vue";
-import FinishedPlanToggleButton from "./FinishedPlanToggleButton.vue"
+import FinishedPlanToggleButton from "@/layouts/FinishedPlanToggleButton.vue"
 
 const props = defineProps<{
     folder: Folder
@@ -66,6 +66,7 @@ function renameFolder( e: any ) {
             />
 
             <FinishedPlanToggleButton
+                data-test="finished-plan-toggle-btn"
                 v-if="finishedPlans.length !== 0"
                 :show="showFinished"
                 @click="showFinished = ! showFinished"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 
-const props = defineProps<{
+defineProps<{
     show: boolean,
 }>();
 </script>
@@ -13,6 +13,7 @@ const props = defineProps<{
          bg-gray-700 text-white py-10px px-1rem rounded flex items-center
          mr-auto
         "
+        justify-between
         btn-reset
     >
         <span class="mr-9px">Completed</span>

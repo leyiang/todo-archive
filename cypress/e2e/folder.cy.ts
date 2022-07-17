@@ -147,7 +147,7 @@ describe('Folder List', () => {
             .should("contain.value", name );
     });
 
-    it.only("auto expand finished-tasks if plan is all finished", () => {
+    it("auto expand finished-tasks if plan is all finished", () => {
         taskHelpers.create("task");
         taskHelpers.finishFirst();
 

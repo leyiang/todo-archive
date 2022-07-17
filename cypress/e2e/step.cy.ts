@@ -1,6 +1,5 @@
 import {clickMenu, get, resetEnv, testID} from "../shared/utils";
 import {stepHelpers} from "../shared/helpers/StepHelper";
-import {setupHooks} from "cypress/mount-utils";
 import {folderHelpers} from "../shared/helpers/FolderHelper";
 import {taskHelpers} from "../shared/helpers/TaskHelper";
 
@@ -52,6 +51,8 @@ describe('Step List', () => {
         get("step-finish-button")
             .first()
             .click();
+
+        cy.get( testID("finished-step-toggle-btn")).click();
 
         stepHelpers
             .getFirst()
