@@ -133,7 +133,7 @@ describe('Task List', () => {
         })
     });
 
-    it.only("hold activeTask state after refresh", function() {
+    it("hold activeTask state after refresh", function() {
         const name = "123";
 
         taskHelpers.create( name );

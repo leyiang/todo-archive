@@ -1,7 +1,4 @@
-import type Folder from "@/core/model/folder/Folder";
-import type Task from "@/core/model/Task";
 import FilterParser, {availableOptions, type filterOptionsType} from "@/core/model/folder/FilterOptions";
-import type Step from "@/core/model/Step";
 import type { rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 
 interface OrganizerOptionList {
@@ -85,14 +82,14 @@ export default class DataOrganizer {
         return folders;
     }
 
-    checkPlanForFilter( plan: Task | Step ) {
+    checkPlanForFilter( plan: rawTask | rawStep ) {
         Object.keys( this.options ).forEach( key => {
             const option = this.options[ key ];
             option.check( plan );
         });
     }
 
-    parseFilterOptions( folder: Folder, filterOptions: filterOptionsType ) {
+    parseFilterOptions( folder: rawFolder, filterOptions: filterOptionsType ) {
         for(let option in filterOptions) {
             for( let item of this.options[ option ].list ) {
                 if( ! folder.plans.includes( item ) ) {
