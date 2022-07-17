@@ -61,10 +61,9 @@ export default class DataOrganizer {
             if( folder ) {
                 folder.plans.push( task );
                 this.taskMap[task.id] = task;
-
-                this.checkPlanForFilter( task );
             }
 
+            this.checkPlanForFilter(task);
         });
 
         steps.forEach(step => {
