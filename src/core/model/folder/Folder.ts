@@ -2,6 +2,7 @@ import Task from "@/core/model/Task";
 import Step from "@/core/model/Step";
 import {isRawFolder, isRawStep, isRawTask} from "@/core/model/rawTypes";
 import {useTodoStore} from "@/stores/TodoStore";
+import type { filterOptionsType } from "./FilterOptions";
 
 export default class Folder {
     public plans: (Task | Step)[] = [];
@@ -10,6 +11,7 @@ export default class Folder {
         public id: number,
         public name: string,
         public order = 10,
+        public filterOptions: filterOptionsType = {}
     ) {
     }
 
@@ -23,6 +25,7 @@ export default class Folder {
                 raw.id,
                 raw.name,
                 raw.order,
+                raw.filterOptions || undefined
             );
 
             const todoStore = useTodoStore();

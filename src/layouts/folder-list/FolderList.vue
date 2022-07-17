@@ -30,6 +30,14 @@ function updateFolderOrder( folder: Folder | null ) {
     }
 }
 
+function updateFolderFilterOptions( folder: Folder | null ) {
+    if( folder !== null ) {
+        const options = JSON.parse( JSON.stringify(folder.filterOptions) ) ;
+        adapter.setFolderProp( folder.id, "filterOptions", options ).then(() => {
+            // Nothing
+        });
+    }
+}
 </script>
 
 <template>
@@ -58,15 +66,33 @@ function updateFolderOrder( folder: Folder | null ) {
                 >Setting: {{ todoStore.settingFolder.name }}</h4>
             </template>
 
-            <div flex flex-col>
-                <div class="flex justify-between items-center">
-                    <span>Order</span>
-                    <input
-                        type="text"
-                        v-model="todoStore.settingFolder.order"
-                        @change="updateFolderOrder( todoStore.settingFolder )"
-                    >
-                </div>
+            <div flex flex-col gap-1rem>
+                <fieldset rounded p-1rem border-gray-100>
+                    <legend>Attributes</legend>
+
+                    <div class="flex justify-between items-center">
+                        <span>Order</span>
+                        <input
+                            type="text"
+                            v-model="todoStore.settingFolder.order"
+                            @change="updateFolderOrder( todoStore.settingFolder )"
+                        >
+                    </div>
+                </fieldset>
+
+                <fieldset rounded p-1rem border-gray-100>
+                    <legend>Filter Options</legend>
+
+                    <div class="flex justify-between items-center">
+                        <span>Today</span>
+
+                        <input
+                            type="checkbox"
+                            v-model="todoStore.settingFolder.filterOptions.today"
+                            @change="updateFolderFilterOptions( todoStore.settingFolder )"
+                        >
+                    </div>
+                </fieldset>
             </div>
         </Modal>
     </aside>
