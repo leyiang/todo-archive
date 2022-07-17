@@ -8,6 +8,7 @@ const props = defineProps<{
 
 <template>
     <button
+        data-test="finished-plan-toggle-btn"
         class="
          bg-gray-700 text-white py-10px px-1rem rounded flex items-center
          mr-auto mt-11px

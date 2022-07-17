@@ -29,11 +29,13 @@ describe('Task List', () => {
             .should("have.length", 0)
     });
 
-    it("able to finish a task", () => {
+    it.only("able to finish a task", () => {
         taskHelpers.create("123");
 
         taskHelpers
             .finishFirst();
+
+        cy.get( testID("finished-plan-toggle-btn") ).click();
 
         taskHelpers
             .getFirst()
