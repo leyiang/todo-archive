@@ -25,5 +25,6 @@ function addNewStep( value: string ) {
         type="text"
         @add="addNewStep"
         placeholder="Add New Step"
+        maxlength="32"
     />
 </template>

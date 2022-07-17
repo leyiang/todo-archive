@@ -27,6 +27,7 @@ function addNewFolder( value: string ) {
             "
             @add="addNewFolder"
             placeholder="Add new folder"
+            maxlength="32"
         />
     </label>
 </template>
