@@ -3,7 +3,7 @@ import Step from "@/core/model/Step";
 import GhostInput from "@/components/common/GhostInput.vue";
 import { Icon } from "@iconify/vue"
 import useFinishIcon from "@/composables/useFinishIcon";
-import {onMounted, ref, type Ref} from "vue";
+import {nextTick, onMounted, ref, type Ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import { getTodayString } from "@/shared/utils";
@@ -55,6 +55,21 @@ function finishStep() {
         props.step.finished = status;
     });
 }
+
+/**
+ * Don't want right click to focus input
+ * So when right click, set input to disabled
+ * Mosueup to recover
+ * TODO: get a better solution
+ */
+const inputDisabled = ref(false);
+function preventInputFocusOnRightClick() {
+    inputDisabled.value = true;
+
+    nextTick(() => {
+        inputDisabled.value = false;
+    });
+}
 </script>
 
 <template>
@@ -77,7 +92,9 @@ function finishStep() {
 
         <GhostInput
             :value="step.name"
+            :disabled="inputDisabled"
             text-1rem flex-1
+            @contextmenu="preventInputFocusOnRightClick"
         />
     </div>
 </template>

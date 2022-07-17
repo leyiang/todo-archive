@@ -16,7 +16,7 @@ const menuPosStyle = computed(() => {
     let { x, y } = pos.value;
 
     if( x + width > window.innerWidth ) {
-        x = window.innerWidth - width;
+        x = window.innerWidth - width - 10;
     }
 
     return {
