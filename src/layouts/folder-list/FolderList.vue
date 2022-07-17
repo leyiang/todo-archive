@@ -23,7 +23,8 @@ const folders = computed(() => {
  */
 function updateFolderOrder( folder: Folder | null ) {
     if( folder !== null ) {
-        adapter.setFolderProp( folder.id, "order", folder.order ).then(() => {
+        const order = Number( folder.order );
+        adapter.setFolderProp( folder.id, "order", order ).then(() => {
             // Nothing todo here.
         });
     }
