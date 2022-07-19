@@ -40,6 +40,8 @@ onMounted(() => {
                 action: () => {
                     if( props.task.date === getTodayString() ) {
                         adapter.setTaskProp( props.task.id, "date", null).then( affecting => {
+                            props.task.date = null;
+
                             affecting.forEach( id => {
                                 const folder = todoStore.folderMap[id];
 
@@ -50,6 +52,8 @@ onMounted(() => {
                         });
                     } else {
                         adapter.setTaskProp( props.task.id, "date", getTodayString()).then( affecting => {
+                            props.task.date = getTodayString();
+
                             affecting.forEach( id => {
                                 const folder = todoStore.folderMap[ id ];
 

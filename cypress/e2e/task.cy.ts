@@ -156,23 +156,28 @@ describe('Task List', () => {
         folderHelpers.create("Today");
         taskHelpers.create("today task", folderHelpers.getFirst());
 
-        taskHelpers
-            .getFirst()
-            .rightclick();
+        const step = () => {
+            folderHelpers.getFirst().click();
 
-        clickMenu("Set as Today");
+            taskHelpers
+                .getFirst()
+                .rightclick();
 
-        cy.reload();
+            clickMenu("Set as Today");
 
-        taskHelpers.getFirst().rightclick();
-        clickMenu("Today's Part is done");
+            taskHelpers.getFirst().rightclick();
+            clickMenu("Today's Part is done");
 
-        folderHelpers
-            .getAll()
-            .last()
-            .click();
+            folderHelpers
+                .getAll()
+                .last()
+                .click();
 
-        taskHelpers.getAll().should("have.length", 0);
+            taskHelpers.getAll().should("have.length", 0);
+        };
+
+        step();
+        step();
     });
 });
 

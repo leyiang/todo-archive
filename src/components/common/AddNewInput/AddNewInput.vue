@@ -34,9 +34,6 @@ function onEnter( e: KeyboardEvent ) {
      */
     emit("add", value);
 }
-
-console.log( props );
-
 </script>
 
 <template>
