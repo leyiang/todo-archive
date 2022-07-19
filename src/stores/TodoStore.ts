@@ -108,6 +108,22 @@ export const useTodoStore = defineStore({
             }
 
             splice( this.activeTask.steps, step );
+        },
+
+        exportData() {
+            const data = {
+                version: "2.0",
+                folders: this.folders
+            };
+
+
+            const raw = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify( data ));
+
+            const a = document.createElement("a");
+            a.setAttribute("href", raw );
+            a.setAttribute("download", "export.json");
+
+            a.click();
         }
     }
 });

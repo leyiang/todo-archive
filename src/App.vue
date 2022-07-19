@@ -7,6 +7,11 @@ import ContextMenu from "@/components/common/context-menu/ContextMenu.vue";
 
 const todoStore = useTodoStore();
 todoStore.init();
+
+/**
+ * For Dev
+ */
+window.exportData = todoStore.exportData;
 </script>
 
 <template>
