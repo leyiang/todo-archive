@@ -136,8 +136,6 @@ describe('Folder List', () => {
         folderHelpers.create( name );
         folderHelpers.create("random");
 
-        folderHelpers.getFirst().click();
-
         cy.reload()
 
         cy
@@ -162,4 +160,28 @@ describe('Folder List', () => {
             .getAll()
             .should("have.length", 1);
     })
+
+    // TODO: Drag to sort test
+    // it.only("drag to sort the folders", () => {
+    //     const tasks = ["task1", "task2"];
+
+    //     taskHelpers.create( tasks[0] );
+    //     taskHelpers.create( tasks[1] );
+
+    //     taskHelpers.getFirst().should("contain.text", tasks[0] ).then( el => {
+    //         const target = el[0];
+
+    //         taskHelpers.getAll().last().then(el => {
+    //             const source = el[0];
+    //             cy.get( source ).drag( target, {
+    //                 force: true
+    //             }).then( r => {
+    //                 console.log( r );
+    //             })
+                
+    //             cy.reload();
+    //             taskHelpers.getFirst().should("contain.text", tasks[1] );
+    //         });
+    //     });
+    // });
 });

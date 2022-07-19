@@ -26,7 +26,8 @@ export default class Task {
                 raw.name,
                 raw.finished,
                 raw.date,
-                raw.description
+                raw.description,
+                raw.priority,
             );
 
             const todoStore = useTodoStore();

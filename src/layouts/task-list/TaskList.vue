@@ -11,17 +11,20 @@ const props = defineProps<{
     folder: Folder
 }>();
 
-const todoStore = useTodoStore();
+const allPlans = computed(() => {
+    const plans = props.folder.plans.slice();
+
+    return plans.sort( (plan, plan1) => {
+        return plan1.priority - plan.priority;
+    });
+});
 
 const plans = computed(() => {
-    const plans = props.folder.plans.slice();
-    // TODO: Sort plans based on priority
-    return plans.filter(plan => ! plan.finished);
+    return allPlans.value.filter(plan => ! plan.finished);
 });
 
 const finishedPlans = computed(() => {
-    const plans = props.folder.plans.slice();
-    return plans.filter(plan => plan.finished);
+    return allPlans.value.filter(plan => plan.finished);
 });
 
 const showFinished = ref<boolean>( plans.value.length === 0 );
@@ -36,7 +39,9 @@ function renameFolder( e: any ) {
 </script>
 
 <template>
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div
+        class="flex-1 flex flex-col overflow-hidden"
+    >
         <GhostInput
             data-test="folder-rename-input"
             :value="folder.name"

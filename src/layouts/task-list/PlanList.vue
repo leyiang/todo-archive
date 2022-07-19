@@ -3,19 +3,53 @@ import StepPlanItem from "./plan/StepPlanItem.vue";
 import TaskPlanItem from "./plan/TaskPlanItem.vue";
 import Task from "@/core/model/Task";
 import Step from "@/core/model/Step";
+import { toRaw } from "vue";
+import { adapter } from "@/stores/TodoStore";
 
-function isTask( plan: Task | Step ) : plan is Task {
+
+type Plan = Task | Step;
+function isTask( plan: Plan ) : plan is Task {
     return plan instanceof Task;
 }
 
-function isStep( plan: Task | Step ) : plan is Step {
+function isStep( plan: Plan ) : plan is Step {
     return plan instanceof Step;
 }
 
 const props = defineProps<{
-    plans: (Task | Step)[]
+    plans: Plan[]
 }>();
 
+let oldPriority = 0;
+let currentDraggingPlan: Plan | null = null;
+let endDraggingPlan: Plan | null = null;
+
+function onDragStart( plan: Plan ) {
+    currentDraggingPlan = plan;
+    oldPriority = plan.priority;
+}
+
+function onDragEnter( plan: Plan ) {
+    if( currentDraggingPlan === null ) return;
+    if( plan === currentDraggingPlan ) return;
+
+    endDraggingPlan = plan;
+    currentDraggingPlan.priority = endDraggingPlan.priority + 1;
+}
+
+function onDrop() {
+    const plan = toRaw( currentDraggingPlan );
+    
+    if( plan === null ) return;
+
+    if( isTask(plan) ) {
+        console.log( plan );
+        
+        adapter.setTaskProp( plan.id, "priority", plan.priority ).then( _ => {
+            // Nothing to do
+        });
+    }
+}
 </script>
 
 <template>
@@ -24,6 +58,12 @@ const props = defineProps<{
             v-if="isTask( plan )"
             :key="plan.id"
             :task="plan"
+
+            draggable="true"
+            @dragstart="onDragStart( plan )"
+            @dragenter.prevent="onDragEnter( plan )"
+            @dragover.prevent=""
+            @drop="onDrop"
         />
 
         <StepPlanItem

@@ -13,7 +13,7 @@ export default class IndexDBAdapter {
     private steps: rawStep[] = [];
 
     constructor( public test = false ) {
-        this.accessor = new IndexDBAccessor("TodoApp", 1);
+        this.accessor = new IndexDBAccessor("TodoAppNext", 2);
         this.initDatabase();
         // this.factory();
     }
@@ -25,11 +25,11 @@ export default class IndexDBAdapter {
             ]);
 
             createStore("task", [
-                "name", "folder_id", "date", "important", "finished", "description"
+                "name", "folder_id", "date", "important", "finished", "description", "priority"
             ]);
 
             createStore("step", [
-                "name", "task_id", "date", "finished",
+                "name", "task_id", "date", "finished", "priority",
             ]);
         });
     }

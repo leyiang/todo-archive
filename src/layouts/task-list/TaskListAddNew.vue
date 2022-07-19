@@ -46,6 +46,6 @@ function addNewTask( value: string ) {
              text-white text-4 outline-none bg-gray-900/30 font-semibold
         "
         @add="addNewTask"
-        placeholder="Add new Task :)"
+        placeholder="Add New Task :)"
     />
 </template>

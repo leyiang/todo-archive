@@ -3,7 +3,7 @@ import Task from "@/core/model/Task";
 import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import useFinishIcon from "@/composables/useFinishIcon";
-import {onMounted, type Ref, ref} from "vue";
+import {onMounted, type Ref, ref, nextTick} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import { getTodayString } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
@@ -68,8 +68,13 @@ onMounted(() => {
         data-test="task-item"
         data-context-trigger
         class="task-item"
-        bg-white border-none p-1rem rounded text-lg flex items-center
-        :class="{ 'text-gray-500 line-through': task.finished }"
+        border-none p-1rem rounded text-lg flex items-center
+        bg-white
+        :class="[
+            {
+                'text-gray-500 line-through': task.finished,
+            }
+        ]"
         @click="toggleTaskActive"
         @keydown.enter="toggleTaskActive"
         ref="el"
@@ -83,6 +88,6 @@ onMounted(() => {
            <Icon :icon="finishIcon" />
         </button>
 
-        <span>{{ task.name }}</span>
+        <span class="select-none">{{ task.name }}</span>
     </div>
 </template>

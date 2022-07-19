@@ -1,5 +1,5 @@
 export const options = {
     db: {
-        name: "TodoApp"
+        name: "TodoAppNext"
     }
 }

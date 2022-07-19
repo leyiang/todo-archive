@@ -47,7 +47,7 @@ const show = ref(false);
                     :step="step"
                 />
 
-                <div class="flex pl-3" v-if="finishedSteps.length">
+                <div class="flex" v-if="finishedSteps.length">
                     <FinishedPlanToggleButton
                         data-test="finished-step-toggle-btn"
                         flex-1
