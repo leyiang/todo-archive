@@ -15,6 +15,10 @@ const allPlans = computed(() => {
     const plans = props.folder.plans.slice();
 
     return plans.sort( (plan, plan1) => {
+        if( plan1.priority === plan.priority ) {
+            return plan1.id - plan.id;
+        }
+
         return plan1.priority - plan.priority;
     });
 });
