@@ -1,7 +1,9 @@
+import type { ComputedRef } from "vue";
+
 export const menuSpecMap = new Map();
 
 export type menuSpecItem = {
-    name: string;
+    name: string | ComputedRef<string>
     action: () => void
 }
 

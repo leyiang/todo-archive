@@ -3,9 +3,9 @@ import Task from "@/core/model/Task";
 import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import useFinishIcon from "@/composables/useFinishIcon";
-import {onMounted, type Ref, ref, nextTick} from "vue";
+import {onMounted, type Ref, ref, nextTick, computed} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
-import { getTodayString } from "@/shared/utils";
+import { getTodayString, splice } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
@@ -36,16 +36,29 @@ onMounted(() => {
     if( el.value !== null ) {
         addNewMenu( el.value, [
             {
-                name: "Set as Today",
+                name: computed(() => props.task.date === getTodayString() ? "Today's Part is done" : "Set as Today"),
                 action: () => {
-                    adapter.setTaskProp( props.task.id, "date", getTodayString()).then( affecting => {
-                        affecting.forEach( id => {
-                            const folder = todoStore.folderMap[ id ];
-                            if( folder instanceof Folder ) {
-                                folder.plans.push(props.task);
-                            }
+                    if( props.task.date === getTodayString() ) {
+                        adapter.setTaskProp( props.task.id, "date", null).then( affecting => {
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[id];
+
+                                if( folder instanceof Folder ) {
+                                    splice( folder.plans, props.task );
+                                }
+                            });
                         });
-                    });
+                    } else {
+                        adapter.setTaskProp( props.task.id, "date", getTodayString()).then( affecting => {
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[ id ];
+
+                                if( folder instanceof Folder ) {
+                                    folder.plans.push(props.task);
+                                }
+                            });
+                        });
+                    }
                 }
             },
 

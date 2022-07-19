@@ -2,7 +2,7 @@
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import GhostInput from "@/components/common/GhostInput.vue";
 import TaskListAddNew from "./TaskListAddNew.vue";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import type Folder from "@/core/model/folder/Folder";
 import PlanList from "./PlanList.vue";
 import FinishedPlanToggleButton from "@/layouts/FinishedPlanToggleButton.vue"
@@ -28,6 +28,10 @@ const finishedPlans = computed(() => {
 });
 
 const showFinished = ref<boolean>( plans.value.length === 0 );
+
+watch(plans, () => {
+    showFinished.value = plans.value.length === 0;
+});
 
 function renameFolder( e: any ) {
     const value = e.target.value;

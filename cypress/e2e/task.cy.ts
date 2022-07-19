@@ -150,5 +150,29 @@ describe('Task List', () => {
             .find( testID("task-name-input") )
             .should("have.value", name);
     });
+
+    it.only("able to remove task from today", function() {
+        folderHelpers.create("normal");
+        folderHelpers.create("Today");
+        taskHelpers.create("today task", folderHelpers.getFirst());
+
+        taskHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        cy.reload();
+
+        taskHelpers.getFirst().rightclick();
+        clickMenu("Today's Part is done");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .click();
+
+        taskHelpers.getAll().should("have.length", 0);
+    });
 });
 
