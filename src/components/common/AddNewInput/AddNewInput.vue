@@ -45,6 +45,7 @@ function onEnter( e: KeyboardEvent ) {
             flex-1
             @keydown.enter="onEnter"
             pr-5rem
+            :maxlength="maxLength"
         >
 
         <small 
