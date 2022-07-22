@@ -3,7 +3,6 @@ import {computed, nextTick, onMounted, type Ref, ref, watch} from "vue";
 
 const el: Ref<null | HTMLTextAreaElement> = ref(null);
 const height: Ref<"auto" | number> = ref("auto");
-const content = ref("");
 
 const props = defineProps({
     minHeight: {
@@ -47,14 +46,12 @@ onMounted(() => {
     resize();
 });
 
-watch( content, resize );
-
 </script>
 
 <template>
     <textarea
         :style="style"
         ref="el"
-        v-model="content"
+        @input="resize"
     ></textarea>
 </template>
