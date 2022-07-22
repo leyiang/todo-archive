@@ -86,6 +86,7 @@ function updateTaskDescription(e: Event) {
             flex="~ 1 col"
         >
             <ResizableTextarea
+                data-test="task-description"
                 class="rounded box-shadow-none p-1rem"
                 border="1 gray-300"
                 placeholder="Task Description"

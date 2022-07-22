@@ -151,7 +151,7 @@ describe('Task List', () => {
             .should("have.value", name);
     });
 
-    it.only("able to remove task from today", function() {
+    it("able to remove task from today", function() {
         folderHelpers.create("normal");
         folderHelpers.create("Today");
         taskHelpers.create("today task", folderHelpers.getFirst());
@@ -178,6 +178,30 @@ describe('Task List', () => {
 
         step();
         step();
+    });
+
+    it("able to set task description", () => {
+        taskHelpers.create("task");
+        taskHelpers.getFirst().click();
+
+        const content = "Random_" + Math.random();
+
+        get("task-description")
+            .should("exist")
+            .should("contain.text", '')
+            .should("not.contain.text", content )
+            .click()
+            .type( content );
+
+        /**
+         * Trigger Change Event
+         */
+        get("task-list").click();
+
+        cy.reload();
+
+        get("task-description")
+            .should("contain.text", content );
     });
 });
 
