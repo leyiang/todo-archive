@@ -5,6 +5,7 @@ import Task from "@/core/model/Task";
 import StepItem from "./StepItem.vue";
 import ResizableTextarea from "@/components/common/ResizableTextarea.vue";
 import FinishedPlanToggleButton from "@/layouts/FinishedPlanToggleButton.vue"
+import { adapter } from "@/stores/TodoStore";
 
 const props = defineProps({
     task: {
@@ -24,6 +25,15 @@ const finishedSteps = computed(() => {
 });
 
 const show = ref(false);
+
+function updateTaskDescription(e: Event) {
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value.toString().trim();
+
+    adapter.setTaskProp( props.task.id, "description", value).then(() => {
+        props.task.description = value;
+    });
+}
 </script>
 
 <template>
@@ -79,6 +89,8 @@ const show = ref(false);
                 class="rounded box-shadow-none p-1rem"
                 border="1 gray-300"
                 placeholder="Task Description"
+                v-text="props.task.description"
+                @change="updateTaskDescription"
             />
         </div>
     </aside>
