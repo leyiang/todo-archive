@@ -135,16 +135,15 @@ describe('Task List', () => {
         })
     });
 
-    it("hold activeTask state after refresh", function() {
+    it.only("hold activeTask state after refresh", function() {
         const name = "123";
 
         taskHelpers.create( name );
-        taskHelpers.create("abc");
 
         taskHelpers.getFirst().click();
-        cy.reload();
 
         cy
+            .reload()
             .get( testID("task-detail") )
             .should("exist")
             .find( testID("task-name-input") )
