@@ -14,14 +14,24 @@ const props = defineProps({
     }
 });
 
-const steps = computed(() => {
+const allSteps = computed(() => {
     const steps = props.task.steps.slice();
-    return steps.filter( step => ! step.finished );
+
+    return steps.sort( (step, step1) => {
+        if( step1.priority === step.priority ) {
+            return step1.id - step.id;
+        }
+
+        return step1.priority - step.priority;
+    });
+});
+
+const steps = computed(() => {
+    return allSteps.value.filter( step => ! step.finished );
 });
 
 const finishedSteps = computed(() => {
-    const steps = props.task.steps.slice();
-    return steps.filter( step => step.finished );
+    return allSteps.value.filter( step => step.finished );
 });
 
 const show = ref(false);
