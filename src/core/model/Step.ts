@@ -25,6 +25,7 @@ export default class Step {
                 raw.name,
                 raw.finished,
                 raw.date,
+                raw.priority,
             );
 
             useTodoStore().stepMap[ raw.id ] = step;

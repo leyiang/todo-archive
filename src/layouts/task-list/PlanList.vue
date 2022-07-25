@@ -42,10 +42,14 @@ function onDrop() {
     
     if( plan === null ) return;
 
+    console.log( isStep(plan) );;
+    
     if( isTask(plan) ) {
-        console.log( plan );
-        
         adapter.setTaskProp( plan.id, "priority", plan.priority ).then( _ => {
+            // Nothing to do
+        });
+    } else if( isStep(plan) ) {
+        adapter.setStepProp( plan.id, "priority", plan.priority ).then( _ => {
             // Nothing to do
         });
     }
@@ -70,6 +74,12 @@ function onDrop() {
             v-else-if="isStep( plan )"
             :key="plan.id"
             :step="plan"
+
+            draggable="true"
+            @dragstart="onDragStart( plan )"
+            @dragenter.prevent="onDragEnter( plan )"
+            @dragover.prevent=""
+            @drop="onDrop"
         />
     </template>
 </template>
