@@ -89,13 +89,13 @@ describe('Step List', () => {
             .clear()
             .type( newName )
             .type("{enter}")
-            .should("contain.value", newName );
+            .should("have.value", newName );
 
         cy.reload();
 
         stepHelpers
             .getFirst()
             .find( testID("step-item-input") )
-            .should("contain.value", newName );
+            .should("have.value", newName );
     });
 });

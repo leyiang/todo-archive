@@ -135,7 +135,7 @@ describe('Task List', () => {
         })
     });
 
-    it.only("hold activeTask state after refresh", function() {
+    it("hold activeTask state after refresh", function() {
         const name = "123";
 
         taskHelpers.create( name );
@@ -203,7 +203,7 @@ describe('Task List', () => {
             .should("contain.text", content );
     });
 
-    it("able to set task name inside detail", () => {
+    it.only("able to set task name inside detail", () => {
         const newName = "THis is new name";
 
         taskHelpers.create("task");
@@ -214,11 +214,11 @@ describe('Task List', () => {
             .clear()
             .type( newName )
             .type("{enter}")
-            .should("contain.value", newName );
+            .should("have.value", newName );
         
         taskHelpers
             .getFirst()
-            .should("contain.text", newName);
+            .should("have.text", newName);
 
         cy.reload();
 
@@ -226,6 +226,6 @@ describe('Task List', () => {
 
         taskHelpers
             .getFirst()
-            .should("contain.text", newName);
+            .should("have.text", newName);
     });
 });
