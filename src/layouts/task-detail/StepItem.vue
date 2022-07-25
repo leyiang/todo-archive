@@ -81,17 +81,25 @@ function renameStep(e: Event) {
         });
     }
 }
+
+// Component Ref
+const input = ref<null | InstanceType<typeof GhostInput>>(null);
+function focusInput() {
+    input.value?.$el?.focus();
+}
 </script>
 
 <template>
     <div
         data-test="step-item"
         data-context-trigger
+        ref="el"
+        @click.self="focusInput"
+
         class="step-item flex items-center text-1rem"
         p="y-3 x-10px"
         hover:bg-gray-200 rounded
         :class="{ 'line-through text-gray-500': step.finished }"
-        ref="el"
     >
         <button
             data-test="step-finish-button"
@@ -105,9 +113,11 @@ function renameStep(e: Event) {
             data-test="step-item-input"
             :value="step.name"
             :disabled="inputDisabled"
-            text-1rem flex-1
             @contextmenu="preventInputFocusOnRightClick"
             @change="renameStep"
+            ref="input"
+
+            text-1rem flex-1
         />
     </div>
 </template>

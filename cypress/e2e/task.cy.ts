@@ -203,7 +203,7 @@ describe('Task List', () => {
             .should("contain.text", content );
     });
 
-    it.only("able to set task name inside detail", () => {
+    it("able to set task name inside detail", () => {
         const newName = "THis is new name";
 
         taskHelpers.create("task");
