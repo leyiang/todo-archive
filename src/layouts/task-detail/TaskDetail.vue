@@ -34,6 +34,18 @@ function updateTaskDescription(e: Event) {
         props.task.description = value;
     });
 }
+
+function renameTask(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const value = target.value.trim();
+
+    if( value.length !== 0 ) {
+        adapter.setTaskProp( props.task.id, "name", value ).then(() => {
+            props.task.name = value;
+        });
+    }
+}
+
 </script>
 
 <template>
@@ -48,6 +60,8 @@ function updateTaskDescription(e: Event) {
                 mb-1rem text-xl px-10px
                 border="none"
                 bg-transparent
+
+                @change="renameTask"
             />
 
             <div class="flex flex-col flex-1 custom-scrollbar" overflow-auto>

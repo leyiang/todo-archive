@@ -203,5 +203,30 @@ describe('Task List', () => {
         get("task-description")
             .should("contain.text", content );
     });
-});
 
+    it("able to set task name inside detail", () => {
+        const newName = "THis is new name";
+
+        taskHelpers.create("task");
+        taskHelpers.getFirst().click();
+
+        cy
+            .get( testID("task-name-input") )
+            .clear()
+            .type( newName )
+            .type("{enter}")
+            .should("contain.value", newName );
+        
+        taskHelpers
+            .getFirst()
+            .should("contain.text", newName);
+
+        cy.reload();
+
+        folderHelpers.getFirst().click();
+
+        taskHelpers
+            .getFirst()
+            .should("contain.text", newName);
+    });
+});
