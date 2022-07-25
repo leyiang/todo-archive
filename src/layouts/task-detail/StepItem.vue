@@ -70,6 +70,17 @@ function preventInputFocusOnRightClick() {
         inputDisabled.value = false;
     });
 }
+
+function renameStep(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const value = target.value.trim();
+
+    if( value.length !== 0 ) {
+        adapter.setStepProp( props.step.id, "name", value ).then(() => {
+            props.step.name = value;
+        });
+    }
+}
 </script>
 
 <template>
@@ -91,10 +102,12 @@ function preventInputFocusOnRightClick() {
         </button>
 
         <GhostInput
+            data-test="step-item-input"
             :value="step.name"
             :disabled="inputDisabled"
             text-1rem flex-1
             @contextmenu="preventInputFocusOnRightClick"
+            @change="renameStep"
         />
     </div>
 </template>

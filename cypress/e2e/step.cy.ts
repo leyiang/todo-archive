@@ -77,5 +77,25 @@ describe('Step List', () => {
             .last()
             .find( testID("unfinished-task-number") )
             .should("contain.text", 1);
-    })
+    });
+
+    it("able to rename a step", () => {
+        const newName = "New Step Name";
+        stepHelpers.create("step");
+
+        stepHelpers
+            .getFirst()
+            .find( testID("step-item-input") )
+            .clear()
+            .type( newName )
+            .type("{enter}")
+            .should("contain.value", newName );
+
+        cy.reload();
+
+        stepHelpers
+            .getFirst()
+            .find( testID("step-item-input") )
+            .should("contain.value", newName );
+    });
 });
