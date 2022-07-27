@@ -2,7 +2,9 @@
 import { Icon } from "@iconify/vue";
 import useFinishIcon from '@/composables/useFinishIcon';
 import type Step from '@/core/model/Step';
-import type Task from '@/core/model/Task';
+import Task from '@/core/model/Task';
+import { useTodoStore } from "@/stores/TodoStore";
+import { computed } from "vue";
 
 const props = defineProps<{
     plan: Task | Step
@@ -11,23 +13,34 @@ const props = defineProps<{
 defineEmits(["toggleActive", "toggleFinish"]);
 
 const finishIcon = useFinishIcon( props.plan );
+const todoStore = useTodoStore();
 
+const dynamicClass = computed(() => {
+    const currentTask = props.plan instanceof Task
+        ? props.plan
+        : todoStore.taskMap[ props.plan.task_id ];
+
+    return [
+        currentTask === todoStore.activeTask ? 'bg-emerald-100' : 'bg-white',
+
+        {
+            'text-gray-500 line-through': props.plan.finished,
+        }
+    ]
+});
 </script>
 
 <template>
     <div
         tabindex="0"
         data-context-trigger
+
         border-none p-1rem rounded text-lg flex items-center
-        bg-white
-        :class="[
-            {
-                'text-gray-500 line-through': plan.finished,
-            }
-        ]"
+        :class="dynamicClass"
+
+        ref="el"
         @click="$emit('toggleActive')"
         @keydown.enter="$emit('toggleActive')"
-        ref="el"
     >
         <button
             data-test="task-finish-button"
