@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Icon } from "@iconify/vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
-import useFinishIcon from "@/composables/useFinishIcon";
-import {onMounted, type Ref, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import Step from "@/core/model/Step";
 import { getTodayString, splice } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
+import PlanItem from "./PlanItem.vue";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -18,7 +17,6 @@ const props = defineProps({
 });
 
 const task = todoStore.taskMap[ props.step.task_id ];
-const finishIcon = useFinishIcon( props.step );
 
 function toggleTaskActive() {
     if( task === undefined ) return;
@@ -34,11 +32,13 @@ function toggleStepFinishStatus() {
     });
 }
 
-const el: Ref<HTMLElement | null> = ref(null);
+const planItem = ref<InstanceType<typeof PlanItem>>();
 
 onMounted(() => {
-    if( el.value !== null ) {
-        addNewMenu( el.value, [
+    const el = planItem?.value?.$el;
+
+    if( el instanceof HTMLElement ) {
+        addNewMenu( el, [
             {
                 name: computed(() => props.step.date === getTodayString() ? "Today's Part is done" : "Set as Today"),
                 action: () => {
@@ -84,24 +84,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <div
+    <PlanItem
         data-test="step-item-in-task-list"
-        data-context-trigger
-        class="task-item bg-white border-none p-1rem rounded text-lg flex items-center"
-        :class="{ 'text-gray-500 line-through': step.finished }"
-        @click="toggleTaskActive"
-        @keydown.enter="toggleTaskActive"
-        ref="el"
-    >
-        <button
-            data-test="task-finish-button"
-            flex items-center justify-center mr-1rem text-2xl
-            btn-reset
-            @click.stop="toggleStepFinishStatus"
-        >
-            <Icon :icon="finishIcon" />
-        </button>
 
-        <span class="select-none">{{ task?.name }} => {{ step.name }}</span>
-    </div>
+        ref="planItem"
+        :plan="step"
+        @toggle-active="toggleTaskActive"
+        @toggle-finish="toggleStepFinishStatus"
+    >
+        {{ task?.name }} => {{ step.name }}
+    </PlanItem>
 </template>
