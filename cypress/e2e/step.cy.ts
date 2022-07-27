@@ -98,4 +98,81 @@ describe('Step List', () => {
             .find( testID("step-item-input") )
             .should("have.value", newName );
     });
+
+    it("able to remove step from today inside detail", () => {
+        folderHelpers.create("folder");
+        folderHelpers.create("Today");
+
+        taskHelpers.create("task", folderHelpers.getFirst() );
+        stepHelpers.create("step", taskHelpers.getFirst());
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .find( testID("unfinished-task-number") )
+            .should("contain.text", 1);
+
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Today's Part is done");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .find( testID("unfinished-task-number") )
+            .should("not.exist");
+    });
+
+    it("able to remove step from today inside task list", () => {
+        folderHelpers.create("folder");
+        folderHelpers.create("Today");
+
+        taskHelpers.create("task", folderHelpers.getFirst() );
+        stepHelpers.create("step", taskHelpers.getFirst());
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .click();
+
+        cy
+            .get( testID("step-item-in-task-list") )
+            .rightclick();
+
+        clickMenu("Today's Part is done");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .find( testID("unfinished-task-number") )
+            .should("not.exist");
+
+
+        // Test Reactivity
+        // Remove in today, so in detail step should able to add it back
+
+        stepHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        folderHelpers
+            .getAll()
+            .last()
+            .find( testID("unfinished-task-number") )
+            .should("have.text", 1);
+    });
 });

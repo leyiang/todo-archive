@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import Step from "@/core/model/Step";
 import GhostInput from "@/components/common/GhostInput.vue";
 import { Icon } from "@iconify/vue"
@@ -6,7 +7,8 @@ import useFinishIcon from "@/composables/useFinishIcon";
 import {nextTick, onMounted, ref, type Ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
-import { getTodayString } from "@/shared/utils";
+import { getTodayString, splice } from "@/shared/utils";
+import Folder from "@/core/model/folder/Folder";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -22,17 +24,33 @@ onMounted(() => {
     if( el.value !== null ) {
         addNewMenu( el.value, [
             {
-                name: "Set as Today",
+                name: computed(() => props.step.date === getTodayString() ? "Today's Part is done" : "Set as Today"),
                 action: () => {
-                    adapter.setStepProp( props.step.id, "date", getTodayString()).then( affecting => {
-                        affecting
-                            .map( id => todoStore.folderMap[id] )
-                            .forEach( folder => {
-                                if( folder !== undefined ) {
-                                    folder.plans.push( props.step );
+                    if( props.step.date === getTodayString() ) {
+                        adapter.setStepProp( props.step.id, "date", null).then( affecting => {
+                            props.step.date = null;
+
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[id];
+
+                                if( folder instanceof Folder ) {
+                                    splice( folder.plans, props.step );
                                 }
                             });
-                    });
+                        });
+                    } else {
+                        adapter.setStepProp( props.step.id, "date", getTodayString()).then( affecting => {
+                            props.step.date = getTodayString();
+
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[ id ];
+
+                                if( folder instanceof Folder ) {
+                                    folder.plans.push(props.step);
+                                }
+                            });
+                        });
+                    }
                 }
             },
             {
