@@ -28,6 +28,11 @@ const dynamicClass = computed(() => {
         }
     ]
 });
+
+const planType = computed(() => {
+    return props.plan instanceof Task ? 'task' : 'plan';
+});
+
 </script>
 
 <template>
@@ -37,6 +42,8 @@ const dynamicClass = computed(() => {
 
         border-none p-1rem rounded text-lg flex items-center
         :class="dynamicClass"
+
+        :plan-type="planType"
 
         ref="el"
         @click="$emit('toggleActive')"
@@ -56,3 +63,37 @@ const dynamicClass = computed(() => {
         </span>
     </div>
 </template>
+
+<style>
+[plan-type] {
+    --size: 30px;
+    position: relative;
+}
+
+[plan-type]::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--size);
+    height: var(--size);
+    color: #FFF;
+
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    text-align: right;
+    padding-right: 5px;
+    box-sizing: border-box;
+
+    line-height: 18px;
+    font-size: .75em;
+}
+
+[plan-type="task"]::after {
+    content: "T";
+    background: dodgerblue;
+}
+
+[plan-type="plan"]::after {
+    content: "P";
+    background: green;
+}
+</style>
