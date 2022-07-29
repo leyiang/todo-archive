@@ -67,7 +67,7 @@ useEventListener("contextmenu", e => {
 <template>
     <div
         v-show="show"
-        class="context-menu flex flex-col bg-white absolute py-8px rounded shadow border border-gray-300"
+        class="context-menu flex flex-col bg-white absolute py-8px border border-gray-300"
         :class="[`w-${ width }px`]"
         :style="menuPosStyle"
         ref="el"
