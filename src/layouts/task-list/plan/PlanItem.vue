@@ -65,12 +65,12 @@ const planType = computed(() => {
 </template>
 
 <style>
-[plan-type] {
+[plan-type="plan"] {
     --size: 30px;
     position: relative;
 }
 
-[plan-type]::after {
+[plan-type="plan"]::after {
     position: absolute;
     top: 0;
     right: 0;
@@ -87,13 +87,13 @@ const planType = computed(() => {
     font-size: .75em;
 }
 
-[plan-type="task"]::after {
+/* [plan-type="task"]::after {
     content: "T";
     background: dodgerblue;
-}
+} */
 
 [plan-type="plan"]::after {
     content: "P";
-    background: green;
+    background: dodgerblue;
 }
 </style>
