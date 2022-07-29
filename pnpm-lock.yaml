@@ -11,6 +11,7 @@ specifiers:
   '@vue/test-utils': ^2.0.0
   '@vue/tsconfig': ^0.1.3
   cypress: ^10.1.0
+  cypress-real-events: ^1.7.1
   eslint: ^8.5.0
   eslint-plugin-cypress: ^2.12.1
   eslint-plugin-vue: ^9.0.0
@@ -43,6 +44,7 @@ devDependencies:
   '@vue/test-utils': 2.0.2_vue@3.2.37
   '@vue/tsconfig': 0.1.3_@types+node@16.11.43
   cypress: 10.3.0
+  cypress-real-events: 1.7.1_cypress@10.3.0
   eslint: 8.19.0
   eslint-plugin-cypress: 2.12.1_eslint@8.19.0
   eslint-plugin-vue: 9.1.1_eslint@8.19.0
@@ -1214,6 +1216,14 @@ packages:
 
   /csstype/2.6.20:
     resolution: {integrity: sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==}
+
+  /cypress-real-events/1.7.1_cypress@10.3.0:
+    resolution: {integrity: sha512-/Bg15RgJ0SYsuXc6lPqH08x19z6j2vmhWN4wXfJqm3z8BTAFiK2MvipZPzxT8Z0jJP0q7kuniWrLIvz/i/8lCQ==}
+    peerDependencies:
+      cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x
+    dependencies:
+      cypress: 10.3.0
+    dev: true
 
   /cypress/10.3.0:
     resolution: {integrity: sha512-txkQWKzvBVnWdCuKs5Xc08gjpO89W2Dom2wpZgT9zWZT5jXxqPIxqP/NC1YArtkpmp3fN5HW8aDjYBizHLUFvg==}
