@@ -228,4 +228,36 @@ describe('Task List', () => {
             .getFirst()
             .should("have.text", newName);
     });
+
+    it.only("able to move task around", function() {
+        folderHelpers.create("old");
+        folderHelpers.create("new");
+
+        taskHelpers.create("today task", folderHelpers.getFirst());
+
+        folderHelpers
+            .getAll()
+            .eq(1)
+            .find( testID("unfinished-task-number") )
+            .should("not.exist");
+
+        taskHelpers
+            .getFirst()
+            .rightclick();
+
+        get("context-menu")
+            .contains("Move task to")
+            .realHover();
+
+        get("child-menu")
+            .contains("new")
+            .click();
+
+        folderHelpers
+            .getAll()
+            .eq(1)
+            .find( testID("unfinished-task-number") )
+            .should("exist")
+            .should("have.text", "1");
+    });
 });

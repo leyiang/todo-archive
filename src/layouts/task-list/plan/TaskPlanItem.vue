@@ -66,6 +66,23 @@ onMounted(() => {
             },
 
             {
+                name: "Move task to",
+
+                children: todoStore.folders.map( folder => ({
+                    name: folder.name,
+                    action: () => {
+                        adapter.setTaskProp( props.task.id, "folder_id", folder.id ).then( r => {
+                            const oldFolder = todoStore.folderMap[ props.task.folder_id ];
+                            splice( oldFolder.plans, props.task );
+
+                            props.task.folder_id = folder.id;
+                            folder.plans.push( props.task );
+                        });
+                    }
+                }))
+            },
+
+            {
                 name: "Remove Task",
                 action: () => {
                     adapter.removeTask( props.task.id ).then(() => {

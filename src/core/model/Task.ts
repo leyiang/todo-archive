@@ -7,6 +7,7 @@ export default class Task {
 
     constructor(
         public id: number,
+        public folder_id: number,
         public name: string,
         public finished: boolean = false,
         public date: string | null = null,
@@ -23,6 +24,7 @@ export default class Task {
         if( isRawTask(raw) ) {
             const task = new Task(
                 raw.id,
+                raw.folder_id,
                 raw.name,
                 raw.finished,
                 raw.date,
