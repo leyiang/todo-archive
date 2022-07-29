@@ -67,6 +67,12 @@ useEventListener("contextmenu", e => {
         closeMenu();
     }
 });
+
+useEventListener("keydown", e => {
+    if( e.key === "Escape" ) {
+        closeMenu();
+    }
+});
 </script>
 
 <template>

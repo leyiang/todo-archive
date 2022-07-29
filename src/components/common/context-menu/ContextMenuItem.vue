@@ -2,7 +2,6 @@
 import type { menuSpecItem } from './ContextMenuData';
 import ContextMenuList from "./ContextMenuList.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref } from 'vue';
 
 const props = defineProps<{
     spec: menuSpecItem
