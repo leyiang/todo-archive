@@ -36,6 +36,7 @@ function triggerAction() {
         </button>
 
         <ContextMenuList
+            data-test="child-menu"
             v-if="spec.children"
             class="child-menu"
             absolute left-full top-0
