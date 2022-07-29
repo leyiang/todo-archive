@@ -4,7 +4,8 @@ export const menuSpecMap = new Map();
 
 export type menuSpecItem = {
     name: string | ComputedRef<string>
-    action: () => void
+    action?: () => void,
+    children?: menuSpecItem[]
 }
 
 export function addNewMenu( el: HTMLElement, spec: menuSpecItem[] ) {

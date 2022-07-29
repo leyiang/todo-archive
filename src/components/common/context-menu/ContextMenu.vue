@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ContextMenuItem from "./ContextMenuItem.vue";
-import {computed, nextTick, onMounted, type Ref, ref} from "vue";
+import {computed, onMounted, type Ref, ref} from "vue";
 import {useRightClick} from "@/composables/useRightClick";
 import {type menuSpecItem, menuSpecMap} from "@/components/common/context-menu/ContextMenuData";
 import {useEventListener} from "@/composables/useEventListener";
@@ -23,11 +23,6 @@ const menuPosStyle = computed(() => {
         transform: `translate(${ x }px, ${ y }px)`
     }
 });
-
-function triggerAction( item: menuSpecItem ) {
-    item.action();
-    show.value = false;
-}
 
 function getRealTarget( el: HTMLElement | null ): null | HTMLElement {
     if( el === null ) return null;
@@ -53,6 +48,10 @@ onMounted(() => {
     }
 });
 
+function closeMenu() {
+    show.value = false;
+}
+
 useEventListener("contextmenu", e => {
     const target = getRealTarget( e.target as HTMLElement );
 
@@ -60,6 +59,8 @@ useEventListener("contextmenu", e => {
         e.preventDefault();
         menus.value = menuSpecMap.get( target );
         show.value = true;
+    } else {
+        closeMenu();
     }
 });
 </script>
@@ -71,10 +72,11 @@ useEventListener("contextmenu", e => {
         :class="[`w-${ width }px`]"
         :style="menuPosStyle"
         ref="el"
+        @close="closeMenu"
     >
         <ContextMenuItem
             v-for="item in menus"
-            @click="triggerAction(item)"
+            :spec="item"
         >{{ item.name }}</ContextMenuItem>
     </div>
 </template>
