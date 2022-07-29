@@ -5,11 +5,11 @@ import {useRightClick} from "@/composables/useRightClick";
 import {type menuSpecItem, menuSpecMap} from "@/components/common/context-menu/ContextMenuData";
 import {useEventListener} from "@/composables/useEventListener";
 import {useClickOutside} from "@/composables/useClickOutside";
+import ContextMenuList from "./ContextMenuList.vue";
 
 const menus: Ref<menuSpecItem[]> = ref([]);
 const show = ref(false);
 const pos = useRightClick();
-const el: Ref<null | HTMLDivElement> = ref(null);
 const width = 300;
 
 const menuPosStyle = computed(() => {
@@ -20,7 +20,8 @@ const menuPosStyle = computed(() => {
     }
 
     return {
-        transform: `translate(${ x }px, ${ y }px)`
+        transform: `translate(${ x }px, ${ y }px)`,
+        "--width": width + "px",
     }
 });
 
@@ -38,9 +39,12 @@ function getRealTarget( el: HTMLElement | null ): null | HTMLElement {
     return null;
 }
 
+const menuList = ref<InstanceType<typeof ContextMenuList>>();
 onMounted(() => {
-    if( el.value !== null ) {
-        useClickOutside( el.value, () => {
+    const el = menuList.value?.$el;
+
+    if( el instanceof HTMLElement ) {
+        useClickOutside( el, () => {
             if( show.value === true ) {
                 show.value = false;
             }
@@ -66,17 +70,15 @@ useEventListener("contextmenu", e => {
 </script>
 
 <template>
-    <div
+    <ContextMenuList
         v-show="show"
-        class="context-menu flex flex-col bg-white absolute py-8px border border-gray-300"
-        :class="[`w-${ width }px`]"
         :style="menuPosStyle"
-        ref="el"
         @close="closeMenu"
+        ref="menuList"
     >
         <ContextMenuItem
             v-for="item in menus"
             :spec="item"
-        >{{ item.name }}</ContextMenuItem>
-    </div>
+        />
+    </ContextMenuList>
 </template>
