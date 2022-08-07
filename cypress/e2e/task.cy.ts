@@ -70,13 +70,33 @@ describe('Task List', () => {
             .should("have.length", 0);
     });
 
-    it("able to toggle detail", () => {
+    it("able to focus detail", () => {
         taskHelpers.create("task");
         taskHelpers.getFirst().click();
         get("task-detail").should("exist");
 
+        cy.reload();
+
+        get("task-detail").should("exist");
+    });
+
+    it("able to de-focus detail", () => {
+        taskHelpers.create("task");
+        taskHelpers.getFirst().click();
+        get("task-detail").should("exist");
         taskHelpers.getFirst().click();
         get("task-detail").should("not.exist");
+
+        cy.reload();
+
+        taskHelpers
+            .getAll()
+            .should("have.length", 1);
+
+        // Need to put after positive assert
+        // Otherwise will have problem
+        cy.get( testID("task-detail") ).should("not.exist");
+
     });
 
     it('remove task will de-focus it', () => {
@@ -229,7 +249,7 @@ describe('Task List', () => {
             .should("have.text", newName);
     });
 
-    it.only("able to move task around", function() {
+    it("able to move task around", function() {
         folderHelpers.create("old");
         folderHelpers.create("new");
 

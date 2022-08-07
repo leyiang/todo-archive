@@ -44,16 +44,19 @@ export const useTodoStore = defineStore({
             }
         },
 
-        setActiveTask( task?: Task ) {
-            if( task !== undefined ) {
+        setActiveTask( task?: Task | null ) {
+            if( task instanceof Task ) {
                 this.activeTask = task;
                 localStorage.setItem("active_task_id", task.id.toString() );
+            } else {
+                this.activeTask = null;
+                localStorage.removeItem("active_task_id");
             }
         },
 
         toggleTaskActive( task: Task ) {
             if( this.activeTask === task ) {
-                this.activeTask = null;
+                this.setActiveTask( null );
             } else {
                 this.setActiveTask( task );
             }
@@ -95,7 +98,7 @@ export const useTodoStore = defineStore({
              * De-active the removed task
              */
             if( this.activeTask === task ) {
-                this.activeTask = null;
+                this.setActiveTask( null );
             }
         },
 
