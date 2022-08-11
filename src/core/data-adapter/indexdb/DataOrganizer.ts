@@ -11,7 +11,7 @@ interface OrganizerOptionList {
         /**
          * Check Filter Option By Using FilterParser
          */
-        check: (...args: any[]) => void
+        check: (item: rawTask | rawStep) => void
     }
 }
 

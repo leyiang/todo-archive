@@ -1,10 +1,12 @@
 import { getTodayString } from "@/shared/utils";
+import { isRawTask, type rawStep, type rawTask } from "../rawTypes";
 
-export const availableOptions = ["today", "important"];
+export const availableOptions = ["today", "important", "all"];
 
 export interface filterOptionsType {
     today?: boolean;
     important?: boolean;
+    all: boolean;
 }
 
 export default class FilterParser {
@@ -12,14 +14,18 @@ export default class FilterParser {
 
     }
 
-    checkValid( option: string, plan: any, ) {
+    checkValid( option: string, plan: rawTask | rawStep, ) {
         if( availableOptions.includes( option ) ) {
             if( option === "today" ) {
                 return plan.date === getTodayString();
             }
 
-            if( option === "important" ) {
+            if( option === "important" && isRawTask(plan) ) {
                 return !! plan.important;
+            }
+
+            if( option === "all" ) {
+                return isRawTask( plan );
             }
         } else {
             // No Good

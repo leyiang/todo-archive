@@ -92,6 +92,16 @@ function updateFolderFilterOptions( folder: Folder | null ) {
                             @change="updateFolderFilterOptions( todoStore.settingFolder )"
                         >
                     </div>
+
+                    <div class="flex justify-between items-center">
+                        <span>All</span>
+
+                        <input
+                            type="checkbox"
+                            v-model="todoStore.settingFolder.filterOptions.all"
+                            @change="updateFolderFilterOptions( todoStore.settingFolder )"
+                        >
+                    </div>
                 </fieldset>
             </div>
         </Modal>
