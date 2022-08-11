@@ -3,7 +3,7 @@ const emit = defineEmits(["close"]);
 </script>
 
 <template>
-    <div class="modal-wrap">
+    <div class="modal-wrap z-10">
         <div
             position-absolute
             inset-0
