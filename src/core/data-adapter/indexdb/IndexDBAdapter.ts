@@ -159,7 +159,7 @@ export default class IndexDBAdapter {
                         finished: false,
                         steps: [],
                         priority: 10,
-                        labels: [],
+                        labels,
                     });
                 });
             });
