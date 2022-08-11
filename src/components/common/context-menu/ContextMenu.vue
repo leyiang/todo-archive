@@ -14,13 +14,14 @@ const width = 300;
 
 const menuPosStyle = computed(() => {
     let { x, y } = pos.value;
+    let yOffset = 10;
 
     if( x + width > window.innerWidth ) {
         x = window.innerWidth - width - 10;
     }
 
     return {
-        transform: `translate(${ x }px, ${ y }px)`,
+        transform: `translate(${ x }px, ${ y + yOffset }px)`,
         "--width": width + "px",
     }
 });
