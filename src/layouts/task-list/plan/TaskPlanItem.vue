@@ -6,6 +6,7 @@ import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import { getTodayString, splice } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
 import PlanItem from "./PlanItem.vue";
+import TaskLabel from "./TaskLabel.vue";
 
 const todoStore = useTodoStore();
 const props = defineProps({
@@ -103,5 +104,9 @@ onMounted(() => {
         :plan="task"
         @toggle-active="toggleTaskActive"
         @toggle-finish="toggleTaskFinishStatus"
-    />
+    >
+        <template #labels>
+            <TaskLabel v-for="label in task.labels">{{ label }}</TaskLabel>
+        </template>
+    </PlanItem>
 </template>

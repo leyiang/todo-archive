@@ -32,7 +32,6 @@ const dynamicClass = computed(() => {
 const planType = computed(() => {
     return props.plan instanceof Task ? 'task' : 'plan';
 });
-
 </script>
 
 <template>
@@ -58,9 +57,15 @@ const planType = computed(() => {
            <Icon :icon="finishIcon" />
         </button>
 
-        <span class="select-none">
-            <slot>{{ plan.name }}</slot>
-        </span>
+        <div class="flex flex-col">
+            <span class="select-none">
+                <slot>{{ plan.name }}</slot>
+            </span>
+
+            <div class="labels flex gap-1 items-center">
+                <slot name="labels"></slot>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -41,6 +41,7 @@ export interface rawTask extends Task {
     steps: rawStep[];
     description: string;
     priority: number;
+    labels: string[];
 }
 
 export function getRawTask(
@@ -53,7 +54,7 @@ export function getRawTask(
     description = "",
     priority = 10,
 ): rawTask {
-    return { id, name, folder_id, date, important, finished, description, priority, steps: [] };
+    return { id, name, folder_id, date, important, finished, description, priority, steps: [], labels: [] };
 }
 
 export interface rawStep extends Step {

@@ -56,7 +56,7 @@ describe('IndexDB Adapter - Task', () => {
             description: "This is the description",
             finished: true,
             important: true,
-            priority: 1
+            priority: 1,
         }
 
         const rawFolder = await adapter.addFolder("Folder Name");
@@ -72,6 +72,7 @@ describe('IndexDB Adapter - Task', () => {
             expect( task.finished === false || task.finished === undefined ).toBeTruthy();
             expect( task.important === false || task.important === undefined ).toBeTruthy();
             expect( task.priority === 10 || task.priority === undefined ).toBeTruthy();
+            expect( task.labels === undefined || Array.isArray(task.labels) ).toBeTruthy();
         });
 
         /**
@@ -134,5 +135,41 @@ describe('IndexDB Adapter - Task', () => {
                 expect( affecting[0] ).toBe( folderMap.important.id );
             });
         }
+    });
+
+    it("Able to add Task with labels", async () => {
+        const labels = ["book", "test"];
+        const name = `:${ labels.join(',') } Task Naem`;
+        
+        const rawFolder = await adapter.addFolder("Folder Name");
+        await adapter.addTask(name, rawFolder.id );
+
+        await adapter.getTasksForTest().then( tasks => {
+            const task = tasks[0];
+            expect( task.labels ).toMatchObject( labels );
+        });
+    });
+
+    it("Able to add labels for task", async () => {
+        const name = "Task Naem";
+
+        let task_id: null | number = null;
+        const rawFolder = await adapter.addFolder("Folder Name");
+
+        await adapter.addTask(name, rawFolder.id );
+
+        await adapter.getTasksForTest().then( tasks => {
+            const task = tasks[0];
+            task_id = task.id;
+            expect( task.labels === undefined || Array.isArray(task.labels) ).toBeTruthy();
+        });
+
+        const label = "new label";
+        await adapter.addTaskLabel(task_id, label);
+
+        await adapter.getTasksForTest().then( tasks => {
+            const task = tasks[0];
+            expect( task.labels ).toMatchObject( [ label ] );
+        });
     });
 });

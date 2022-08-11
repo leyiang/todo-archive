@@ -133,10 +133,21 @@ export default class IndexDBAdapter {
                 return reject("Task name should not be empty");
             }
 
+            let labels:string[] = [];
+
+            if( /:.+ \w+/.test(name) ) {
+                const spaceIndex = name.indexOf(" ");
+                const raw = name.slice(1, spaceIndex);
+                name = name.slice(spaceIndex + 1);
+                
+                labels = raw.split(',');
+            }
+
             this.accessor.onReady(() => {
                 this.accessor.add("task", {
                     name,
                     folder_id,
+                    labels
                 }).then( id => {
                     resolve({
                         id,
@@ -148,6 +159,7 @@ export default class IndexDBAdapter {
                         finished: false,
                         steps: [],
                         priority: 10,
+                        labels: [],
                     });
                 });
             });
@@ -212,7 +224,7 @@ export default class IndexDBAdapter {
         ];
 
         const special_keys = [
-            "important", "folder_id", "date",
+            "important", "folder_id", "date", 
         ];
 
         const allowed_keys = [ ...normal_keys, ...special_keys ];
@@ -317,6 +329,24 @@ export default class IndexDBAdapter {
                     resolve();
                 });
             })
+        });
+    }
+
+    addTaskLabel( task_id: number, label: string ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.get("task", task_id).then( raw => {
+                if( ! Array.isArray(raw.labels) ) {
+                    raw.labels = [];
+                }
+
+                if( ! raw.labels.includes(label) ) {
+                    raw.labels.push(label);
+                }
+
+                this.accessor.set("task", raw).then( r => {
+                    resolve();
+                });
+            });
         });
     }
 }

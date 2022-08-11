@@ -13,6 +13,7 @@ export default class Task {
         public date: string | null = null,
         public description: string,
         public priority = 10,
+        public labels:string[] = []
     ) {
     }
 
@@ -30,6 +31,7 @@ export default class Task {
                 raw.date,
                 raw.description,
                 raw.priority,
+                raw.labels
             );
 
             const todoStore = useTodoStore();
