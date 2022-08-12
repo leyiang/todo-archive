@@ -135,7 +135,7 @@ export default class IndexDBAdapter {
 
             let labels:string[] = [];
 
-            if( /:.+ \w+/.test(name) ) {
+            if( /:.+[^,] .+/.test(name) ) {
                 const spaceIndex = name.indexOf(" ");
                 const raw = name.slice(1, spaceIndex);
                 name = name.slice(spaceIndex + 1);
