@@ -1,15 +1,28 @@
-<template>
-    <small class="label">
-        <slot></slot>
-    </small>
-</template>
+<script setup lang="ts">
 
-<style>
-.label {
-    background: pink;
-    padding: 0px 8px;
-    border-radius: 2px;
-    height: 20px;
-    line-height: 20px;
-}
-</style>
+import {computed} from "vue";
+import {useTodoStore} from "@/stores/TodoStore";
+
+const props = defineProps<{
+    name: string
+}>();
+
+const todoStore = useTodoStore();
+const label = computed(() => {
+    return todoStore.labelMap[ props.name ] || { textColor: "#000", bgColor: "#EEE" };
+});
+
+const style = computed(() => {
+    return {
+        color: label.value.textColor,
+        backgroundColor: label.value.bgColor
+    }
+});
+</script>
+
+<template>
+    <small
+        class="py-2px px-12px rounded-full h-20px leading-20px"
+        :style="style"
+    >{{ name }}</small>
+</template>

@@ -4,7 +4,7 @@ import {adapter, useTodoStore} from "@/stores/TodoStore";
 import {onMounted, ref} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
 import Step from "@/core/model/Step";
-import { getTodayString, splice } from "@/shared/utils";
+import { getTodayString, getTomorrowString, splice } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
 import PlanItem from "./PlanItem.vue";
 
@@ -67,6 +67,15 @@ onMounted(() => {
                             });
                         });
                     }
+                }
+            },
+
+            {
+                name: computed(() => props.step.date === getTomorrowString() ? "Remove from tomorrow" : "Set as Tomorrow"),
+                action: () => {
+                    adapter.setStepProp( props.step.id, "date", getTomorrowString()).then( () => {
+                        props.step.date = getTomorrowString();
+                    });
                 }
             },
 

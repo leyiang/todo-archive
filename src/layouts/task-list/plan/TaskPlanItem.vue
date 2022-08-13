@@ -3,7 +3,7 @@ import Task from "@/core/model/Task";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 import {onMounted, ref, computed} from "vue";
 import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
-import { getTodayString, splice } from "@/shared/utils";
+import { getTodayString, getTomorrowString, splice } from "@/shared/utils";
 import Folder from "@/core/model/folder/Folder";
 import PlanItem from "./PlanItem.vue";
 import TaskLabel from "./TaskLabel.vue";
@@ -65,7 +65,14 @@ onMounted(() => {
                     }
                 }
             },
-
+            {
+                name: computed(() => props.task.date === getTomorrowString() ? "Remove from tomorrow" : "Set as Tomorrow"),
+                action: () => {
+                    adapter.setTaskProp( props.task.id, "date", getTomorrowString()).then( affecting => {
+                        props.task.date = getTomorrowString();
+                    });
+                }
+            },
             {
                 name: "Move task to",
 
@@ -106,7 +113,10 @@ onMounted(() => {
         @toggle-finish="toggleTaskFinishStatus"
     >
         <template #labels>
-            <TaskLabel v-for="label in task.labels">{{ label }}</TaskLabel>
+            <TaskLabel
+                v-for="label in task.labels"
+                :name="label"
+            />
         </template>
     </PlanItem>
 </template>
