@@ -41,7 +41,7 @@ function updateFolderFilterOptions( folder: Folder | null ) {
 </script>
 
 <template>
-    <aside
+    <div
         class="flex flex-col p-1rem"
         data-test="folder-list"
     >
@@ -105,5 +105,5 @@ function updateFolderFilterOptions( folder: Folder | null ) {
                 </fieldset>
             </div>
         </Modal>
-    </aside>
+    </div>
 </template>

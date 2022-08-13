@@ -4,6 +4,7 @@ import Folder from "@/core/model/folder/Folder";
 import Task from "@/core/model/Task";
 import {splice} from "@/shared/utils";
 import type Step from "@/core/model/Step";
+import Label, {type rawLabel} from '@/core/model/Label';
 
 export const adapter = new IndexDBAdapter();
 export const useTodoStore = defineStore({
@@ -18,6 +19,9 @@ export const useTodoStore = defineStore({
         activeFolder: null as (null | Folder),
         settingFolder: null as (null | Folder),
         activeTask: null as (null | Task),
+
+        labels: [] as Label[],
+        labelMap: {} as { [id: string]: Label },
     }),
 
     actions: {
@@ -35,6 +39,23 @@ export const useTodoStore = defineStore({
                     this.setActiveFolder( this.folders[0] );
                 }
             });
+
+            adapter.getLabels().then( labels => {
+                labels.map( raw => {
+                    this.addLabel( raw );
+                });
+            });
+        },
+
+        addLabel( raw: rawLabel ) {
+            const label = Label.Load(raw);
+            this.labelMap[ label.name ] = label;
+            this.labels.push( label );
+        },
+
+        removeLabel( label: Label ) {
+            splice(this.labels, label);
+            delete this.labelMap[ label.name ];
         },
 
         setActiveFolder( folder?: Folder ) {

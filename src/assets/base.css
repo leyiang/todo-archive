@@ -40,3 +40,14 @@ body {
 input, textarea {
   line-height: 1.25;
 }
+
+button {
+  cursor: pointer;
+}
+
+/**
+  Able to stretch it in flex box
+**/
+input[type="color" i] {
+  height: auto;
+}

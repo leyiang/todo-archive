@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FolderList from "@/layouts/folder-list/FolderList.vue"
+import UserMeta from "@/layouts/user-meta/UserMeta.vue"
 import TaskListWarp from "@/layouts/task-list/TaskListWrap.vue"
 import TaskDetail from "@/layouts/task-detail/TaskDetail.vue";
 import {useTodoStore} from "@/stores/TodoStore";
@@ -16,9 +17,13 @@ window.exportData = todoStore.exportData;
 
 <template>
     <div class="todo-app flex h-full">
-        <FolderList
-            class="min-w-300px"
-        />
+        <aside class="todo-aside flex flex-col">
+            <UserMeta />
+
+            <FolderList
+                class="min-w-300px flex-1"
+            />
+        </aside>
 
         <TaskListWarp
             data-test="task-list"

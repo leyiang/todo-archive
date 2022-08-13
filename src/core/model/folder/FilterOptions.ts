@@ -6,7 +6,7 @@ export const availableOptions = ["today", "important", "all"];
 export interface filterOptionsType {
     today?: boolean;
     important?: boolean;
-    all: boolean;
+    all?: boolean;
 }
 
 export default class FilterParser {

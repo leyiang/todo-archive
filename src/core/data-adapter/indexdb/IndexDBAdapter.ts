@@ -4,6 +4,7 @@ import type {rawFolder, rawStep, rawTask} from "@/core/model/rawTypes";
 import {isNameEmpty} from "@/shared/utils";
 import type {filterOptionsType} from "@/core/model/folder/FilterOptions";
 import {loadData} from "@/core/data-adapter/indexdb/IndexDBLoadData";
+import type { rawLabel } from "@/core/model/Label";
 
 export default class IndexDBAdapter {
     private accessor: IndexDBAccessor;
@@ -13,24 +14,28 @@ export default class IndexDBAdapter {
     private steps: rawStep[] = [];
 
     constructor( public test = false ) {
-        this.accessor = new IndexDBAccessor("TodoAppNext", 2);
+        this.accessor = new IndexDBAccessor("TodoAppNext", 4);
         this.initDatabase();
         // this.factory();
     }
 
     initDatabase() {
         this.accessor.onInitDatabase((db: IDBDatabase, createStore) => {
-            createStore("folder", [
-                "name", "order", "filterOptions"
-            ]);
+            // createStore("folder", [
+            //     "name", "order", "filterOptions"
+            // ]);
 
-            createStore("task", [
-                "name", "folder_id", "date", "important", "finished", "description", "priority"
-            ]);
+            // createStore("task", [
+            //     "name", "folder_id", "date", "important", "finished", "description", "priority", "labels"
+            // ]);
 
-            createStore("step", [
-                "name", "task_id", "date", "finished", "priority",
-            ]);
+            // createStore("step", [
+            //     "name", "task_id", "date", "finished", "priority",
+            // ]);
+
+            // createStore("label", [
+            //     "name", "textColor", "bgColor", 
+            // ]);
         });
     }
 
@@ -75,6 +80,16 @@ export default class IndexDBAdapter {
                     resolve( data );
                 });
             })
+        });
+    }
+
+    getLabels(): Promise<rawLabel[]> {
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.getAll("label").then( labels => {
+                    resolve( labels );
+                });
+            });
         });
     }
 
@@ -344,6 +359,49 @@ export default class IndexDBAdapter {
                 }
 
                 this.accessor.set("task", raw).then( r => {
+                    resolve();
+                });
+            });
+        });
+    }
+
+    addLabel( name: string, bgColor: string, textColor: string ): Promise<rawLabel> {
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.add("label", {
+                    name,
+                    bgColor,
+                    textColor
+                }).then( id => {
+                    resolve({
+                        id,
+                        name,
+                        bgColor,
+                        textColor
+                    });
+                });
+            });
+        });
+    }
+
+    removeLabel( id: number ): Promise<void> {
+        return new Promise(resolve => {
+            this.accessor.onReady(() => {
+                this.accessor.remove("label", id).then(r => {
+                    resolve();
+                });
+            });
+        });
+    }
+
+    setLabelProps( id: number, attr: {[index: string]: string} ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.get("label", id ).then( raw => {
+                for(let key in attr) {
+                    raw[ key ] = attr[key];
+                }
+
+                this.accessor.set("label", raw).then( r => {
                     resolve();
                 });
             });
