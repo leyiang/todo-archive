@@ -7,6 +7,7 @@ export default {
 <script setup lang="ts">
 import {isNameEmpty} from "@/shared/utils";
 import { ref } from "vue";
+import AInput from "../AInput.vue";
 
 const props = defineProps<{
     maxLength?: number,
@@ -38,17 +39,16 @@ function onEnter( e: KeyboardEvent ) {
 
 <template>
     <div class="add-new-input-wrap" position-relative flex w-full>
-        <input
+        <a-input
             v-bind="$attrs"
-            type="text"
             v-model="content"
             flex-1
             @keydown.enter="onEnter"
             pr-5rem
             :maxlength="maxLength"
-        >
+        />
 
-        <small 
+        <small
             v-if="maxLength !== undefined"
          text-gray-500 position-absolute right-1rem pointer-events-none
          color-current

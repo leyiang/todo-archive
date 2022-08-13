@@ -4,6 +4,5 @@
         border-gray-300
         border-1
         rounded
-        px-2
     >
 </template>

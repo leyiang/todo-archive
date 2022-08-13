@@ -51,7 +51,7 @@ function createLabel(e: SubmitEvent) {
 
         <form class="flex gap-2 mt-1rem" @submit.prevent="createLabel">
             <a-input type="color" name="color" style="padding: 0"/>
-            <a-input data-test="new-label-input" flex-1 required name="name" />
+            <a-input data-test="new-label-input" class="flex-1 px-2" required name="name" />
             <IconButton icon="ic:outline-plus"></IconButton>
         </form>
     </Modal>
