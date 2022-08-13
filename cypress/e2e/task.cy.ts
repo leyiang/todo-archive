@@ -280,4 +280,30 @@ describe('Task List', () => {
             .should("exist")
             .should("have.text", "1");
     });
+
+    it.only("able to set task tomorrow", function() {
+        folderHelpers.create("normal");
+        folderHelpers.create("Today");
+        taskHelpers.create("today task", folderHelpers.getFirst());
+
+        taskHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Today");
+
+        taskHelpers
+            .getFirst()
+            .rightclick();
+
+        clickMenu("Set as Tomorrow");
+
+        cy.reload();
+
+        folderHelpers
+            .getAll()
+            .eq(1)
+            .find( testID("unfinished-task-number") )
+            .should("not.exist");
+    });
 });

@@ -21,21 +21,21 @@ export default class IndexDBAdapter {
 
     initDatabase() {
         this.accessor.onInitDatabase((db: IDBDatabase, createStore) => {
-            // createStore("folder", [
-            //     "name", "order", "filterOptions"
-            // ]);
+            createStore("folder", [
+                "name", "order", "filterOptions"
+            ]);
 
-            // createStore("task", [
-            //     "name", "folder_id", "date", "important", "finished", "description", "priority", "labels"
-            // ]);
+            createStore("task", [
+                "name", "folder_id", "date", "important", "finished", "description", "priority", "labels"
+            ]);
 
-            // createStore("step", [
-            //     "name", "task_id", "date", "finished", "priority",
-            // ]);
+            createStore("step", [
+                "name", "task_id", "date", "finished", "priority",
+            ]);
 
-            // createStore("label", [
-            //     "name", "textColor", "bgColor", 
-            // ]);
+            createStore("label", [
+                "name", "textColor", "bgColor",
+            ]);
         });
     }
 
