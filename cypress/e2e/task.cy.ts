@@ -281,7 +281,7 @@ describe('Task List', () => {
             .should("have.text", "1");
     });
 
-    it.only("able to set task tomorrow", function() {
+    it("able to set task tomorrow", function() {
         folderHelpers.create("normal");
         folderHelpers.create("Today");
         taskHelpers.create("today task", folderHelpers.getFirst());

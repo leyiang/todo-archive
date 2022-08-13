@@ -31,7 +31,7 @@ function updateLabelColor(e: Event) {
 </script>
 
 <template>
-    <div class="flex">
+    <div data-test="label-item" class="flex">
         <a-input
             type="color"
             :value="label.bgColor"
