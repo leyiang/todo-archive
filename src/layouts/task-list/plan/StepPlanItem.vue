@@ -38,56 +38,7 @@ onMounted(() => {
     const el = planItem?.value?.$el;
 
     if( el instanceof HTMLElement ) {
-        addNewMenu( el, [
-            {
-                name: computed(() => props.step.date === getTodayString() ? "Today's Part is done" : "Set as Today"),
-                action: () => {
-                    if( props.step.date === getTodayString() ) {
-                        adapter.setStepProp( props.step.id, "date", null).then( affecting => {
-                            props.step.date = null;
-
-                            affecting.forEach( id => {
-                                const folder = todoStore.folderMap[id];
-
-                                if( folder instanceof Folder ) {
-                                    splice( folder.plans, props.step );
-                                }
-                            });
-                        });
-                    } else {
-                        adapter.setStepProp( props.step.id, "date", getTodayString()).then( affecting => {
-                            props.step.date = getTodayString();
-
-                            affecting.forEach( id => {
-                                const folder = todoStore.folderMap[ id ];
-
-                                if( folder instanceof Folder ) {
-                                    folder.plans.push(props.step);
-                                }
-                            });
-                        });
-                    }
-                }
-            },
-
-            {
-                name: computed(() => props.step.date === getTomorrowString() ? "Remove from tomorrow" : "Set as Tomorrow"),
-                action: () => {
-                    adapter.setStepProp( props.step.id, "date", getTomorrowString()).then( () => {
-                        props.step.date = getTomorrowString();
-                    });
-                }
-            },
-
-            {
-                name: "Remove Step",
-                action: () => {
-                    adapter.removeStep( props.step.id ).then(() => {
-                        todoStore.removeStep( props.step );
-                    });
-                }
-            },
-        ]);
+        props.step.registerMenu( el );
     }
 });
 </script>

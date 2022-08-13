@@ -1,5 +1,9 @@
 import {isRawStep} from "@/core/model/rawTypes";
-import {useTodoStore} from "@/stores/TodoStore";
+import {adapter, useTodoStore} from "@/stores/TodoStore";
+import {addNewMenu} from "@/components/common/context-menu/ContextMenuData";
+import {computed} from "vue";
+import {getTodayString, getTomorrowString, splice} from "@/shared/utils";
+import Folder from "@/core/model/folder/Folder";
 
 export default class Step {
     constructor(
@@ -34,5 +38,58 @@ export default class Step {
         } else {
             throw "Wrong Properties for Folder.Load";
         }
+    }
+
+    registerMenu( el: HTMLElement ) {
+        const todoStore = useTodoStore();
+
+        addNewMenu( el, [
+            {
+                name: computed(() => this.date === getTodayString() ? "Today's Part is done" : "Set as Today"),
+                action: () => {
+                    if( this.date === getTodayString() ) {
+                        adapter.setStepProp( this.id, "date", null).then( affecting => {
+                            this.date = null;
+
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[id];
+
+                                if( folder instanceof Folder ) {
+                                    splice( folder.plans, this );
+                                }
+                            });
+                        });
+                    } else {
+                        adapter.setStepProp( this.id, "date", getTodayString()).then( affecting => {
+                            this.date = getTodayString();
+
+                            affecting.forEach( id => {
+                                const folder = todoStore.folderMap[ id ];
+
+                                if( folder instanceof Folder ) {
+                                    folder.plans.push(this);
+                                }
+                            });
+                        });
+                    }
+                }
+            },
+            {
+                name: computed(() => this.date === getTomorrowString() ? "Remove from tomorrow" : "Set as Tomorrow"),
+                action: () => {
+                    adapter.setStepProp( this.id, "date", getTomorrowString()).then( () => {
+                        this.date = getTomorrowString();
+                    });
+                }
+            },
+            {
+                name: "Remove Step",
+                action: () => {
+                    adapter.removeStep( this.id ).then( () => {
+                        todoStore.removeStep( this );
+                    });
+                }
+            }
+        ]);
     }
 }
