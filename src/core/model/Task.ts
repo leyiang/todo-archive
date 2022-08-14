@@ -98,6 +98,12 @@ export default class Task {
                 }
             },
             {
+                name: "Edit Label",
+                action: () => {
+                    todoStore.editingLabelTask = this;
+                }
+            },
+            {
                 name: "Move task to",
 
                 children: todoStore.folders.map( folder => ({

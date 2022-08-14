@@ -365,6 +365,18 @@ export default class IndexDBAdapter {
         });
     }
 
+    setTaskLabels( task_id: number, labels: string[] ): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.accessor.get("task", task_id).then( raw => {
+                raw.labels = labels;
+
+                this.accessor.set("task", raw).then( r => {
+                    resolve();
+                });
+            });
+        });
+    }
+
     addLabel( name: string, bgColor: string, textColor: string ): Promise<rawLabel> {
         return new Promise(resolve => {
             this.accessor.onReady(() => {

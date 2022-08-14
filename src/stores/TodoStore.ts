@@ -22,6 +22,8 @@ export const useTodoStore = defineStore({
 
         labels: [] as Label[],
         labelMap: {} as { [id: string]: Label },
+
+        editingLabelTask: null as (null | Task),
     }),
 
     actions: {

@@ -6,7 +6,9 @@ import {computed, ref, watch} from "vue";
 import type Folder from "@/core/model/folder/Folder";
 import PlanList from "./PlanList.vue";
 import FinishedPlanToggleButton from "@/layouts/FinishedPlanToggleButton.vue"
+import LabelEditor from "./LabelEditor.vue";
 
+const todoStore = useTodoStore();
 const props = defineProps<{
     folder: Folder
 }>();
@@ -89,9 +91,14 @@ function renameFolder( e: any ) {
                 v-if="showFinished"
                 :plans="finishedPlans"
             />
-        </div>
 
+        </div>
     </div>
 
     <TaskListAddNew />
+
+    <LabelEditor
+        v-if="todoStore.editingLabelTask"
+        :task="todoStore.editingLabelTask"
+    />
 </template>

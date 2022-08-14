@@ -28,3 +28,7 @@ export function getTomorrowString() {
 
     return `${ year }-${ month }-${ day }`;
 }
+
+export function last( arr: any[] ) {
+    return arr[ arr.length - 1 ];
+}
