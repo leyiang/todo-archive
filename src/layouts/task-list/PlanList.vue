@@ -57,29 +57,41 @@ function onDrop() {
 </script>
 
 <template>
-    <template v-for="plan in plans">
-        <TaskPlanItem
-            v-if="isTask( plan )"
-            :key="plan.id"
-            :task="plan"
+    <TransitionGroup name="list">
+        <template v-for="plan in plans">
+            <TaskPlanItem
+                v-if="isTask( plan )"
+                :key="plan.id"
+                :task="plan"
 
-            draggable="true"
-            @dragstart="onDragStart( plan )"
-            @dragenter.prevent="onDragEnter( plan )"
-            @dragover.prevent=""
-            @drop="onDrop"
-        />
+                draggable="true"
+                @dragstart="onDragStart( plan )"
+                @dragenter.prevent="onDragEnter( plan )"
+                @dragover.prevent=""
+                @drop="onDrop"
+            />
 
-        <StepPlanItem
-            v-else-if="isStep( plan )"
-            :key="plan.id"
-            :step="plan"
+            <StepPlanItem
+                v-else-if="isStep( plan )"
+                :key="plan.id"
+                :step="plan"
 
-            draggable="true"
-            @dragstart="onDragStart( plan )"
-            @dragenter.prevent="onDragEnter( plan )"
-            @dragover.prevent=""
-            @drop="onDrop"
-        />
-    </template>
+                draggable="true"
+                @dragstart="onDragStart( plan )"
+                @dragenter.prevent="onDragEnter( plan )"
+                @dragover.prevent=""
+                @drop="onDrop"
+            />
+        </template>
+    </TransitionGroup>
 </template>
+
+<style>
+.list-enter-active {
+    transition: all 2s;
+}
+
+.list-enter-from {
+    box-shadow: inset 0 0 40px greenyellow;
+}
+</style>
