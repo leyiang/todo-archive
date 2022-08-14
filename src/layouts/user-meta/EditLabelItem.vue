@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Label from "@/core/model/Label";
 import AInput from "@/components/common/AInput.vue";
+import GhostInput from "@/components/common/GhostInput.vue";
 import IconButton from "@/components/common/IconButton.vue";
 import {adapter, useTodoStore} from "@/stores/TodoStore";
 
@@ -28,6 +29,14 @@ function updateLabelColor(e: Event) {
     }
 }
 
+function updateLabelName(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const name = target.value.toString().trim();
+
+    adapter.setLabelProps( props.label.id, { name }).then(() => {
+        props.label.name = name;
+    });
+}
 </script>
 
 <template>
@@ -39,7 +48,11 @@ function updateLabelColor(e: Event) {
             @change="updateLabelColor"
         />
 
-        <span class="flex-1 flex items-center px-2">{{ label.name }}</span>
+        <GhostInput
+            :value="label.name"
+            class="flex-1 ml-.5rem mr-2 px-2"
+            @change="updateLabelName"
+        />
 
         <IconButton
             icon="ic:baseline-close"
