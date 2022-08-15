@@ -42,6 +42,7 @@ function updateLabelName(e: Event) {
 <template>
     <div data-test="label-item" class="flex">
         <a-input
+            data-test="edit-label-color"
             type="color"
             :value="label.bgColor"
             style="padding: 0"
@@ -49,6 +50,7 @@ function updateLabelName(e: Event) {
         />
 
         <GhostInput
+            data-test="edit-label-name"
             :value="label.name"
             class="flex-1 ml-.5rem mr-2 px-2"
             @change="updateLabelName"

@@ -61,6 +61,7 @@ const style = computed(() => {
                 flex
             >
                 <button
+                    data-test="close-modal-button"
                     btn-reset
                     btn-action
                     ml-auto

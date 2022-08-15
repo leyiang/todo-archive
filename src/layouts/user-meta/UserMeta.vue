@@ -9,6 +9,7 @@ import EditLabelItem from "./EditLabelItem.vue";
 
 const showSetting = ref(false);
 const todoStore = useTodoStore();
+const name = ref("");
 
 function createLabel(e: SubmitEvent) {
     const data = new FormData(e.target as HTMLFormElement);
@@ -19,6 +20,7 @@ function createLabel(e: SubmitEvent) {
     if( textColor !== null ) {
         adapter.addLabel(value, color, textColor).then((raw) => {
             todoStore.addLabel( raw );
+            name.value = "";
         });
     }
 }
@@ -50,8 +52,11 @@ function createLabel(e: SubmitEvent) {
         </div>
 
         <form class="flex gap-2 mt-1rem" @submit.prevent="createLabel">
-            <a-input type="color" name="color" style="padding: 0"/>
-            <a-input data-test="new-label-input" class="flex-1 px-2" required name="name" />
+            <a-input
+                data-test="new-label-color"
+                type="color" name="color" style="padding: 0"
+            />
+            <a-input data-test="new-label-input" class="flex-1 px-2" required name="name" v-model="name" />
             <IconButton icon="ic:outline-plus"></IconButton>
         </form>
     </Modal>

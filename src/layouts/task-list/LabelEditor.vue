@@ -44,7 +44,7 @@ function update() {
             <h4 class="m0">Editing Label for {{ '<' + task.name + '>' }}</h4>
         </template>
 
-        <div class="label-editor">
+        <div class="label-editor" data-test="label-editor">
             <div class="flex b-1 border-gray-300 rounded gap-1rem flex-wrap min-h-50px leading-24px p-.5rem items-center box-border">
                 <TaskLabel
                     v-for="label in task.labels"
@@ -52,6 +52,7 @@ function update() {
                 />
 
                 <input
+                    data-test="label-editor-input"
                     type="text"
                     class="flex-1 w-20px min-w-unset b-none outline-none"
                     v-model.trim="newLabel"
