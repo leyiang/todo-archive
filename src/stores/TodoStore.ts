@@ -139,7 +139,8 @@ export const useTodoStore = defineStore({
         exportData() {
             const data = {
                 version: "2.0",
-                folders: this.folders
+                folders: this.folders,
+                labels: this.labels
             };
 
 
