@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import { Icon } from "@iconify/vue";
+<script setup lang="ts"> import { Icon } from "@iconify/vue";
 import useFinishIcon from '@/composables/useFinishIcon';
 import type Step from '@/core/model/Step';
 import Task from '@/core/model/Task';
@@ -24,7 +23,7 @@ const dynamicClass = computed(() => {
         currentTask === todoStore.activeTask ? 'bg-emerald-100' : 'bg-white',
 
         {
-            'text-gray-500 line-through': props.plan.finished,
+            'text-gray-500': props.plan.finished,
         }
     ]
 });
@@ -58,7 +57,7 @@ const planType = computed(() => {
         </button>
 
         <div class="flex flex-col">
-            <span class="select-none">
+            <span class="select-none" :class="props.plan.finished ? 'line-through' : '' ">
                 <slot>{{ plan.name }}</slot>
             </span>
 
