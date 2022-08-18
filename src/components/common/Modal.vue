@@ -16,7 +16,6 @@ const props = defineProps({
 
 const style = computed(() => {
     return {
-        width: props.width + "px",
         height: props.height + "px",
         maxHeight: props.height + "px",
         overflow: "auto",
@@ -25,7 +24,7 @@ const style = computed(() => {
 </script>
 
 <template>
-    <div class="modal-wrap z-10">
+    <div class="modal-wrap z-10" :style="`width: ${ width }px`">
         <div
             position-absolute
             inset-0
