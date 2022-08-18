@@ -3,9 +3,11 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import "./assets/base.css"
 import "uno.css";
+import {loadDirectives} from "@/directives/load";
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(createPinia()).use( loadDirectives );
+
 app.mount('#app')
 
 /**

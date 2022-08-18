@@ -35,7 +35,6 @@ function removeLabel() {
 function update() {
     adapter.setTaskLabels(task.id, JSON.parse(JSON.stringify(task.labels)));
 }
-
 </script>
 
 <template>
@@ -52,13 +51,13 @@ function update() {
                 />
 
                 <input
+                    v-focus
                     data-test="label-editor-input"
                     type="text"
                     class="flex-1 w-20px min-w-unset b-none outline-none"
                     v-model.trim="newLabel"
                     @keydown.enter="addNewLabel"
                     @keydown.delete="removeLabel"
-                    autofocus
                 >
             </div>
         </div>
